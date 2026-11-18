@@ -1,0 +1,2241 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Chalets de Noël de Manchester • Listes de Cadeaux</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Polices typographiques chaleureuses : Fraunces & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Fraunces', 'serif'],
+                    },
+                    colors: {
+                        mcr: {
+                            kraft: '#F2E4CC',
+                            parchment: '#E8D5B5',
+                            parchmentDark: '#D8C098',
+                            brick: '#7E241C',
+                            brickDark: '#5B1812',
+                            pine: '#173326',
+                            pineLight: '#224937',
+                            mulled: '#48141A',
+                            brass: '#D4A03E',
+                            brassLight: '#E7BC66',
+                            ink: '#1F1614'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Palette stricte sans aucun encart blanc : papier kraft ancien, parchemin doré, briques rouges et vert sapin */
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #173326;
+            background-image:
+                radial-gradient(circle at 18% 12%, rgba(126, 36, 28, 0.45) 0%, transparent 48%),
+                radial-gradient(circle at 82% 88%, rgba(72, 20, 26, 0.58) 0%, transparent 52%),
+                repeating-linear-gradient(45deg, rgba(212, 160, 62, 0.03) 0px, rgba(212, 160, 62, 0.03) 2px, transparent 2px, transparent 10px);
+            color: #1F1614;
+            overflow-x: hidden;
+        }
+
+        /* Cartes en papier kraft ancien (zéro fond blanc) */
+        .kraft-card {
+            background-color: #F2E4CC;
+            background-image:
+                radial-gradient(rgba(126, 36, 28, 0.05) 1px, transparent 0),
+                linear-gradient(180deg, #F2E4CC 0%, #E8D5B5 100%);
+            background-size: 18px 18px, 100% 100%;
+            border: 3px solid #48141A;
+            box-shadow: 0 10px 25px rgba(20, 10, 8, 0.35), inset 0 1px 0 rgba(232, 213, 181, 0.8);
+            border-radius: 20px;
+        }
+
+        .parchment-panel {
+            background-color: #E8D5B5;
+            background-image: linear-gradient(145deg, #E8D5B5 0%, #DEC69E 100%);
+            border: 2px solid #7E241C;
+            border-radius: 16px;
+        }
+
+        /* Façade en briques rouges victoriennes du Northern Quarter */
+        .manchester-brick-wall {
+            background-color: #7E241C;
+            background-image:
+                linear-gradient(335deg, rgba(72, 20, 26, 0.58) 23px, transparent 23px),
+                linear-gradient(155deg, rgba(91, 24, 18, 0.65) 23px, transparent 23px),
+                linear-gradient(335deg, rgba(72, 20, 26, 0.58) 23px, transparent 23px),
+                linear-gradient(155deg, rgba(145, 45, 35, 0.45) 23px, transparent 23px);
+            background-size: 58px 58px;
+            background-position: 0px 2px, 4px 35px, 29px 31px, 34px 6px;
+            box-shadow: inset 0 0 38px rgba(31, 22, 20, 0.55);
+        }
+
+        /* Grandes fenêtres victoriennes illuminées avec rebords enneigés */
+        .victorian-window {
+            background: radial-gradient(circle at 50% 45%, #F4C96B 0%, #D4A03E 62%, #9B6B1E 100%);
+            border: 4px solid #2A1612;
+            border-radius: 20px 20px 4px 4px;
+            box-shadow:
+                0 0 22px rgba(212, 160, 62, 0.55),
+                inset 0 0 12px rgba(72, 20, 26, 0.45);
+            position: relative;
+        }
+        .victorian-window::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to right, transparent 47%, #2A1612 47%, #2A1612 53%, transparent 53%),
+                linear-gradient(to bottom, transparent 47%, #2A1612 47%, #2A1612 53%, transparent 53%);
+            pointer-events: none;
+        }
+        .snowy-ledge {
+            height: 10px;
+            background: linear-gradient(180deg, #F2E4CC 0%, #D8C098 100%);
+            border: 2px solid #2A1612;
+            border-radius: 999px;
+            margin-top: -3px;
+            box-shadow: 0 3px 4px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Toit d'ardoise enneigé & fumée de cheminée */
+        .pitched-slate-roof {
+            clip-path: polygon(4% 100%, 14% 0%, 86% 0%, 96% 100%);
+            background:
+                repeating-linear-gradient(90deg, rgba(212, 160, 62, 0.14) 0px, rgba(212, 160, 62, 0.14) 2px, transparent 2px, transparent 22px),
+                linear-gradient(180deg, #2D2523 0%, #1F1614 100%);
+        }
+        .chimney-smoke {
+            animation: chimneyPuff 3.6s infinite ease-out;
+        }
+        .chimney-smoke-delay {
+            animation: chimneyPuff 3.6s infinite ease-out 1.8s;
+        }
+        @keyframes chimneyPuff {
+            0% { transform: translateY(0) scale(0.7); opacity: 0.75; }
+            100% { transform: translateY(-26px) translateX(10px) scale(1.55); opacity: 0; }
+        }
+
+        /* Guirlande lumineuse dorée en CSS */
+        .string-lights {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: relative;
+        }
+        .string-lights::before {
+            content: "";
+            position: absolute;
+            top: 4px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #1F1614;
+            border-radius: 999px;
+        }
+        .bulb {
+            width: 11px;
+            height: 15px;
+            border-radius: 50% 50% 45% 45%;
+            border: 2px solid #1F1614;
+            position: relative;
+            z-index: 2;
+            animation: warmTwinkle 2.2s infinite ease-in-out;
+        }
+        .bulb-gold { background: #E7BC66; box-shadow: 0 0 12px #D4A03E; }
+        .bulb-amber { background: #D97724; box-shadow: 0 0 12px #D97724; animation-delay: 0.7s; }
+        .bulb-ruby { background: #B8332A; box-shadow: 0 0 12px #B8332A; animation-delay: 1.4s; }
+
+        @keyframes warmTwinkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(0.92); }
+        }
+
+        /* Porte 3D interactive du chalet et sortie des 3 personnes détourées */
+        .doorway-stage {
+            perspective: 800px;
+        }
+        .door-interior-glow {
+            background: radial-gradient(circle at 50% 42%, #FCE39C 0%, #E7BC66 52%, #9B5A1A 100%);
+            box-shadow: inset 0 0 18px rgba(72, 20, 26, 0.65);
+        }
+        .door-leaf-3d {
+            transform-origin: left center;
+            transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.65s ease;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+        }
+        .doorway-stage:hover .door-leaf-3d,
+        .doorway-stage.door-open .door-leaf-3d {
+            transform: rotateY(-108deg);
+            box-shadow: -8px 6px 16px rgba(20, 10, 8, 0.55);
+        }
+        .cutout-trio-actor {
+            transform: translateY(10px) scale(0.84);
+            opacity: 0.12;
+            transition: transform 0.65s cubic-bezier(0.34, 1.45, 0.64, 1), opacity 0.4s ease;
+            /* Contour blanc style autocollant + ombre portée */
+            filter:
+                drop-shadow(1.8px 0 0 #F7F2E7)
+                drop-shadow(-1.8px 0 0 #F7F2E7)
+                drop-shadow(0 1.8px 0 #F7F2E7)
+                drop-shadow(0 -1.8px 0 #F7F2E7)
+                drop-shadow(0 6px 8px rgba(20, 10, 8, 0.58));
+        }
+        .doorway-stage:hover .cutout-trio-actor,
+        .doorway-stage.door-open .cutout-trio-actor {
+            transform: translateY(18px) scale(1.32);
+            opacity: 1;
+        }
+
+        /* Boutons et champs de saisie texturés (zéro blanc) */
+        .btn-brass {
+            background: linear-gradient(180deg, #E2B354 0%, #C8922E 100%);
+            color: #1F1614;
+            border: 2px solid #48141A;
+            box-shadow: 0 4px 0 #48141A;
+            font-weight: 700;
+            transition: all 0.15s ease;
+        }
+        .btn-brass:hover {
+            filter: brightness(1.06);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 0 #48141A;
+        }
+        .btn-brass:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #48141A;
+        }
+
+        .btn-brick {
+            background: linear-gradient(180deg, #912B22 0%, #6D1D16 100%);
+            color: #F2E4CC;
+            border: 2px solid #2A1612;
+            box-shadow: 0 4px 0 #2A1612;
+            font-weight: 700;
+            transition: all 0.15s ease;
+        }
+        .btn-brick:hover {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+        }
+        .btn-brick:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #2A1612;
+        }
+
+        .btn-pine {
+            background: linear-gradient(180deg, #224937 0%, #173326 100%);
+            color: #F2E4CC;
+            border: 2px solid #1F1614;
+            box-shadow: 0 4px 0 #1F1614;
+            font-weight: 700;
+            transition: all 0.15s ease;
+        }
+        .btn-pine:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
+        .mcr-input {
+            background-color: #E8D5B5;
+            border: 2px solid #7E241C;
+            color: #1F1614;
+            border-radius: 12px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .mcr-input::placeholder {
+            color: rgba(31, 22, 20, 0.55);
+        }
+        .mcr-input:focus {
+            outline: none;
+            border-color: #173326;
+            box-shadow: 0 0 0 3px rgba(212, 160, 62, 0.45);
+        }
+
+        /* Chute légère de flocons sur le haut de la page */
+        #snow-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 44vh;
+            pointer-events: none;
+            z-index: 35;
+            overflow: hidden;
+        }
+        .snow-flake {
+            position: absolute;
+            top: -24px;
+            color: #F2E4CC;
+            opacity: 0.72;
+            user-select: none;
+            animation: gentleSnowFall linear infinite;
+        }
+        @keyframes gentleSnowFall {
+            0% {
+                transform: translateY(-10px) translateX(0px) rotate(0deg);
+                opacity: 0.85;
+            }
+            75% {
+                opacity: 0.65;
+            }
+            100% {
+                transform: translateY(44vh) translateX(22px) rotate(180deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-full flex flex-col">
+
+    <!-- Flocons légers sur le haut de la page -->
+    <div id="snow-layer" aria-hidden="true"></div>
+
+    <!-- EN-TÊTE : MARCHÉ DE NOËL DE MANCHESTER & GRANDE MAISON VICTORIAN EN BRIQUE ROUGE + CHAT BRITISH SHORTHAIR CÔTE À CÔTE -->
+    <header class="relative bg-mcr-mulled border-b-4 border-mcr-brass shadow-2xl pt-5 pb-8 px-2 sm:px-6 overflow-hidden">
+        <!-- Guirlande lumineuse supérieure -->
+        <div class="max-w-5xl mx-auto mb-4 string-lights px-2">
+            <span class="bulb bulb-gold"></span>
+            <span class="bulb bulb-amber"></span>
+            <span class="bulb bulb-ruby"></span>
+            <span class="bulb bulb-gold"></span>
+            <span class="bulb bulb-amber"></span>
+            <span class="bulb bulb-ruby"></span>
+            <span class="bulb bulb-gold"></span>
+            <span class="bulb bulb-amber"></span>
+            <span class="bulb bulb-ruby"></span>
+            <span class="bulb bulb-gold"></span>
+        </div>
+
+        <div class="max-w-5xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 bg-mcr-pine text-mcr-brass border-2 border-mcr-brass px-4 py-1 rounded-full text-xs font-bold tracking-wider uppercase mb-2.5 shadow">
+                <span>🐝</span>
+                <span>Manchester Christmas Markets &bull; Albert Square</span>
+                <span>🐝</span>
+            </div>
+
+            <h1 class="font-display text-3xl sm:text-5xl font-extrabold text-mcr-kraft tracking-tight drop-shadow-md">
+                Les Chalets de Noël de Manchester
+            </h1>
+            <p class="text-mcr-parchment text-xs sm:text-base max-w-2xl mx-auto mt-1.5 font-medium">
+                Espace commun de Noël : chacun ajoute son onglet, dépose ses idées cadeaux ou réserve les présents des proches.
+            </p>
+
+            <!-- SCÈNE ARCHITECTURALE CÔTE À CÔTE (flex-nowrap garantit qu'ils restent côte à côte sur grand écran et tablette) -->
+            <div class="mt-7 max-w-4xl mx-auto flex flex-nowrap items-end justify-center gap-2 sm:gap-5 px-1">
+                
+                <!-- 1. GRANDE MAISON VICTORIENNE EN BRIQUE ROUGE DE MANCHESTER -->
+                <div class="flex-1 min-w-0 max-w-[640px] relative">
+                    <!-- Deux cheminées en brique rouge + fumée douce -->
+                    <div class="flex justify-between px-10 sm:px-16 -mb-2 relative z-10">
+                        <div class="relative w-9 sm:w-12 h-8 sm:h-10 manchester-brick-wall border-x-2 border-t-2 border-mcr-ink rounded-t-md">
+                            <div class="h-2 bg-mcr-kraft border-b-2 border-mcr-ink -mx-1 rounded-sm"></div>
+                        </div>
+                        <div class="relative w-10 sm:w-12 h-9 sm:h-11 manchester-brick-wall border-x-2 border-t-2 border-mcr-ink rounded-t-md">
+                            <div class="h-2 bg-mcr-kraft border-b-2 border-mcr-ink -mx-1 rounded-sm"></div>
+                            <span class="chimney-smoke absolute -top-3 left-2 w-3.5 h-3.5 rounded-full bg-mcr-kraft/75 pointer-events-none"></span>
+                            <span class="chimney-smoke-delay absolute -top-4 left-4 w-4 h-4 rounded-full bg-mcr-parchment/65 pointer-events-none"></span>
+                        </div>
+                    </div>
+
+                    <!-- Toit d'ardoise enneigé -->
+                    <div class="pitched-slate-roof h-14 sm:h-20 border-t-4 border-mcr-brass relative flex flex-col items-center justify-center pt-1">
+                        <div class="bg-mcr-pine border-2 border-mcr-brass px-3 py-0.5 rounded-full text-[9px] sm:text-[11px] font-bold tracking-widest text-mcr-kraft uppercase shadow">
+                            M2 &bull; Northern Quarter &bull; Est. 1884
+                        </div>
+                    </div>
+                    <!-- Corniche enneigée épaisse -->
+                    <div class="h-3.5 bg-gradient-to-b from-mcr-kraft to-mcr-parchmentDark border-x-4 border-t-2 border-mcr-ink rounded-t-lg shadow"></div>
+
+                    <!-- Corps principal à 2 étages en briques rouges de Manchester -->
+                    <div class="manchester-brick-wall border-4 border-mcr-ink rounded-b-2xl p-2.5 sm:p-5 relative">
+                        <!-- Enseigne dorée MANCHESTER CHRISTMAS CHALET -->
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="hidden sm:inline-block text-sm">🎄</span>
+                            <div class="mx-auto bg-mcr-ink border-2 border-mcr-brass px-3 sm:px-4 py-1 rounded text-[10px] sm:text-xs font-display font-bold text-mcr-brass tracking-wider shadow">
+                                🐝 MANCHESTER CHRISTMAS CHALET
+                            </div>
+                            <span class="hidden sm:inline-block text-sm">🎄</span>
+                        </div>
+
+                        <!-- 2e Étage : 3 Grandes fenêtres victoriennes cintrées illuminées -->
+                        <div class="grid grid-cols-3 gap-2.5 sm:gap-4 px-1 sm:px-3">
+                            <div>
+                                <div class="victorian-window h-16 sm:h-24 flex items-center justify-center">
+                                    <span class="text-lg sm:text-2xl drop-shadow" title="Sapin illuminé">🎄</span>
+                                </div>
+                                <div class="snowy-ledge"></div>
+                            </div>
+                            <div>
+                                <div class="victorian-window h-16 sm:h-24 flex items-center justify-center">
+                                    <span class="text-lg sm:text-2xl drop-shadow" title="Cloche de fête">🔔</span>
+                                </div>
+                                <div class="snowy-ledge"></div>
+                            </div>
+                            <div>
+                                <div class="victorian-window h-16 sm:h-24 flex items-center justify-center">
+                                    <span class="text-lg sm:text-2xl drop-shadow" title="Chaleur du foyer">🕯️</span>
+                                </div>
+                                <div class="snowy-ledge"></div>
+                            </div>
+                        </div>
+
+                        <!-- Guirlande lumineuse intermédiaire -->
+                        <div class="my-3 sm:my-4 string-lights px-2">
+                            <span class="bulb bulb-gold"></span>
+                            <span class="bulb bulb-ruby"></span>
+                            <span class="bulb bulb-amber"></span>
+                            <span class="bulb bulb-gold"></span>
+                            <span class="bulb bulb-ruby"></span>
+                            <span class="bulb bulb-amber"></span>
+                            <span class="bulb bulb-gold"></span>
+                            <span class="bulb bulb-ruby"></span>
+                        </div>
+
+                        <!-- Rez-de-chaussée : Fenêtre gauche + Étal vin chaud, Grande Porte 3D interactive centrale, Fenêtre droite + Détourer ma photo -->
+                        <div class="mt-2 grid grid-cols-12 items-end gap-2 sm:gap-3 px-0.5 sm:px-2">
+                            <!-- Côté gauche -->
+                            <div class="col-span-4 space-y-2.5">
+                                <div>
+                                    <div class="victorian-window h-14 sm:h-20 flex items-center justify-center">
+                                        <span class="text-base sm:text-xl drop-shadow">🎁</span>
+                                    </div>
+                                    <div class="snowy-ledge"></div>
+                                </div>
+                                <div class="bg-mcr-mulled border-2 border-mcr-brass rounded-xl p-1.5 sm:p-2.5 text-left shadow-lg">
+                                    <div class="text-[9px] sm:text-[10px] font-bold text-mcr-brass uppercase tracking-wide truncate">Chalet N°12</div>
+                                    <div class="text-[10px] sm:text-xs text-mcr-kraft font-semibold flex items-center gap-1 mt-0.5 truncate">
+                                        <span>☕</span> <span class="truncate">Vin chaud</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Centre : Grande Porte vert sapin 3D interactive avec Canvas haute définition des 3 personnages détourés -->
+                            <div class="col-span-4 flex justify-center">
+                                <div id="chalet-doorway" class="doorway-stage relative w-28 sm:w-36 md:w-44 h-36 sm:h-44 md:h-48 shrink-0 select-none cursor-pointer group" title="Passez le curseur ou cliquez sur la porte pour faire sortir la famille !">
+                                    <!-- Bulle d'indice au-dessus de la porte -->
+                                    <div id="door-hint-badge" class="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-mcr-brass text-mcr-ink border-2 border-mcr-ink text-[9px] sm:text-[11px] font-extrabold px-2.5 py-0.5 rounded-full shadow transition-transform group-hover:scale-105 z-30">
+                                        ✨ Ouvrir la porte
+                                    </div>
+
+                                    <!-- Cadre de porte et lumière chaude intérieure -->
+                                    <div class="w-full h-full door-interior-glow border-4 border-mcr-ink rounded-t-3xl relative overflow-visible flex items-end justify-center shadow-inner">
+                                        <!-- Canvas haute définition des 3 personnes détourées (contour blanc autocollant + ombre portée) -->
+                                        <div class="cutout-trio-actor relative z-10 w-[132%] h-[112%] flex items-end justify-center pointer-events-none">
+                                            <canvas id="doorway-trio-canvas" width="320" height="360" class="w-full h-full object-contain object-bottom"></canvas>
+                                        </div>
+
+                                        <!-- Battant de porte vert sapin qui pivote en 3D sur ses gonds à gauche -->
+                                        <div class="door-leaf-3d absolute inset-0 bg-mcr-pine rounded-t-xl flex flex-col items-center pt-4 shadow-lg z-20">
+                                            <!-- Couronne de Noël en CSS -->
+                                            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-4 border-mcr-pineLight bg-mcr-brick flex items-center justify-center shadow-inner">
+                                                <span class="w-3 h-3 rounded-full bg-mcr-brass"></span>
+                                            </div>
+                                            <!-- Heurtoir & poignée laiton -->
+                                            <div class="w-3 h-3 rounded-full bg-mcr-brass border border-mcr-ink mt-2.5"></div>
+                                            <div class="w-2.5 h-5 rounded-full bg-mcr-brass border border-mcr-ink self-end mr-3 mt-2.5"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Côté droit -->
+                            <div class="col-span-4 space-y-2.5">
+                                <div>
+                                    <div class="victorian-window h-14 sm:h-20 flex items-center justify-center">
+                                        <span class="text-base sm:text-xl drop-shadow">🧦</span>
+                                    </div>
+                                    <div class="snowy-ledge"></div>
+                                </div>
+                                <div class="flex justify-end">
+                                    <label for="door-photo-cutout-input" class="w-full cursor-pointer inline-flex items-center justify-center gap-1.5 bg-mcr-ink/90 hover:bg-mcr-pine text-mcr-parchment border-2 border-mcr-brass/80 px-2 py-1.5 rounded-xl text-[9px] sm:text-[10px] font-bold transition shadow" title="Importer une photo pour détourer automatiquement les personnes sur Canvas">
+                                        <i class="fa-solid fa-scissors text-mcr-brass"></i>
+                                        <span class="truncate">Détourer ma photo</span>
+                                    </label>
+                                    <input type="file" id="door-photo-cutout-input" accept="image/*" class="hidden">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. BARNABY : VRAI CHAT BRITISH SHORTHAIR GRIS EN STYLE BANDE DESSINÉE SUR CANVAS (TOUJOURS À DROITE DE LA MAISON) -->
+                <div class="shrink-0 flex flex-col items-center">
+                    <div class="relative rounded-2xl p-1.5 bg-mcr-parchment border-4 border-mcr-brass shadow-xl cursor-pointer group" id="cat-canvas-wrapper" title="Cliquez pour faire ronronner Barnaby le British Shorthair !">
+                        <canvas id="british-shorthair-canvas" width="210" height="225" class="block w-[112px] h-[120px] sm:w-[175px] sm:h-[188px] md:w-[195px] md:h-[210px] rounded-xl"></canvas>
+                        <div id="cat-speech" class="opacity-0 transition-opacity duration-300 absolute -top-5 right-0 bg-mcr-kraft border-2 border-mcr-ink text-mcr-ink text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow whitespace-nowrap">
+                            Ronron... Joyeux Noël ! 🐝
+                        </div>
+                    </div>
+                    <span class="mt-1.5 text-[9px] sm:text-[11px] font-semibold text-mcr-parchment bg-mcr-ink/85 border border-mcr-brass/60 px-2.5 py-0.5 rounded-full whitespace-nowrap">
+                        Barnaby &bull; British Shorthair
+                    </span>
+                </div>
+            </div>
+
+            <!-- Trottoir enneigé commun reliant la grande maison et Barnaby -->
+            <div class="max-w-4xl mx-auto h-3.5 bg-gradient-to-b from-mcr-kraft to-mcr-parchmentDark border-2 border-mcr-ink rounded-full -mt-1.5 shadow-md"></div>
+        </div>
+    </header>
+
+    <!-- CONTENU PRINCIPAL COMMUN À TOUS LES PARTICIPANTS -->
+    <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-8 space-y-6">
+
+        <!-- BARRE D'ONGLETS DES PARTICIPANTS (SANS ENCART "CHALET PARTAGÉ DE NOËL") -->
+        <section class="kraft-card p-4 sm:p-5 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5">
+                    <span class="font-display text-base sm:text-lg font-bold text-mcr-mulled flex items-center gap-2">
+                        <i class="fa-solid fa-tags text-mcr-brick"></i> Listes de Noël
+                    </span>
+                    <span id="sync-status-badge" class="bg-mcr-pine text-mcr-kraft text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-mcr-ink">
+                        <i class="fa-solid fa-circle text-mcr-brass text-[7px] mr-1"></i> Synchronisé en direct
+                    </span>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <button type="button" id="btn-open-participant-modal" class="btn-brick px-3.5 py-2 rounded-xl text-xs sm:text-sm flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-user-plus text-mcr-brass"></i>
+                        <span>+ Ajouter mon onglet</span>
+                    </button>
+                    <button type="button" id="btn-copy-site-link" class="btn-brass px-3.5 py-2 rounded-xl text-xs sm:text-sm flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-share-nodes text-mcr-brick"></i>
+                        <span>Partager le lien du site</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Liste des onglets des participants -->
+            <div id="participants-tabs-bar" class="flex flex-wrap items-center gap-2.5 pt-1" role="tablist">
+                <!-- Onglets injectés dynamiquement -->
+            </div>
+        </section>
+
+        <!-- ÉTAT INITIAL SI TOUS LES ONGLETS SONT SUPPRIMÉS -->
+        <section id="empty-participants-state" class="hidden kraft-card p-8 sm:p-12 text-center space-y-4">
+            <div class="text-5xl">🎄</div>
+            <h3 class="font-display text-2xl sm:text-3xl font-bold text-mcr-mulled">
+                Ouvrez le premier onglet de Noël !
+            </h3>
+            <p class="text-sm sm:text-base text-mcr-ink/85 max-w-lg mx-auto">
+                Ajoutez votre prénom pour créer votre espace personnel. Tout le monde peut accéder aux onglets et ajouter le sien.
+            </p>
+            <div class="pt-2">
+                <button type="button" id="btn-first-participant" class="btn-brass px-6 py-3.5 rounded-xl text-sm sm:text-base inline-flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-sparkles text-mcr-brick"></i>
+                    <span>Créer mon onglet de Noël</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- CONTENU DE L'ONGLET DU PARTICIPANT SÉLECTIONNÉ -->
+        <section id="participant-board" class="hidden space-y-6">
+
+            <!-- BANNIÈRE D'ALERTE FESTIVE SI LE PARTICIPANT A TERMINÉ SA LISTE -->
+            <div id="completed-alert-banner" class="hidden kraft-card text-mcr-kraft border-4 border-mcr-brass p-5 shadow-xl" style="background-image: linear-gradient(135deg, #173326 0%, #224937 100%);">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-4 text-center sm:text-left">
+                        <div class="w-12 h-12 rounded-2xl bg-mcr-brass text-mcr-ink flex items-center justify-center text-2xl shrink-0 border-2 border-mcr-ink shadow">
+                            🎉
+                        </div>
+                        <div>
+                            <span class="inline-block bg-mcr-brick text-mcr-kraft text-[11px] font-bold uppercase px-2.5 py-0.5 rounded-full mb-1">
+                                🐝 Alerte Organisateur &amp; Proches
+                            </span>
+                            <h3 id="completed-alert-title" class="font-display text-xl font-bold text-mcr-kraft">
+                                Liste de Noël terminée !
+                            </h3>
+                            <p id="completed-alert-details" class="text-xs sm:text-sm text-mcr-parchment mt-0.5">
+                                Tous les souhaits ont été ajoutés. Vous pouvez maintenant réserver vos cadeaux !
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EN-TÊTE DE L'ONGLET ACTIF -->
+            <div class="kraft-card p-6 sm:p-7">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+                    <div class="space-y-1.5">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="bg-mcr-brick text-mcr-kraft text-xs font-bold px-3 py-1 rounded-full border border-mcr-ink">
+                                <i class="fa-solid fa-gift mr-1 text-mcr-brass"></i> Liste de souhaits
+                            </span>
+                            <span id="wishes-counter-badge" class="bg-mcr-parchmentDark text-mcr-ink text-xs font-bold px-3 py-1 rounded-full border border-mcr-brick/40">
+                                0 souhait
+                            </span>
+                        </div>
+                        <h2 id="active-tab-title" class="font-display text-3xl sm:text-4xl font-extrabold text-mcr-mulled">
+                            Liste de Noël
+                        </h2>
+                        <p id="active-tab-note" class="text-sm text-mcr-ink/85 max-w-2xl">
+                            Découvrez ses idées cadeaux ou réservez un présent pour éviter les doublons.
+                        </p>
+                    </div>
+
+                    <!-- Actions sur l'onglet -->
+                    <div class="flex flex-wrap items-center gap-2.5">
+                        <button type="button" id="btn-open-wish-modal" class="btn-brick px-4 py-3 rounded-xl text-xs sm:text-sm flex items-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-plus-circle text-mcr-brass"></i>
+                            <span>Ajouter un cadeau</span>
+                        </button>
+
+                        <button type="button" id="btn-toggle-finished" class="btn-brass px-4 py-3 rounded-xl text-xs sm:text-sm flex items-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-bell"></i>
+                            <span>J'ai terminé ma liste !</span>
+                        </button>
+
+                        <button type="button" id="btn-delete-participant" class="bg-mcr-parchmentDark hover:bg-mcr-brick hover:text-mcr-kraft text-mcr-brick border-2 border-mcr-brick px-3 py-3 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer transition" title="Supprimer cet onglet">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRILLE DES SOUHAITS DE CADEAUX -->
+            <div id="wishes-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+
+            <!-- ÉTAT VIDE POUR CET ONGLET -->
+            <div id="empty-wishes-state" class="hidden kraft-card p-10 text-center">
+                <div class="text-5xl mb-3">🎁</div>
+                <h3 class="font-display text-2xl font-bold text-mcr-mulled">Aucun cadeau dans cet onglet</h3>
+                <p class="text-sm text-mcr-ink/80 max-w-md mx-auto mt-1 mb-5">
+                    Ajoutez un produit précis avec photo et lien marchand, ou décrivez simplement un besoin libre !
+                </p>
+                <button type="button" id="btn-empty-add-wish" class="btn-brick px-5 py-3 rounded-xl text-sm inline-flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-plus"></i> Ajouter un premier souhait
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODALE : AJOUTER UN NOUVEL ONGLET PARTICIPANT -->
+    <div id="modal-participant" class="fixed inset-0 bg-mcr-ink/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="kraft-card max-w-md w-full p-6 sm:p-8 relative">
+            <button type="button" id="btn-close-participant-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-mcr-parchmentDark border-2 border-mcr-ink text-mcr-ink hover:bg-mcr-brick hover:text-mcr-kraft flex items-center justify-center cursor-pointer transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="font-display text-2xl font-bold text-mcr-mulled mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-user-plus text-mcr-brick"></i> Nouvel onglet de Noël
+            </h3>
+            <p class="text-xs sm:text-sm text-mcr-ink/80 mb-5">
+                Entrez votre prénom pour créer votre onglet dans l'espace commun.
+            </p>
+
+            <form id="form-participant" class="space-y-4">
+                <div>
+                    <label for="participant-name-input" class="block text-xs sm:text-sm font-bold text-mcr-mulled mb-1">
+                        Votre prénom *
+                    </label>
+                    <input type="text" id="participant-name-input" required placeholder="Ex. Camille, Thomas, Léa..."
+                        class="w-full px-4 py-3 mcr-input text-sm font-semibold">
+                </div>
+
+                <div>
+                    <label for="participant-note-input" class="block text-xs sm:text-sm font-bold text-mcr-mulled mb-1">
+                        Petit mot d'accueil <span class="font-normal text-mcr-ink/70">(optionnel)</span>
+                    </label>
+                    <input type="text" id="participant-note-input" placeholder="Ex. Mes tailles : pull M, pointure 39..."
+                        class="w-full px-4 py-2.5 mcr-input text-sm">
+                </div>
+
+                <div class="pt-2 flex gap-3">
+                    <button type="button" id="btn-cancel-participant-modal" class="flex-1 bg-mcr-parchmentDark hover:bg-mcr-brass/40 text-mcr-ink border-2 border-mcr-ink py-2.5 rounded-xl text-sm font-bold cursor-pointer">
+                        Annuler
+                    </button>
+                    <button type="submit" class="flex-1 btn-brass py-2.5 rounded-xl text-sm cursor-pointer">
+                        Créer l'onglet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODALE : AJOUTER / MODIFIER UN SOUHAIT DE NOËL -->
+    <div id="modal-wish" class="fixed inset-0 bg-mcr-ink/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="kraft-card max-w-lg w-full p-6 sm:p-8 relative max-h-[92vh] overflow-y-auto">
+            <button type="button" id="btn-close-wish-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-mcr-parchmentDark border-2 border-mcr-ink text-mcr-ink hover:bg-mcr-brick hover:text-mcr-kraft flex items-center justify-center cursor-pointer transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 id="modal-wish-title" class="font-display text-2xl font-bold text-mcr-mulled mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-gift text-mcr-brick"></i> Ajouter un souhait de Noël
+            </h3>
+            <p class="text-xs sm:text-sm text-mcr-ink/80 mb-5">
+                Indiquez un produit précis ou décrivez simplement votre besoin si vous n'avez pas de modèle défini d'avance.
+            </p>
+
+            <form id="form-wish" class="space-y-4">
+                <input type="hidden" id="wish-edit-id">
+
+                <div>
+                    <label for="wish-name" class="block text-xs sm:text-sm font-bold text-mcr-mulled mb-1">
+                        <i class="fa-solid fa-tag text-mcr-brick mr-1"></i> Nom du produit <span class="font-normal text-mcr-ink/70">(optionnel si besoin libre)</span>
+                    </label>
+                    <input type="text" id="wish-name" placeholder="Ex. Écharpe en laine, Roman policier, Mug..."
+                        class="w-full px-4 py-2.5 mcr-input text-sm font-medium">
+                </div>
+
+                <div>
+                    <label for="wish-url" class="block text-xs sm:text-sm font-bold text-mcr-mulled mb-1">
+                        <i class="fa-solid fa-globe text-mcr-pine mr-1"></i> Lien du site marchand <span class="font-normal text-mcr-ink/70">(optionnel)</span>
+                    </label>
+                    <input type="url" id="wish-url" placeholder="https://www.boutique.fr/article"
+                        class="w-full px-4 py-2.5 mcr-input text-sm">
+                </div>
+
+                <div>
+                    <label for="wish-description" class="block text-xs sm:text-sm font-bold text-mcr-mulled mb-1">
+                        <i class="fa-solid fa-feather-pointed text-mcr-brick mr-1"></i> Description des besoins libres / envies
+                    </label>
+                    <textarea id="wish-description" rows="3"
+                        placeholder="Précisez la taille, la couleur, ou décrivez votre besoin général s'il n'y a pas de produit précis défini d'avance..."
+                        class="w-full px-4 py-2.5 mcr-input text-sm resize-none"></textarea>
+                </div>
+
+                <!-- Upload photo convertie en Base64 redimensionné avec aperçu immédiat -->
+                <div>
+                    <label for="wish-photo-input" class="block text-xs sm:text-sm font-bold text-mcr-mulled mb-1">
+                        <i class="fa-solid fa-camera text-mcr-pine mr-1"></i> Photo par upload <span class="font-normal text-mcr-ink/70">(optionnel)</span>
+                    </label>
+                    <input type="file" id="wish-photo-input" accept="image/*"
+                        class="w-full px-3 py-2 mcr-input text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border file:border-mcr-ink file:text-xs file:font-bold file:bg-mcr-pine file:text-mcr-kraft hover:file:brightness-110 cursor-pointer">
+
+                    <!-- Aperçu immédiat de la photo Base64 -->
+                    <div id="wish-photo-preview-box" class="hidden mt-3 parchment-panel p-2.5 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <img id="wish-photo-preview-img" src="" alt="Aperçu du souhait" class="w-16 h-16 object-cover rounded-xl border-2 border-mcr-ink">
+                            <div class="text-xs">
+                                <span class="font-bold text-mcr-pine block">Photo ajoutée !</span>
+                                <span class="text-mcr-ink/75">Prête à être enregistrée</span>
+                            </div>
+                        </div>
+                        <button type="button" id="btn-remove-wish-photo" class="text-xs font-bold text-mcr-brick hover:underline px-2 py-1 cursor-pointer">
+                            Retirer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pt-3 flex gap-3">
+                    <button type="button" id="btn-cancel-wish-modal" class="flex-1 bg-mcr-parchmentDark hover:bg-mcr-brass/40 text-mcr-ink border-2 border-mcr-ink py-2.5 rounded-xl text-sm font-bold cursor-pointer">
+                        Annuler
+                    </button>
+                    <button type="submit" class="flex-1 btn-brass py-2.5 rounded-xl text-sm cursor-pointer">
+                        Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODALE : PARTAGE DU LIEN DU SITE (SANS JAMAIS GÉNÉRER D'URL BLOB:) -->
+    <div id="modal-share-link" class="fixed inset-0 bg-mcr-ink/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="kraft-card max-w-lg w-full p-6 sm:p-8 relative text-center">
+            <button type="button" id="btn-close-share-modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-mcr-parchmentDark border-2 border-mcr-ink text-mcr-ink hover:bg-mcr-brick hover:text-mcr-kraft flex items-center justify-center cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="w-14 h-14 rounded-2xl bg-mcr-brass border-2 border-mcr-ink flex items-center justify-center text-2xl mx-auto mb-3 shadow">
+                🐝
+            </div>
+            <h3 class="font-display text-2xl font-bold text-mcr-mulled">
+                Partager le lien du site
+            </h3>
+            <p class="text-xs sm:text-sm text-mcr-ink/85 mt-1 mb-4">
+                Tous ceux qui ouvrent ce site accèdent aux mêmes onglets et peuvent ajouter leur propre liste de Noël.
+            </p>
+
+            <!-- Avertissement clair si l'utilisateur est dans un aperçu temporaire (blob:) -->
+            <div id="blob-warning-box" class="hidden parchment-panel p-3.5 mb-4 text-left text-xs text-mcr-ink space-y-1.5">
+                <div class="font-bold text-mcr-brick flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-info"></i> Fenêtre d'aperçu temporaire détectée
+                </div>
+                <p>
+                    L'adresse actuelle de cette fenêtre est un aperçu local temporaire qui ne peut pas être ouvert par vos proches. Pour le partager avec votre famille, hébergez ce fichier <code class="font-bold">index.html</code> (par exemple sur GitHub Pages, Netlify ou Vercel) et partagez l'adresse publique du site !
+                </p>
+            </div>
+
+            <div id="real-url-share-box" class="space-y-4">
+                <div class="flex items-center gap-2 parchment-panel p-2">
+                    <input type="text" id="share-modal-url" readonly
+                        class="w-full bg-transparent text-xs font-semibold text-mcr-ink px-2 outline-none select-all">
+                    <button type="button" id="btn-modal-copy" class="btn-brass px-4 py-2 rounded-lg text-xs whitespace-nowrap cursor-pointer">
+                        <i class="fa-regular fa-copy mr-1"></i> Copier
+                    </button>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-2.5">
+                    <button type="button" id="btn-modal-email" class="btn-brick px-4 py-2.5 rounded-xl text-xs flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-envelope"></i> Envoyer par Email
+                    </button>
+                    <button type="button" id="btn-modal-whatsapp" class="btn-pine px-4 py-2.5 rounded-xl text-xs flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-brands fa-whatsapp"></i> Envoyer sur WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE : CONFIRMATION (RÉSERVATION CADEAU OU SUPPRESSION ONGLET — SANS confirm() NATIF) -->
+    <div id="modal-confirm-action" class="fixed inset-0 bg-mcr-ink/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="kraft-card max-w-sm w-full p-6 text-center space-y-4">
+            <div id="confirm-action-icon" class="text-3xl">🎁</div>
+            <h3 id="confirm-action-title" class="font-display text-xl font-bold text-mcr-mulled">Confirmer l'action</h3>
+            <p id="confirm-action-text" class="text-xs sm:text-sm text-mcr-ink/85">
+                Voulez-vous confirmer cette action ?
+            </p>
+            <div class="flex gap-3 pt-1">
+                <button type="button" id="btn-cancel-confirm" class="flex-1 bg-mcr-parchmentDark text-mcr-ink border-2 border-mcr-ink py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer">
+                    Annuler
+                </button>
+                <button type="button" id="btn-execute-confirm" class="flex-1 btn-brass py-2.5 rounded-xl text-xs sm:text-sm cursor-pointer">
+                    Confirmer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast-notification" class="fixed bottom-5 right-5 z-50 bg-mcr-pine text-mcr-kraft border-2 border-mcr-brass px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <span class="text-lg">🎄</span>
+        <span id="toast-text" class="text-xs sm:text-sm font-bold">Action effectuée !</span>
+    </div>
+
+    <!-- PIED DE PAGE -->
+    <footer class="mt-auto py-6 px-4 text-center border-t-2 border-mcr-brass/30 bg-mcr-ink/40 text-mcr-parchment text-xs">
+        <p class="font-display font-semibold text-sm text-mcr-brass">🐝 Les Chalets de Noël de Manchester</p>
+        <p class="mt-1 opacity-80">Albert Square &bull; Northern Quarter &bull; Espace commun des listes de Noël</p>
+    </footer>
+
+    <script>
+        (function () {
+            'use strict';
+
+            /**
+             * ============================================================================
+             * 1. CANVAS HAUTE DÉFINITION DES 3 PERSONNAGES DÉTOURÉS DANS LA PORTE DU CHALET
+             *    - Homme à droite : casquette sombre, lunettes de soleil, barbe, t-shirt noir, short kaki, cornet vanille
+             *    - Femme à gauche : cheveux naturels blonds/châtains SANS aucun chapeau rose, t-shirt rose vif, short jean, glace fusée
+             *    - Petite fille au centre devant eux : t-shirt blanc à manches volantées, short noir, cornet vanille
+             * ============================================================================
+             */
+            function drawDefaultTrioOnDoorCanvas() {
+                const canvas = document.getElementById('doorway-trio-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.save();
+                ctx.scale(320 / 220, 360 / 250);
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                // === HOMME À DROITE ===
+                ctx.fillStyle = '#DDA98C';
+                ctx.strokeStyle = '#1F1614';
+                ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.roundRect(122, 156, 13, 52, 4); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.roundRect(144, 156, 13, 52, 4); ctx.fill(); ctx.stroke();
+
+                // Chaussettes noires
+                ctx.fillStyle = '#1C1B1E';
+                ctx.lineWidth = 1.5;
+                ctx.fillRect(122, 192, 13, 18); ctx.strokeRect(122, 192, 13, 18);
+                ctx.fillRect(144, 192, 13, 18); ctx.strokeRect(144, 192, 13, 18);
+
+                // Baskets grises à détail rouge
+                ctx.fillStyle = '#8C8F94';
+                ctx.lineWidth = 1.8;
+                ctx.beginPath(); ctx.roundRect(114, 210, 27, 11, 4); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.roundRect(140, 210, 27, 11, 4); ctx.fill(); ctx.stroke();
+                ctx.strokeStyle = '#D63229';
+                ctx.lineWidth = 2.2;
+                ctx.beginPath(); ctx.moveTo(122, 213); ctx.lineTo(129, 216); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(148, 213); ctx.lineTo(155, 216); ctx.stroke();
+
+                // Short kaki
+                ctx.fillStyle = '#5D6648';
+                ctx.strokeStyle = '#1F1614';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(118, 126); ctx.lineTo(162, 126); ctx.lineTo(165, 160);
+                ctx.lineTo(144, 160); ctx.lineTo(141, 150); ctx.lineTo(138, 160); ctx.lineTo(116, 160);
+                ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                // T-shirt noir
+                ctx.fillStyle = '#212024';
+                ctx.beginPath();
+                ctx.moveTo(114, 74); ctx.quadraticCurveTo(140, 68, 166, 74);
+                ctx.lineTo(178, 99); ctx.lineTo(167, 105); ctx.lineTo(162, 94);
+                ctx.lineTo(162, 128); ctx.lineTo(118, 128); ctx.lineTo(118, 94);
+                ctx.lineTo(112, 105); ctx.lineTo(102, 99);
+                ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                // Bras et tatouage
+                ctx.strokeStyle = '#DDA98C';
+                ctx.lineWidth = 9.5;
+                ctx.beginPath(); ctx.moveTo(114, 94); ctx.lineTo(110, 111); ctx.lineTo(122, 113); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(167, 95); ctx.lineTo(174, 116); ctx.lineTo(166, 122); ctx.stroke();
+                ctx.strokeStyle = '#3A4248';
+                ctx.lineWidth = 4;
+                ctx.setLineDash([2, 2]);
+                ctx.beginPath(); ctx.moveTo(167, 99); ctx.lineTo(171, 111); ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Cornet glace vanille
+                ctx.fillStyle = '#D4A03E';
+                ctx.strokeStyle = '#1F1614';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath(); ctx.moveTo(118, 104); ctx.lineTo(128, 104); ctx.lineTo(123, 121); ctx.closePath(); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#F7F1DC';
+                ctx.beginPath(); ctx.arc(123, 100, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+                // Visage, barbe, lunettes de soleil & casquette sombre
+                ctx.fillStyle = '#E2B295';
+                ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.ellipse(140, 54, 15, 17, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#3D312A';
+                ctx.lineWidth = 1.4;
+                ctx.beginPath();
+                ctx.moveTo(126, 55); ctx.quadraticCurveTo(140, 76, 154, 55);
+                ctx.lineTo(154, 61); ctx.quadraticCurveTo(140, 75, 126, 61);
+                ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                // Sourire
+                ctx.fillStyle = '#F7F2E7';
+                ctx.beginPath(); ctx.moveTo(134, 61); ctx.quadraticCurveTo(140, 67, 146, 61); ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                // Lunettes de soleil noires
+                ctx.fillStyle = '#141416';
+                ctx.beginPath(); ctx.roundRect(128, 47, 10, 7, 2); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.roundRect(142, 47, 10, 7, 2); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(138, 49); ctx.lineTo(142, 49); ctx.stroke();
+
+                // Casquette sombre
+                ctx.fillStyle = '#2A2B30';
+                ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.moveTo(125, 44); ctx.quadraticCurveTo(140, 28, 155, 44); ctx.closePath(); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#18181B';
+                ctx.beginPath(); ctx.roundRect(131, 41, 18, 4, 2); ctx.fill();
+
+                // === FEMME À GAUCHE (CHEVEUX NATURELS BLONDS/CHÂTAINS SANS AUCUN CHAPEAU ROSE) ===
+                ctx.fillStyle = '#E5B79B';
+                ctx.strokeStyle = '#1F1614';
+                ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.moveTo(62, 162); ctx.lineTo(50, 214); ctx.lineTo(62, 214); ctx.lineTo(74, 162); ctx.closePath(); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.roundRect(82, 162, 12, 46, 4); ctx.fill(); ctx.stroke();
+
+                // Chaussettes blanches & bottines noires
+                ctx.fillStyle = '#F7F2E7';
+                ctx.lineWidth = 1.5;
+                ctx.fillRect(49, 204, 12, 12); ctx.strokeRect(49, 204, 12, 12);
+                ctx.fillStyle = '#1A191B';
+                ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.roundRect(40, 215, 22, 15, 4); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.roundRect(77, 206, 19, 16, 4); ctx.fill(); ctx.stroke();
+
+                // Short en jean bleu clair
+                ctx.fillStyle = '#77A9DF';
+                ctx.beginPath();
+                ctx.moveTo(58, 134); ctx.lineTo(100, 134); ctx.lineTo(104, 166);
+                ctx.lineTo(84, 166); ctx.lineTo(81, 156); ctx.lineTo(78, 166); ctx.lineTo(56, 166);
+                ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                // T-shirt rose vif
+                ctx.fillStyle = '#F44E8A';
+                ctx.beginPath();
+                ctx.moveTo(56, 84); ctx.quadraticCurveTo(79, 79, 102, 84);
+                ctx.lineTo(110, 108); ctx.lineTo(99, 113); ctx.lineTo(96, 101);
+                ctx.lineTo(96, 135); ctx.lineTo(58, 135); ctx.lineTo(58, 101);
+                ctx.lineTo(53, 115); ctx.lineTo(43, 110);
+                ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                // Bras gauche & glace fusée
+                ctx.strokeStyle = '#E5B79B';
+                ctx.lineWidth = 9;
+                ctx.beginPath(); ctx.moveTo(54, 102); ctx.lineTo(46, 118); ctx.lineTo(52, 123); ctx.stroke();
+                ctx.fillStyle = '#2E8B57';
+                ctx.strokeStyle = '#1F1614';
+                ctx.lineWidth = 1.3;
+                ctx.beginPath(); ctx.roundRect(43, 102, 7, 14, 3); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#E7BC66';
+                ctx.fillRect(43, 96, 7, 6);
+                ctx.fillStyle = '#D63229';
+                ctx.beginPath(); ctx.moveTo(43, 96); ctx.quadraticCurveTo(46.5, 89, 50, 96); ctx.closePath(); ctx.fill();
+
+                // Cheveux naturels blonds/châtains ondulés mi-longs (aucun élément rose sur la tête)
+                ctx.fillStyle = '#A67C52';
+                ctx.strokeStyle = '#1F1614';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(61, 56);
+                ctx.quadraticCurveTo(63, 41, 79, 41);
+                ctx.quadraticCurveTo(95, 41, 97, 56);
+                ctx.quadraticCurveTo(101, 78, 96, 89);
+                ctx.lineTo(62, 89);
+                ctx.quadraticCurveTo(57, 78, 61, 56);
+                ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                // Visage souriant de la femme
+                ctx.fillStyle = '#ECC0A6';
+                ctx.beginPath(); ctx.ellipse(79, 65, 14, 16, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+                // Mèches naturelles encadrant le visage
+                ctx.fillStyle = '#A67C52';
+                ctx.beginPath();
+                ctx.moveTo(64, 62); ctx.quadraticCurveTo(67, 47, 79, 46);
+                ctx.quadraticCurveTo(91, 47, 94, 62);
+                ctx.quadraticCurveTo(89, 54, 79, 54);
+                ctx.quadraticCurveTo(69, 54, 64, 62);
+                ctx.closePath(); ctx.fill();
+                ctx.strokeStyle = '#7A5736';
+                ctx.lineWidth = 1.8;
+                ctx.beginPath(); ctx.moveTo(64, 62); ctx.quadraticCurveTo(61, 75, 65, 87); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(94, 62); ctx.quadraticCurveTo(97, 75, 93, 87); ctx.stroke();
+
+                // Yeux & sourire
+                ctx.fillStyle = '#1F1614';
+                ctx.beginPath(); ctx.arc(74, 63, 1.8, 0, Math.PI * 2); ctx.arc(84, 63, 1.8, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#F7F2E7';
+                ctx.strokeStyle = '#1F1614';
+                ctx.lineWidth = 1.2;
+                ctx.beginPath(); ctx.moveTo(73, 69); ctx.quadraticCurveTo(79, 76, 85, 69); ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                // === PETITE FILLE AU CENTRE DEVANT EUX ===
+                ctx.fillStyle = '#E8BCA0';
+                ctx.strokeStyle = '#1F1614';
+                ctx.lineWidth = 1.8;
+                ctx.beginPath(); ctx.roundRect(97, 182, 10, 36, 4); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.roundRect(114, 182, 10, 36, 4); ctx.fill(); ctx.stroke();
+
+                ctx.fillStyle = '#F7F2E7';
+                ctx.lineWidth = 1.5;
+                ctx.fillRect(97, 207, 10, 12); ctx.strokeRect(97, 207, 10, 12);
+                ctx.fillRect(114, 207, 10, 12); ctx.strokeRect(114, 207, 10, 12);
+
+                ctx.fillStyle = '#E8E1D5';
+                ctx.lineWidth = 1.8;
+                ctx.beginPath(); ctx.roundRect(91, 219, 22, 10, 4); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.roundRect(110, 219, 22, 10, 4); ctx.fill(); ctx.stroke();
+
+                // Short noir
+                ctx.fillStyle = '#1C1B1E';
+                ctx.beginPath();
+                ctx.moveTo(95, 162); ctx.lineTo(126, 162); ctx.lineTo(128, 184);
+                ctx.lineTo(113, 184); ctx.lineTo(111, 178); ctx.lineTo(109, 184); ctx.lineTo(94, 184);
+                ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                // T-shirt blanc à manches volantées
+                ctx.fillStyle = '#F7F5F0';
+                ctx.beginPath();
+                ctx.moveTo(94, 126); ctx.quadraticCurveTo(110, 122, 127, 126);
+                ctx.lineTo(136, 138); ctx.lineTo(128, 144); ctx.lineTo(125, 138);
+                ctx.lineTo(125, 163); ctx.lineTo(96, 163); ctx.lineTo(96, 138);
+                ctx.lineTo(93, 144); ctx.lineTo(85, 138);
+                ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                // Bras tenant le cornet de glace à deux mains
+                ctx.strokeStyle = '#E8BCA0';
+                ctx.lineWidth = 7.5;
+                ctx.beginPath(); ctx.moveTo(92, 136); ctx.quadraticCurveTo(96, 150, 106, 150); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(129, 136); ctx.quadraticCurveTo(125, 150, 115, 150); ctx.stroke();
+
+                ctx.fillStyle = '#D4A03E';
+                ctx.strokeStyle = '#1F1614';
+                ctx.lineWidth = 1.4;
+                ctx.beginPath(); ctx.moveTo(106, 144); ctx.lineTo(115, 144); ctx.lineTo(110.5, 158); ctx.closePath(); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#F7F1DC';
+                ctx.beginPath(); ctx.arc(110.5, 140.5, 5.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+                // Chignon & visage souriant de la petite fille
+                ctx.fillStyle = '#5A3D2B';
+                ctx.lineWidth = 1.6;
+                ctx.beginPath(); ctx.arc(110.5, 96, 7, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#ECC0A6';
+                ctx.lineWidth = 1.8;
+                ctx.beginPath(); ctx.ellipse(110.5, 111, 13, 14.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#5A3D2B';
+                ctx.beginPath();
+                ctx.moveTo(98, 108); ctx.quadraticCurveTo(102, 96, 110.5, 96);
+                ctx.quadraticCurveTo(119.5, 96, 123, 108);
+                ctx.quadraticCurveTo(119, 102, 110.5, 102);
+                ctx.quadraticCurveTo(102.5, 102, 98, 108);
+                ctx.closePath(); ctx.fill();
+
+                ctx.fillStyle = '#1F1614';
+                ctx.beginPath(); ctx.arc(106, 110, 1.7, 0, Math.PI * 2); ctx.arc(115, 110, 1.7, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#F7F2E7';
+                ctx.lineWidth = 1.1;
+                ctx.beginPath(); ctx.moveTo(105.5, 115.5); ctx.quadraticCurveTo(110.5, 121, 115.5, 115.5); ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                ctx.restore();
+            }
+
+            /**
+             * ============================================================================
+             * 2. PORTE 3D INTERACTIVE & DÉTOURAGE AUTOMATIQUE DE PHOTO SUR CANVAS
+             * ============================================================================
+             */
+            function initInteractiveChaletDoor() {
+                drawDefaultTrioOnDoorCanvas();
+
+                const doorway = document.getElementById('chalet-doorway');
+                const hintBadge = document.getElementById('door-hint-badge');
+                const photoCutoutInput = document.getElementById('door-photo-cutout-input');
+
+                if (doorway) {
+                    doorway.addEventListener('click', () => {
+                        const isOpen = doorway.classList.toggle('door-open');
+                        if (hintBadge) {
+                            hintBadge.textContent = isOpen ? '🎄 Bienvenue !' : '✨ Ouvrir la porte';
+                        }
+                    });
+                }
+
+                if (photoCutoutInput) {
+                    photoCutoutInput.addEventListener('change', (e) => {
+                        const file = e.target.files && e.target.files[0];
+                        if (!file) return;
+                        processDoorwayPhotoCutout(file);
+                    });
+                }
+            }
+
+            function processDoorwayPhotoCutout(file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const maxDim = 420;
+                        let w = img.width;
+                        let h = img.height;
+                        if (w > maxDim || h > maxDim) {
+                            if (w > h) {
+                                h = Math.round((h * maxDim) / w);
+                                w = maxDim;
+                            } else {
+                                w = Math.round((w * maxDim) / h);
+                                h = maxDim;
+                            }
+                        }
+
+                        const offCanvas = document.createElement('canvas');
+                        offCanvas.width = w;
+                        offCanvas.height = h;
+                        const offCtx = offCanvas.getContext('2d');
+                        offCtx.drawImage(img, 0, 0, w, h);
+
+                        const imgData = offCtx.getImageData(0, 0, w, h);
+                        const data = imgData.data;
+                        const visited = new Uint8Array(w * h);
+                        const stack = [];
+
+                        const isBackgroundPixel = (idx) => {
+                            const r = data[idx];
+                            const g = data[idx + 1];
+                            const b = data[idx + 2];
+                            const isSky = (b > 135 && b >= r - 10 && g > 125) || (r > 185 && g > 190 && b > 195);
+                            const isGrass = (g > r + 14 && g > b + 18 && g > 65);
+                            return isSky || isGrass;
+                        };
+
+                        for (let x = 0; x < w; x++) {
+                            stack.push(x);
+                            stack.push((h - 1) * w + x);
+                        }
+                        for (let y = 0; y < h; y++) {
+                            stack.push(y * w);
+                            stack.push(y * w + (w - 1));
+                        }
+
+                        while (stack.length > 0) {
+                            const pos = stack.pop();
+                            if (visited[pos]) continue;
+                            visited[pos] = 1;
+                            const idx = pos * 4;
+                            if (isBackgroundPixel(idx)) {
+                                data[idx + 3] = 0;
+                                const x = pos % w;
+                                const y = (pos - x) / w;
+                                if (x > 0 && !visited[pos - 1]) stack.push(pos - 1);
+                                if (x < w - 1 && !visited[pos + 1]) stack.push(pos + 1);
+                                if (y > 0 && !visited[pos - w]) stack.push(pos - w);
+                                if (y < h - 1 && !visited[pos + w]) stack.push(pos + w);
+                            }
+                        }
+
+                        for (let y = Math.floor(h * 0.55); y < h; y++) {
+                            for (let x = 0; x < w; x++) {
+                                const idx = (y * w + x) * 4;
+                                const r = data[idx], g = data[idx + 1], b = data[idx + 2];
+                                if (g > r + 18 && g > b + 22) {
+                                    data[idx + 3] = 0;
+                                }
+                            }
+                        }
+
+                        offCtx.putImageData(imgData, 0, 0);
+
+                        let minX = w, minY = h, maxX = 0, maxY = 0;
+                        for (let y = 0; y < h; y++) {
+                            for (let x = 0; x < w; x++) {
+                                if (data[(y * w + x) * 4 + 3] > 30) {
+                                    if (x < minX) minX = x;
+                                    if (x > maxX) maxX = x;
+                                    if (y < minY) minY = y;
+                                    if (y > maxY) maxY = y;
+                                }
+                            }
+                        }
+
+                        if (maxX > minX && maxY > minY) {
+                            const pad = 8;
+                            minX = Math.max(0, minX - pad);
+                            minY = Math.max(0, minY - pad);
+                            maxX = Math.min(w - 1, maxX + pad);
+                            maxY = Math.min(h - 1, maxY + pad);
+
+                            const cropW = maxX - minX + 1;
+                            const cropH = maxY - minY + 1;
+
+                            const doorCanvas = document.getElementById('doorway-trio-canvas');
+                            if (doorCanvas) {
+                                const dCtx = doorCanvas.getContext('2d');
+                                dCtx.clearRect(0, 0, doorCanvas.width, doorCanvas.height);
+                                const scale = Math.min(doorCanvas.width / cropW, doorCanvas.height / cropH);
+                                const drawW = cropW * scale;
+                                const drawH = cropH * scale;
+                                const drawX = (doorCanvas.width - drawW) / 2;
+                                const drawY = doorCanvas.height - drawH;
+                                dCtx.drawImage(offCanvas, minX, minY, cropW, cropH, drawX, drawY, drawW, drawH);
+                            }
+
+                            const doorway = document.getElementById('chalet-doorway');
+                            const hintBadge = document.getElementById('door-hint-badge');
+                            if (doorway) doorway.classList.add('door-open');
+                            if (hintBadge) hintBadge.textContent = '🎄 Bienvenue !';
+                            showToast('Photo détourée sur Canvas et placée dans la porte du chalet ! ✨');
+                        }
+                    };
+                    img.src = ev.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            /**
+             * ============================================================================
+             * 3. BARNABY : VRAI CHAT BRITISH SHORTHAIR GRIS ANIMÉ SUR CANVAS (BD)
+             * ============================================================================
+             */
+            function initBritishShorthairCanvas() {
+                const canvas = document.getElementById('british-shorthair-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+
+                let frame = 0;
+                let blinkTimer = 0;
+                let isBlinking = false;
+                let purrBoost = 0;
+
+                const wrapper = document.getElementById('cat-canvas-wrapper');
+                const speech = document.getElementById('cat-speech');
+                if (wrapper && speech) {
+                    wrapper.addEventListener('click', () => {
+                        purrBoost = 35;
+                        speech.classList.remove('opacity-0');
+                        clearTimeout(window.__catSpeechTimer);
+                        window.__catSpeechTimer = setTimeout(() => {
+                            speech.classList.add('opacity-0');
+                        }, 2400);
+                    });
+                }
+
+                function drawBritishShorthair() {
+                    const w = canvas.width;
+                    const h = canvas.height;
+                    ctx.clearRect(0, 0, w, h);
+
+                    // Fond soirée d'hiver à Manchester
+                    const bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+                    bgGrad.addColorStop(0, '#2B3A42');
+                    bgGrad.addColorStop(0.65, '#4A5559');
+                    bgGrad.addColorStop(0.66, '#E8D5B5');
+                    bgGrad.addColorStop(1, '#D8C098');
+                    ctx.fillStyle = bgGrad;
+                    ctx.fillRect(0, 0, w, h);
+
+                    // Halo de réverbère victorien
+                    const lampHalo = ctx.createRadialGradient(34, 48, 4, 34, 48, 48);
+                    lampHalo.addColorStop(0, 'rgba(231, 188, 102, 0.75)');
+                    lampHalo.addColorStop(1, 'rgba(231, 188, 102, 0)');
+                    ctx.fillStyle = lampHalo;
+                    ctx.fillRect(0, 0, 95, 110);
+
+                    ctx.strokeStyle = '#1F1614';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(34, 152);
+                    ctx.lineTo(34, 56);
+                    ctx.stroke();
+                    ctx.fillStyle = '#E7BC66';
+                    ctx.beginPath();
+                    ctx.moveTo(27, 56);
+                    ctx.lineTo(41, 56);
+                    ctx.lineTo(44, 42);
+                    ctx.lineTo(24, 42);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+
+                    frame += 0.045 + (purrBoost > 0 ? 0.05 : 0);
+                    if (purrBoost > 0) purrBoost--;
+
+                    blinkTimer++;
+                    if (blinkTimer > 150) {
+                        isBlinking = true;
+                        if (blinkTimer > 160) {
+                            isBlinking = false;
+                            blinkTimer = 0;
+                        }
+                    }
+
+                    const tailAngle = Math.sin(frame) * 0.22;
+                    const breathY = Math.sin(frame * 1.2) * 1.4;
+
+                    // Ombre au sol
+                    ctx.fillStyle = 'rgba(31, 22, 20, 0.25)';
+                    ctx.beginPath();
+                    ctx.ellipse(115, 198, 56, 11, 0, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Queue épaisse et arrondie
+                    ctx.save();
+                    ctx.translate(154, 174);
+                    ctx.rotate(tailAngle);
+                    ctx.lineCap = 'round';
+                    ctx.strokeStyle = '#1F1614';
+                    ctx.lineWidth = 22;
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.bezierCurveTo(26, -4, 34, -30, 18, -42);
+                    ctx.stroke();
+
+                    ctx.strokeStyle = '#6E7885';
+                    ctx.lineWidth = 16;
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.bezierCurveTo(26, -4, 34, -30, 18, -42);
+                    ctx.stroke();
+                    ctx.restore();
+
+                    // Corps trapu British Blue
+                    ctx.save();
+                    ctx.translate(0, breathY);
+
+                    ctx.fillStyle = '#75808E';
+                    ctx.strokeStyle = '#1F1614';
+                    ctx.lineWidth = 3.2;
+                    ctx.beginPath();
+                    ctx.moveTo(74, 130);
+                    ctx.bezierCurveTo(60, 152, 62, 188, 78, 195);
+                    ctx.lineTo(148, 195);
+                    ctx.bezierCurveTo(164, 188, 164, 150, 148, 130);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#96A1AF';
+                    ctx.beginPath();
+                    ctx.ellipse(112, 154, 24, 28, 0, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = '#7C8796';
+                    ctx.beginPath();
+                    ctx.roundRect(84, 160, 21, 37, 10);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.roundRect(119, 160, 21, 37, 10);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(91, 196); ctx.lineTo(91, 190);
+                    ctx.moveTo(98, 196); ctx.lineTo(98, 190);
+                    ctx.moveTo(126, 196); ctx.lineTo(126, 190);
+                    ctx.moveTo(133, 196); ctx.lineTo(133, 190);
+                    ctx.stroke();
+
+                    // Écharpe rayée noir et or de Manchester
+                    ctx.lineWidth = 3;
+                    ctx.fillStyle = '#1F1614';
+                    ctx.beginPath();
+                    ctx.roundRect(74, 121, 76, 15, 7);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#D4A03E';
+                    ctx.fillRect(86, 122.5, 8, 12);
+                    ctx.fillRect(108, 122.5, 8, 12);
+                    ctx.fillRect(130, 122.5, 8, 12);
+
+                    ctx.fillStyle = '#1F1614';
+                    ctx.beginPath();
+                    ctx.roundRect(122, 132, 16, 26, 5);
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.fillStyle = '#D4A03E';
+                    ctx.fillRect(123.5, 140, 13, 5);
+                    ctx.fillRect(123.5, 150, 13, 4);
+
+                    // Tête ronde aux joues rebondies
+                    ctx.lineWidth = 3.2;
+                    ctx.fillStyle = '#6E7885';
+                    ctx.beginPath();
+                    ctx.moveTo(74, 82);
+                    ctx.quadraticCurveTo(66, 52, 92, 66);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(150, 82);
+                    ctx.quadraticCurveTo(158, 52, 132, 66);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#9D8E95';
+                    ctx.beginPath();
+                    ctx.moveTo(77, 78);
+                    ctx.quadraticCurveTo(73, 60, 88, 68);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.moveTo(147, 78);
+                    ctx.quadraticCurveTo(151, 60, 136, 68);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.fillStyle = '#7C8796';
+                    ctx.beginPath();
+                    ctx.ellipse(112, 96, 44, 36, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#96A1AF';
+                    ctx.beginPath();
+                    ctx.ellipse(102, 108, 13, 10, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.ellipse(122, 108, 13, 10, 0, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Grands yeux ronds cuivrés
+                    if (isBlinking) {
+                        ctx.strokeStyle = '#1F1614';
+                        ctx.lineWidth = 3;
+                        ctx.beginPath();
+                        ctx.arc(95, 93, 8, 0.1 * Math.PI, 0.9 * Math.PI);
+                        ctx.stroke();
+                        ctx.beginPath();
+                        ctx.arc(129, 93, 8, 0.1 * Math.PI, 0.9 * Math.PI);
+                        ctx.stroke();
+                    } else {
+                        ctx.fillStyle = '#E08A1E';
+                        ctx.strokeStyle = '#1F1614';
+                        ctx.lineWidth = 2.6;
+                        ctx.beginPath();
+                        ctx.arc(95, 92, 9.5, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.stroke();
+
+                        ctx.beginPath();
+                        ctx.arc(129, 92, 9.5, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.stroke();
+
+                        ctx.fillStyle = '#1F1614';
+                        ctx.beginPath();
+                        ctx.arc(95, 92, 5, 0, Math.PI * 2);
+                        ctx.arc(129, 92, 5, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        ctx.fillStyle = '#F2E4CC';
+                        ctx.beginPath();
+                        ctx.arc(92, 89, 2.4, 0, Math.PI * 2);
+                        ctx.arc(126, 89, 2.4, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    // Nez & sourire BD
+                    ctx.fillStyle = '#3E4652';
+                    ctx.beginPath();
+                    ctx.moveTo(108, 103);
+                    ctx.lineTo(116, 103);
+                    ctx.lineTo(112, 108);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.strokeStyle = '#1F1614';
+                    ctx.lineWidth = 2.2;
+                    ctx.beginPath();
+                    ctx.moveTo(112, 108);
+                    ctx.quadraticCurveTo(106, 114, 101, 111);
+                    ctx.moveTo(112, 108);
+                    ctx.quadraticCurveTo(118, 114, 123, 111);
+                    ctx.stroke();
+
+                    // Moustaches
+                    ctx.lineWidth = 1.8;
+                    ctx.beginPath();
+                    ctx.moveTo(85, 105); ctx.lineTo(62, 101);
+                    ctx.moveTo(85, 110); ctx.lineTo(63, 112);
+                    ctx.moveTo(139, 105); ctx.lineTo(162, 101);
+                    ctx.moveTo(139, 110); ctx.lineTo(161, 112);
+                    ctx.stroke();
+
+                    // Bonnet de Noël
+                    ctx.fillStyle = '#7E241C';
+                    ctx.strokeStyle = '#1F1614';
+                    ctx.lineWidth = 2.8;
+                    ctx.beginPath();
+                    ctx.moveTo(92, 65);
+                    ctx.quadraticCurveTo(112, 34, 138, 52);
+                    ctx.lineTo(132, 68);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#F2E4CC';
+                    ctx.beginPath();
+                    ctx.roundRect(89, 60, 46, 10, 5);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.arc(141, 53, 6.5, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.restore();
+                    requestAnimationFrame(drawBritishShorthair);
+                }
+
+                drawBritishShorthair();
+            }
+
+            /**
+             * ============================================================================
+             * 4. SYNCHRONISATION LOCALE INSTANTANÉE (localStorage + BroadcastChannel)
+             * ============================================================================
+             */
+            const STORAGE_KEY = 'manchester_christmas_chalet_v1';
+            const CHANNEL_NAME = 'manchester_christmas_sync';
+            let broadcastChannel = null;
+
+            try {
+                if ('BroadcastChannel' in window) {
+                    broadcastChannel = new BroadcastChannel(CHANNEL_NAME);
+                }
+            } catch (e) {
+                broadcastChannel = null;
+            }
+
+            // Exemples pré-remplis modifiables pour que le site soit immédiatement vivant
+            const DEFAULT_PARTICIPANTS = [
+                {
+                    id: 'camille-mcr',
+                    name: 'Camille',
+                    note: 'Pull taille M, pointure 39 — Ambiance cocooning et lecture au coin du feu !',
+                    isCompleted: false,
+                    createdAt: 1700000001,
+                    wishes: [
+                        {
+                            id: 'w_demo_1',
+                            name: 'Écharpe en laine mérinos écossaise',
+                            url: 'https://www.johnlewis.com',
+                            description: 'Couleurs chaudes (bordeaux, vert sapin ou camel) pour affronter le vent de Manchester.',
+                            photo: '',
+                            reserved: false
+                        },
+                        {
+                            id: 'w_demo_2',
+                            name: '',
+                            url: '',
+                            description: 'Besoin libre : un beau roman policier anglais ou une sélection de thés de Noël parfumés (cannelle, orange confite).',
+                            photo: '',
+                            reserved: true
+                        }
+                    ]
+                },
+                {
+                    id: 'thomas-mcr',
+                    name: 'Thomas',
+                    note: 'Fan de café de spécialité et de balades dans le Peak District.',
+                    isCompleted: true,
+                    createdAt: 1700000002,
+                    wishes: [
+                        {
+                            id: 'w_demo_3',
+                            name: 'Moulin à café manuel en acier inoxydable',
+                            url: 'https://www.amazon.fr',
+                            description: 'Pour préparer un bon café filtre le matin pendant les vacances d’hiver.',
+                            photo: '',
+                            reserved: false
+                        }
+                    ]
+                }
+            ];
+
+            let participantsList = [];
+            let selectedParticipantId = null;
+            let pendingPhotoBase64 = '';
+            let pendingConfirmCallback = null;
+
+            function loadStateFromStorage() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (raw) {
+                        const parsed = JSON.parse(raw);
+                        if (Array.isArray(parsed)) {
+                            participantsList = parsed;
+                        }
+                    } else {
+                        participantsList = JSON.parse(JSON.stringify(DEFAULT_PARTICIPANTS));
+                        saveStateToStorage(false);
+                    }
+                } catch (e) {
+                    if (participantsList.length === 0) {
+                        participantsList = JSON.parse(JSON.stringify(DEFAULT_PARTICIPANTS));
+                    }
+                }
+
+                if (participantsList.length > 0) {
+                    const exists = participantsList.some(p => p.id === selectedParticipantId);
+                    if (!exists) {
+                        const hashTab = decodeURIComponent((window.location.hash || '').replace(/^#tab=/, ''));
+                        const found = participantsList.find(p => p.id === hashTab);
+                        selectedParticipantId = found ? found.id : participantsList[0].id;
+                    }
+                } else {
+                    selectedParticipantId = null;
+                }
+            }
+
+            function saveStateToStorage(broadcast = true) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(participantsList));
+                } catch (e) {
+                    showToast('Espace de stockage local saturé (réduisez le poids d’une photo).');
+                }
+                if (broadcast && broadcastChannel) {
+                    try {
+                        broadcastChannel.postMessage({ type: 'STATE_UPDATED' });
+                    } catch (e) {}
+                }
+            }
+
+            if (broadcastChannel) {
+                broadcastChannel.onmessage = (event) => {
+                    if (event.data && event.data.type === 'STATE_UPDATED') {
+                        loadStateFromStorage();
+                        renderAll();
+                    }
+                };
+            }
+
+            window.addEventListener('storage', (e) => {
+                if (e.key === STORAGE_KEY) {
+                    loadStateFromStorage();
+                    renderAll();
+                }
+            });
+
+            /**
+             * ============================================================================
+             * 5. RENDU DE L'INTERFACE COMMUNE PAR ONGLETS
+             * ============================================================================
+             */
+            function renderAll() {
+                const tabsBar = document.getElementById('participants-tabs-bar');
+                const emptyState = document.getElementById('empty-participants-state');
+                const board = document.getElementById('participant-board');
+                if (!tabsBar || !emptyState || !board) return;
+
+                tabsBar.innerHTML = '';
+
+                if (participantsList.length === 0) {
+                    emptyState.classList.remove('hidden');
+                    board.classList.add('hidden');
+                    return;
+                }
+
+                emptyState.classList.add('hidden');
+                board.classList.remove('hidden');
+
+                participantsList.forEach((person) => {
+                    const isActive = person.id === selectedParticipantId;
+                    const wishesCount = (person.wishes || []).length;
+
+                    const tabBtn = document.createElement('button');
+                    tabBtn.type = 'button';
+                    tabBtn.setAttribute('role', 'tab');
+                    tabBtn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+
+                    if (isActive) {
+                        tabBtn.className = 'px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-mcr-brick text-mcr-kraft border-2 border-mcr-ink shadow-md flex items-center gap-2 cursor-pointer transition transform -translate-y-0.5';
+                    } else {
+                        tabBtn.className = 'px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-mcr-parchmentDark/80 hover:bg-mcr-brass/45 text-mcr-ink border-2 border-mcr-brick/40 flex items-center gap-2 cursor-pointer transition';
+                    }
+
+                    const completedIcon = person.isCompleted
+                        ? '<span class="bg-mcr-pine text-mcr-kraft text-[10px] font-bold px-2 py-0.5 rounded-full border border-mcr-brass" title="Liste terminée !">✓ Prête</span>'
+                        : `<span class="text-[11px] opacity-75">(${wishesCount})</span>`;
+
+                    tabBtn.innerHTML = `
+                        <span>🎄 ${escapeHtml(person.name)}</span>
+                        ${completedIcon}
+                    `;
+
+                    tabBtn.addEventListener('click', () => {
+                        selectedParticipantId = person.id;
+                        if (!window.location.href.startsWith('blob:')) {
+                            try {
+                                history.replaceState(null, '', '#tab=' + encodeURIComponent(person.id));
+                            } catch (e) {}
+                        }
+                        renderAll();
+                    });
+
+                    tabsBar.appendChild(tabBtn);
+                });
+
+                renderActiveParticipantBoard();
+            }
+
+            function renderActiveParticipantBoard() {
+                const person = participantsList.find(p => p.id === selectedParticipantId);
+                if (!person) return;
+
+                const wishes = person.wishes || [];
+
+                document.getElementById('active-tab-title').textContent = `Liste de Noël de ${person.name}`;
+                document.getElementById('active-tab-note').textContent = person.note
+                    ? person.note
+                    : `Ajoutez vos idées cadeaux ci-dessous ou réservez un souhait de ${person.name} pour éviter les doublons.`;
+                document.getElementById('wishes-counter-badge').textContent = `${wishes.length} souhait${wishes.length > 1 ? 's' : ''}`;
+
+                // Bannière d'alerte festive quand la liste est marquée comme terminée
+                const alertBanner = document.getElementById('completed-alert-banner');
+                const toggleBtn = document.getElementById('btn-toggle-finished');
+
+                if (person.isCompleted) {
+                    alertBanner.classList.remove('hidden');
+                    document.getElementById('completed-alert-title').textContent = `${person.name} a terminé sa liste de Noël !`;
+                    document.getElementById('completed-alert-details').textContent =
+                        `Tous ses souhaits (${wishes.length} idée${wishes.length > 1 ? 's' : ''}) sont en ligne. Vous pouvez réserver le cadeau que vous souhaitez lui offrir !`;
+                    toggleBtn.innerHTML = '<i class="fa-solid fa-rotate-left"></i> <span>Liste validée (Rouvrir)</span>';
+                } else {
+                    alertBanner.classList.add('hidden');
+                    toggleBtn.innerHTML = '<i class="fa-solid fa-bell"></i> <span>J\'ai terminé ma liste !</span>';
+                }
+
+                // Grille des souhaits
+                const grid = document.getElementById('wishes-grid');
+                const emptyWishes = document.getElementById('empty-wishes-state');
+                grid.innerHTML = '';
+
+                if (wishes.length === 0) {
+                    emptyWishes.classList.remove('hidden');
+                    return;
+                }
+                emptyWishes.classList.add('hidden');
+
+                wishes.forEach((wish) => {
+                    const card = document.createElement('article');
+                    card.className = 'kraft-card p-5 flex flex-col justify-between gap-4';
+
+                    const titleText = wish.name ? escapeHtml(wish.name) : 'Idée libre / Besoin particulier';
+                    const isReserved = Boolean(wish.reserved);
+
+                    const statusBadge = isReserved
+                        ? '<span class="bg-mcr-pine text-mcr-kraft text-xs font-bold px-3 py-1 rounded-full border border-mcr-ink flex items-center gap-1.5 shrink-0"><i class="fa-solid fa-check-circle text-mcr-brass"></i> Réservé / Offert</span>'
+                        : '<span class="bg-mcr-brass/45 text-mcr-ink text-xs font-bold px-3 py-1 rounded-full border border-mcr-ink/40 shrink-0">Disponible</span>';
+
+                    const photoHtml = wish.photo ? `
+                        <div class="w-full h-48 rounded-xl overflow-hidden border-2 border-mcr-ink bg-mcr-parchmentDark">
+                            <img src="${wish.photo}" alt="${titleText}" class="w-full h-full object-cover">
+                        </div>
+                    ` : '';
+
+                    const linkHtml = wish.url ? `
+                        <div>
+                            <a href="${escapeHtml(wish.url)}" target="_blank" rel="noopener noreferrer"
+                               class="inline-flex items-center gap-2 bg-mcr-pine hover:brightness-110 text-mcr-kraft text-xs font-bold px-3.5 py-2 rounded-xl border border-mcr-ink transition">
+                                <i class="fa-solid fa-arrow-up-right-from-square text-mcr-brass"></i>
+                                <span>Voir sur le site marchand</span>
+                            </a>
+                        </div>
+                    ` : '';
+
+                    const descHtml = wish.description ? `
+                        <div class="parchment-panel p-3.5 text-xs sm:text-sm text-mcr-ink">
+                            <div class="font-bold text-mcr-mulled text-xs uppercase tracking-wide mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-feather-pointed text-mcr-brick"></i> Description des besoins
+                            </div>
+                            <p class="whitespace-pre-line leading-relaxed">${escapeHtml(wish.description)}</p>
+                        </div>
+                    ` : '';
+
+                    const reserveBtnHtml = !isReserved
+                        ? `<button type="button" data-action="reserve" data-id="${wish.id}"
+                            class="w-full btn-pine py-2.5 px-4 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-gift text-mcr-brass"></i> Réserver / Offrir ce cadeau
+                           </button>`
+                        : `<button type="button" data-action="unreserve" data-id="${wish.id}"
+                            class="w-full bg-mcr-parchmentDark hover:bg-mcr-brass/40 text-mcr-ink border-2 border-mcr-ink py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-rotate-left"></i> Annuler la réservation
+                           </button>`;
+
+                    card.innerHTML = `
+                        <div class="space-y-3">
+                            <div class="flex items-start justify-between gap-3">
+                                <h4 class="font-display text-lg sm:text-xl font-bold text-mcr-mulled leading-snug">${titleText}</h4>
+                                ${statusBadge}
+                            </div>
+                            ${photoHtml}
+                            ${linkHtml}
+                            ${descHtml}
+                        </div>
+                        <div class="space-y-2 pt-1">
+                            ${reserveBtnHtml}
+                            <div class="flex items-center gap-2">
+                                <button type="button" data-action="edit" data-id="${wish.id}"
+                                    class="flex-1 bg-mcr-parchmentDark hover:bg-mcr-brass/45 text-mcr-ink border-2 border-mcr-ink py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer">
+                                    <i class="fa-solid fa-pen"></i> Modifier
+                                </button>
+                                <button type="button" data-action="delete" data-id="${wish.id}"
+                                    class="bg-mcr-brick/15 hover:bg-mcr-brick hover:text-mcr-kraft text-mcr-brick border-2 border-mcr-brick py-2 px-3.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition">
+                                    <i class="fa-solid fa-trash-can"></i> Supprimer
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    grid.appendChild(card);
+                });
+            }
+
+            /**
+             * ============================================================================
+             * 6. COMPRESSION PHOTO BASE64 & GESTION DES MODALES / ÉVÉNEMENTS
+             * ============================================================================
+             */
+            function processImageToBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const maxDim = 340;
+                            let w = img.width;
+                            let h = img.height;
+                            if (w > maxDim || h > maxDim) {
+                                if (w > h) {
+                                    h = Math.round((h * maxDim) / w);
+                                    w = maxDim;
+                                } else {
+                                    w = Math.round((w * maxDim) / h);
+                                    h = maxDim;
+                                }
+                            }
+                            const offCanvas = document.createElement('canvas');
+                            offCanvas.width = w;
+                            offCanvas.height = h;
+                            const offCtx = offCanvas.getContext('2d');
+                            offCtx.drawImage(img, 0, 0, w, h);
+                            resolve(offCanvas.toDataURL('image/jpeg', 0.74));
+                        };
+                        img.onerror = reject;
+                        img.src = event.target.result;
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            function openConfirmDialog({ icon, title, text, confirmLabel, onConfirm }) {
+                document.getElementById('confirm-action-icon').textContent = icon || '🎁';
+                document.getElementById('confirm-action-title').textContent = title || 'Confirmation';
+                document.getElementById('confirm-action-text').textContent = text || '';
+                document.getElementById('btn-execute-confirm').textContent = confirmLabel || 'Confirmer';
+                pendingConfirmCallback = onConfirm;
+                document.getElementById('modal-confirm-action').classList.remove('hidden');
+            }
+
+            function bindEvents() {
+                // Modale Confirmation
+                const modalConfirm = document.getElementById('modal-confirm-action');
+                document.getElementById('btn-cancel-confirm').addEventListener('click', () => {
+                    modalConfirm.classList.add('hidden');
+                    pendingConfirmCallback = null;
+                });
+                document.getElementById('btn-execute-confirm').addEventListener('click', () => {
+                    modalConfirm.classList.add('hidden');
+                    if (typeof pendingConfirmCallback === 'function') {
+                        pendingConfirmCallback();
+                    }
+                    pendingConfirmCallback = null;
+                });
+
+                // Modale Participant
+                const modalParticipant = document.getElementById('modal-participant');
+                const formParticipant = document.getElementById('form-participant');
+
+                const openParticipantModal = () => {
+                    formParticipant.reset();
+                    modalParticipant.classList.remove('hidden');
+                    setTimeout(() => document.getElementById('participant-name-input').focus(), 50);
+                };
+
+                document.getElementById('btn-open-participant-modal').addEventListener('click', openParticipantModal);
+                document.getElementById('btn-first-participant').addEventListener('click', openParticipantModal);
+                document.getElementById('btn-close-participant-modal').addEventListener('click', () => modalParticipant.classList.add('hidden'));
+                document.getElementById('btn-cancel-participant-modal').addEventListener('click', () => modalParticipant.classList.add('hidden'));
+
+                formParticipant.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const name = document.getElementById('participant-name-input').value.trim();
+                    const note = document.getElementById('participant-note-input').value.trim();
+                    if (!name) return;
+
+                    const slug = name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-');
+                    const newId = `${slug}-${Date.now().toString(36)}`;
+
+                    participantsList.push({
+                        id: newId,
+                        name,
+                        note,
+                        isCompleted: false,
+                        createdAt: Date.now(),
+                        wishes: []
+                    });
+
+                    selectedParticipantId = newId;
+                    modalParticipant.classList.add('hidden');
+                    saveStateToStorage(true);
+                    renderAll();
+                    showToast(`Onglet de ${name} ajouté au chalet ! 🎄`);
+                });
+
+                // Bouton "J'ai terminé ma liste !"
+                document.getElementById('btn-toggle-finished').addEventListener('click', () => {
+                    const person = participantsList.find(p => p.id === selectedParticipantId);
+                    if (!person) return;
+
+                    person.isCompleted = !person.isCompleted;
+                    saveStateToStorage(true);
+                    renderAll();
+
+                    if (person.isCompleted) {
+                        showToast(`🎉 Alerte activée : la liste de ${person.name} est marquée comme terminée !`);
+                    } else {
+                        showToast(`La liste de ${person.name} est rouverte pour modifications.`);
+                    }
+                });
+
+                // Suppression d'un onglet participant
+                document.getElementById('btn-delete-participant').addEventListener('click', () => {
+                    const person = participantsList.find(p => p.id === selectedParticipantId);
+                    if (!person) return;
+                    openConfirmDialog({
+                        icon: '🕯️',
+                        title: `Supprimer l'onglet de ${person.name} ?`,
+                        text: `Cet onglet et ses ${(person.wishes || []).length} souhait(s) seront retirés de la liste commune.`,
+                        confirmLabel: 'Supprimer',
+                        onConfirm: () => {
+                            participantsList = participantsList.filter(p => p.id !== person.id);
+                            selectedParticipantId = participantsList[0]?.id || null;
+                            saveStateToStorage(true);
+                            renderAll();
+                            showToast('Onglet supprimé.');
+                        }
+                    });
+                });
+
+                // Modale Souhait
+                const modalWish = document.getElementById('modal-wish');
+                const formWish = document.getElementById('form-wish');
+
+                const openWishModal = (wishToEdit = null) => {
+                    formWish.reset();
+                    pendingPhotoBase64 = '';
+                    document.getElementById('wish-photo-preview-box').classList.add('hidden');
+                    document.getElementById('wish-edit-id').value = '';
+
+                    if (wishToEdit) {
+                        document.getElementById('modal-wish-title').innerHTML = '<i class="fa-solid fa-pen text-mcr-brick"></i> Modifier ce souhait';
+                        document.getElementById('wish-edit-id').value = wishToEdit.id;
+                        document.getElementById('wish-name').value = wishToEdit.name || '';
+                        document.getElementById('wish-url').value = wishToEdit.url || '';
+                        document.getElementById('wish-description').value = wishToEdit.description || '';
+                        if (wishToEdit.photo) {
+                            pendingPhotoBase64 = wishToEdit.photo;
+                            document.getElementById('wish-photo-preview-img').src = wishToEdit.photo;
+                            document.getElementById('wish-photo-preview-box').classList.remove('hidden');
+                        }
+                    } else {
+                        document.getElementById('modal-wish-title').innerHTML = '<i class="fa-solid fa-gift text-mcr-brick"></i> Ajouter un souhait de Noël';
+                    }
+
+                    modalWish.classList.remove('hidden');
+                };
+
+                document.getElementById('btn-open-wish-modal').addEventListener('click', () => openWishModal());
+                document.getElementById('btn-empty-add-wish').addEventListener('click', () => openWishModal());
+                document.getElementById('btn-close-wish-modal').addEventListener('click', () => modalWish.classList.add('hidden'));
+                document.getElementById('btn-cancel-wish-modal').addEventListener('click', () => modalWish.classList.add('hidden'));
+
+                document.getElementById('wish-photo-input').addEventListener('change', async (e) => {
+                    const file = e.target.files && e.target.files[0];
+                    if (!file) return;
+                    try {
+                        pendingPhotoBase64 = await processImageToBase64(file);
+                        document.getElementById('wish-photo-preview-img').src = pendingPhotoBase64;
+                        document.getElementById('wish-photo-preview-box').classList.remove('hidden');
+                    } catch (err) {
+                        showToast('Impossible de traiter cette image.');
+                    }
+                });
+
+                document.getElementById('btn-remove-wish-photo').addEventListener('click', () => {
+                    pendingPhotoBase64 = '';
+                    document.getElementById('wish-photo-input').value = '';
+                    document.getElementById('wish-photo-preview-box').classList.add('hidden');
+                });
+
+                formWish.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const person = participantsList.find(p => p.id === selectedParticipantId);
+                    if (!person) return;
+
+                    const editId = document.getElementById('wish-edit-id').value;
+                    const name = document.getElementById('wish-name').value.trim();
+                    const url = document.getElementById('wish-url').value.trim();
+                    const description = document.getElementById('wish-description').value.trim();
+
+                    if (!name && !description && !url && !pendingPhotoBase64) {
+                        showToast('Renseignez au moins un nom de produit ou une description des besoins.');
+                        return;
+                    }
+
+                    if (!Array.isArray(person.wishes)) person.wishes = [];
+
+                    if (editId) {
+                        const idx = person.wishes.findIndex(w => w.id === editId);
+                        if (idx !== -1) {
+                            person.wishes[idx] = {
+                                ...person.wishes[idx],
+                                name,
+                                url,
+                                description,
+                                photo: pendingPhotoBase64
+                            };
+                        }
+                        showToast('Souhait mis à jour !');
+                    } else {
+                        person.wishes.push({
+                            id: 'w_' + Math.random().toString(36).substring(2, 9),
+                            name,
+                            url,
+                            description,
+                            photo: pendingPhotoBase64,
+                            reserved: false
+                        });
+                        showToast(`Souhait ajouté sur l'onglet de ${person.name} ! 🎁`);
+                    }
+
+                    modalWish.classList.add('hidden');
+                    saveStateToStorage(true);
+                    renderAll();
+                });
+
+                // Actions sur les cartes cadeaux (Réserver avec confirmation / Libérer / Modifier / Supprimer)
+                document.getElementById('wishes-grid').addEventListener('click', (e) => {
+                    const btn = e.target.closest('button[data-action]');
+                    if (!btn) return;
+
+                    const person = participantsList.find(p => p.id === selectedParticipantId);
+                    if (!person) return;
+
+                    const action = btn.dataset.action;
+                    const wishId = btn.dataset.id;
+                    const idx = (person.wishes || []).findIndex(w => w.id === wishId);
+                    if (idx === -1) return;
+                    const wish = person.wishes[idx];
+
+                    if (action === 'reserve') {
+                        openConfirmDialog({
+                            icon: '🎁',
+                            title: 'Réserver / Offrir ce cadeau ?',
+                            text: `Voulez-vous marquer « ${wish.name || 'Idée libre'} » comme Réservé / Offert pour ${person.name} afin d'éviter les doublons ?`,
+                            confirmLabel: 'Oui, je réserve',
+                            onConfirm: () => {
+                                person.wishes[idx].reserved = true;
+                                saveStateToStorage(true);
+                                renderAll();
+                                showToast('Cadeau marqué comme Réservé / Offert ! 🎄');
+                            }
+                        });
+                    } else if (action === 'unreserve') {
+                        person.wishes[idx].reserved = false;
+                        saveStateToStorage(true);
+                        renderAll();
+                        showToast('Réservation annulée.');
+                    } else if (action === 'edit') {
+                        openWishModal(wish);
+                    } else if (action === 'delete') {
+                        openConfirmDialog({
+                            icon: '🗑️',
+                            title: 'Supprimer ce souhait ?',
+                            text: `Voulez-vous retirer « ${wish.name || 'Idée libre'} » de la liste de ${person.name} ?`,
+                            confirmLabel: 'Supprimer',
+                            onConfirm: () => {
+                                person.wishes.splice(idx, 1);
+                                saveStateToStorage(true);
+                                renderAll();
+                                showToast('Souhait supprimé.');
+                            }
+                        });
+                    }
+                });
+
+                // Partage du lien du site (sans jamais générer d'URL blob:)
+                const modalShare = document.getElementById('modal-share-link');
+                document.getElementById('btn-copy-site-link').addEventListener('click', () => {
+                    const rawHref = window.location.href;
+                    const isBlob = rawHref.startsWith('blob:') || rawHref.startsWith('about:') || rawHref.startsWith('file:');
+                    const cleanUrl = rawHref.split('#')[0].split('?')[0];
+
+                    const blobWarning = document.getElementById('blob-warning-box');
+                    const realUrlBox = document.getElementById('real-url-share-box');
+
+                    if (isBlob) {
+                        blobWarning.classList.remove('hidden');
+                        realUrlBox.classList.add('hidden');
+                    } else {
+                        blobWarning.classList.add('hidden');
+                        realUrlBox.classList.remove('hidden');
+                        document.getElementById('share-modal-url').value = cleanUrl;
+                    }
+
+                    modalShare.classList.remove('hidden');
+                });
+
+                document.getElementById('btn-close-share-modal').addEventListener('click', () => modalShare.classList.add('hidden'));
+                document.getElementById('btn-modal-copy').addEventListener('click', () => {
+                    const url = document.getElementById('share-modal-url').value;
+                    copyToClipboard(url, 'Lien du site copié !');
+                });
+                document.getElementById('btn-modal-email').addEventListener('click', () => {
+                    const url = document.getElementById('share-modal-url').value;
+                    const subject = encodeURIComponent('Nos Listes de Noël de Manchester 🎄');
+                    const body = encodeURIComponent(`Bonjour,\n\nRejoignez notre espace commun de Noël pour ajouter votre onglet et consulter les listes de chacun :\n${url}`);
+                    window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+                });
+                document.getElementById('btn-modal-whatsapp').addEventListener('click', () => {
+                    const url = document.getElementById('share-modal-url').value;
+                    const text = encodeURIComponent(`🎄 Nos Listes de Noël de Manchester — Ajoutez votre onglet ici :\n${url}`);
+                    window.open(`https://wa.me/?text=${text}`, '_blank');
+                });
+            }
+
+            function copyToClipboard(text, feedbackMsg) {
+                const temp = document.createElement('textarea');
+                temp.value = text;
+                temp.style.position = 'fixed';
+                temp.style.opacity = '0';
+                document.body.appendChild(temp);
+                temp.select();
+                try {
+                    document.execCommand('copy');
+                    showToast(feedbackMsg);
+                } catch (e) {
+                    showToast('Sélectionnez le lien manuellement pour le copier.');
+                }
+                document.body.removeChild(temp);
+            }
+
+            function showToast(msg) {
+                const toast = document.getElementById('toast-notification');
+                const toastText = document.getElementById('toast-text');
+                if (!toast || !toastText) return;
+                toastText.textContent = msg;
+                toast.classList.remove('translate-y-24', 'opacity-0');
+                clearTimeout(window.__toastTimer);
+                window.__toastTimer = setTimeout(() => {
+                    toast.classList.add('translate-y-24', 'opacity-0');
+                }, 3400);
+            }
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+
+            function initSnowflakes() {
+                const layer = document.getElementById('snow-layer');
+                if (!layer) return;
+                const chars = ['❄', '❅', '•'];
+                for (let i = 0; i < 22; i++) {
+                    const el = document.createElement('span');
+                    el.className = 'snow-flake';
+                    el.textContent = chars[i % chars.length];
+                    el.style.left = `${Math.random() * 100}vw`;
+                    el.style.fontSize = `${10 + Math.random() * 10}px`;
+                    el.style.animationDuration = `${7 + Math.random() * 7}s`;
+                    el.style.animationDelay = `${Math.random() * 5}s`;
+                    layer.appendChild(el);
+                }
+            }
+
+            function bootApp() {
+                initSnowflakes();
+                initBritishShorthairCanvas();
+                initInteractiveChaletDoor();
+                loadStateFromStorage();
+                bindEvents();
+                renderAll();
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', bootApp);
+            } else {
+                bootApp();
+            }
+        })();
+    </script>
+</body>
+</html>
