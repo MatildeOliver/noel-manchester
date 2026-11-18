@@ -381,7 +381,7 @@
                             </div>
                             <div>
                                 <div class="victorian-window h-16 sm:h-24 flex items-center justify-center">
-                                    <span class="text-lg sm:text-2xl drop-shadow" title="Cloche de fête">🔔</span>
+                                    <span class="text-lg sm:text-2xl drop-shadow" title="Chaleur du foyer">✨</span>
                                 </div>
                                 <div class="snowy-ledge"></div>
                             </div>
@@ -460,13 +460,19 @@
                                     </div>
                                     <div class="snowy-ledge"></div>
                                 </div>
-                                <div class="flex justify-end">
-                                    <label for="door-photo-cutout-input" class="w-full cursor-pointer inline-flex items-center justify-center gap-1.5 bg-mcr-ink/90 hover:bg-mcr-pine text-mcr-parchment border-2 border-mcr-brass/80 px-2 py-1.5 rounded-xl text-[9px] sm:text-[10px] font-bold transition shadow" title="Importer une photo pour détourer automatiquement les personnes sur Canvas">
+                                <div class="flex flex-col gap-1.5 items-end">
+                                    <label for="door-photo-cutout-input" class="w-full cursor-pointer inline-flex items-center justify-center gap-1.5 bg-mcr-ink/90 hover:bg-mcr-pine text-mcr-parchment border-2 border-mcr-brass/80 px-2 py-1 rounded-xl text-[9px] sm:text-[10px] font-bold transition shadow" title="Importer une photo pour détourer les personnes de la porte">
                                         <i class="fa-solid fa-scissors text-mcr-brass"></i>
-                                        <span class="truncate">Détourer ma photo</span>
+                                        <span class="truncate">Photo porte</span>
                                     </label>
                                     <input type="file" id="door-photo-cutout-input" accept="image/*" class="hidden">
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. BARNABY : VRAI CHAT BRITISH SHORTHAIR GRIS ANIMÉ SUR CANVAS (TOUJOURS À DROITE DE LA MAISON) -->
                             </div>
                         </div>
                     </div>
@@ -827,10 +833,10 @@
 
             /**
              * ============================================================================
-             * 1. CANVAS HAUTE DÉFINITION DES 3 PERSONNAGES DÉTOURÉS DANS LA PORTE DU CHALET
-             *    - Homme à droite : casquette sombre, lunettes de soleil, barbe, t-shirt noir, short kaki, cornet vanille
-             *    - Femme à gauche : cheveux naturels blonds/châtains SANS aucun chapeau rose, t-shirt rose vif, short jean, glace fusée
-             *    - Petite fille au centre devant eux : t-shirt blanc à manches volantées, short noir, cornet vanille
+             * 1. PORTRAITS SEMI-RÉALISTES DÉTOURÉS DES 3 PERSONNAGES DANS LA PORTE DU CHALET
+             *    - Femme à gauche : cheveux mi-longs châtain clair ondulés (sans chapeau), t-shirt rose vif drapé, short jean bleu clair, glace fusée
+             *    - Homme à droite : casquette sombre à l'envers, lunettes de soleil noires, barbe soignée, t-shirt noir, tatouage bras, short cargo kaki, cornet vanille
+             *    - Petite fille au centre devant : cheveux bruns attachés, t-shirt blanc à manches volantées, short noir, cornet vanille tenu à deux mains
              * ============================================================================
              */
             function drawDefaultTrioOnDoorCanvas() {
@@ -844,241 +850,402 @@
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
 
-                // === HOMME À DROITE ===
-                ctx.fillStyle = '#DDA98C';
-                ctx.strokeStyle = '#1F1614';
-                ctx.lineWidth = 2;
-                ctx.beginPath(); ctx.roundRect(122, 156, 13, 52, 4); ctx.fill(); ctx.stroke();
-                ctx.beginPath(); ctx.roundRect(144, 156, 13, 52, 4); ctx.fill(); ctx.stroke();
+                const skinGrad = (x1, y1, x2, y2, c1, c2, c3) => {
+                    const g = ctx.createLinearGradient(x1, y1, x2, y2);
+                    g.addColorStop(0, c1);
+                    g.addColorStop(0.55, c2);
+                    g.addColorStop(1, c3);
+                    return g;
+                };
 
-                // Chaussettes noires
-                ctx.fillStyle = '#1C1B1E';
-                ctx.lineWidth = 1.5;
-                ctx.fillRect(122, 192, 13, 18); ctx.strokeRect(122, 192, 13, 18);
-                ctx.fillRect(144, 192, 13, 18); ctx.strokeRect(144, 192, 13, 18);
+                // === 1. HOMME À DROITE (PORTRAIT SEMI-RÉALISTE) ===
+                // Jambes avec volume et lumière naturelle
+                ctx.fillStyle = skinGrad(122, 156, 136, 206, '#E8B99D', '#D9A182', '#BE8366');
+                ctx.strokeStyle = 'rgba(42, 26, 20, 0.55)';
+                ctx.lineWidth = 1.1;
+                ctx.beginPath(); ctx.roundRect(122, 156, 13, 52, 5); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = skinGrad(144, 156, 158, 206, '#E8B99D', '#D9A182', '#BE8366');
+                ctx.beginPath(); ctx.roundRect(144, 156, 13, 52, 5); ctx.fill(); ctx.stroke();
 
-                // Baskets grises à détail rouge
-                ctx.fillStyle = '#8C8F94';
-                ctx.lineWidth = 1.8;
-                ctx.beginPath(); ctx.roundRect(114, 210, 27, 11, 4); ctx.fill(); ctx.stroke();
-                ctx.beginPath(); ctx.roundRect(140, 210, 27, 11, 4); ctx.fill(); ctx.stroke();
-                ctx.strokeStyle = '#D63229';
-                ctx.lineWidth = 2.2;
-                ctx.beginPath(); ctx.moveTo(122, 213); ctx.lineTo(129, 216); ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(148, 213); ctx.lineTo(155, 216); ctx.stroke();
+                // Chaussettes noires Nike/sport
+                ctx.fillStyle = '#1E1E22';
+                ctx.fillRect(122, 192, 13, 18);
+                ctx.fillRect(144, 192, 13, 18);
+                ctx.fillStyle = 'rgba(255,255,255,0.65)';
+                ctx.fillRect(127, 196, 3, 1.5);
+                ctx.fillRect(149, 196, 3, 1.5);
 
-                // Short kaki
-                ctx.fillStyle = '#5D6648';
-                ctx.strokeStyle = '#1F1614';
-                ctx.lineWidth = 2;
+                // Baskets grises texturées à lacets rouges
+                const shoeGrad = ctx.createLinearGradient(114, 209, 114, 221);
+                shoeGrad.addColorStop(0, '#9DA1A7');
+                shoeGrad.addColorStop(1, '#686C73');
+                ctx.fillStyle = shoeGrad;
+                ctx.beginPath(); ctx.roundRect(114, 210, 27, 11, 5); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.roundRect(140, 210, 27, 11, 5); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#EAE6DF';
+                ctx.fillRect(115, 218, 25, 3);
+                ctx.fillRect(141, 218, 25, 3);
+                ctx.strokeStyle = '#C9382E';
+                ctx.lineWidth = 1.6;
+                ctx.beginPath(); ctx.moveTo(123, 212); ctx.lineTo(129, 215); ctx.moveTo(124, 215); ctx.lineTo(130, 212); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(149, 212); ctx.lineTo(155, 215); ctx.moveTo(150, 215); ctx.lineTo(156, 212); ctx.stroke();
+
+                // Short cargo kaki avec poches latérales et plis d'ombre
+                const cargoGrad = ctx.createLinearGradient(116, 126, 165, 160);
+                cargoGrad.addColorStop(0, '#6B7453');
+                cargoGrad.addColorStop(0.6, '#565E42');
+                cargoGrad.addColorStop(1, '#414831');
+                ctx.fillStyle = cargoGrad;
+                ctx.strokeStyle = 'rgba(31, 22, 20, 0.6)';
+                ctx.lineWidth = 1.2;
                 ctx.beginPath();
                 ctx.moveTo(118, 126); ctx.lineTo(162, 126); ctx.lineTo(165, 160);
-                ctx.lineTo(144, 160); ctx.lineTo(141, 150); ctx.lineTo(138, 160); ctx.lineTo(116, 160);
+                ctx.lineTo(144, 160); ctx.lineTo(141, 149); ctx.lineTo(138, 160); ctx.lineTo(116, 160);
                 ctx.closePath(); ctx.fill(); ctx.stroke();
+                // Poches cargo & plis
+                ctx.strokeStyle = 'rgba(28, 32, 20, 0.45)';
+                ctx.strokeRect(154, 136, 8, 13);
+                ctx.beginPath(); ctx.moveTo(126, 134); ctx.quadraticCurveTo(133, 143, 124, 154); ctx.stroke();
 
-                // T-shirt noir
-                ctx.fillStyle = '#212024';
-                ctx.beginPath();
-                ctx.moveTo(114, 74); ctx.quadraticCurveTo(140, 68, 166, 74);
-                ctx.lineTo(178, 99); ctx.lineTo(167, 105); ctx.lineTo(162, 94);
-                ctx.lineTo(162, 128); ctx.lineTo(118, 128); ctx.lineTo(118, 94);
-                ctx.lineTo(112, 105); ctx.lineTo(102, 99);
-                ctx.closePath(); ctx.fill(); ctx.stroke();
-
-                // Bras et tatouage
-                ctx.strokeStyle = '#DDA98C';
-                ctx.lineWidth = 9.5;
-                ctx.beginPath(); ctx.moveTo(114, 94); ctx.lineTo(110, 111); ctx.lineTo(122, 113); ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(167, 95); ctx.lineTo(174, 116); ctx.lineTo(166, 122); ctx.stroke();
-                ctx.strokeStyle = '#3A4248';
-                ctx.lineWidth = 4;
-                ctx.setLineDash([2, 2]);
-                ctx.beginPath(); ctx.moveTo(167, 99); ctx.lineTo(171, 111); ctx.stroke();
+                // Bras gauche & droit avec volume musculaire + tatouage détaillé sur l'avant-bras gauche
+                ctx.strokeStyle = '#DDA688';
+                ctx.lineWidth = 9;
+                ctx.beginPath(); ctx.moveTo(113, 93); ctx.lineTo(110, 111); ctx.lineTo(122, 113); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(167, 94); ctx.lineTo(174, 116); ctx.lineTo(167, 123); ctx.stroke();
+                // Ombre & tatouage artistique sur le bras droit
+                ctx.strokeStyle = 'rgba(48, 56, 62, 0.55)';
+                ctx.lineWidth = 5.5;
+                ctx.setLineDash([1.5, 1.5]);
+                ctx.beginPath(); ctx.moveTo(167, 97); ctx.lineTo(173, 115); ctx.stroke();
                 ctx.setLineDash([]);
 
-                // Cornet glace vanille
-                ctx.fillStyle = '#D4A03E';
-                ctx.strokeStyle = '#1F1614';
-                ctx.lineWidth = 1.5;
-                ctx.beginPath(); ctx.moveTo(118, 104); ctx.lineTo(128, 104); ctx.lineTo(123, 121); ctx.closePath(); ctx.fill(); ctx.stroke();
-                ctx.fillStyle = '#F7F1DC';
-                ctx.beginPath(); ctx.arc(123, 100, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+                // T-shirt noir drapé avec reflets doux
+                const blackTeeGrad = ctx.createLinearGradient(104, 72, 176, 128);
+                blackTeeGrad.addColorStop(0, '#323137');
+                blackTeeGrad.addColorStop(0.45, '#201F24');
+                blackTeeGrad.addColorStop(1, '#141317');
+                ctx.fillStyle = blackTeeGrad;
+                ctx.strokeStyle = 'rgba(18, 16, 20, 0.75)';
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.moveTo(114, 74); ctx.quadraticCurveTo(140, 69, 166, 74);
+                ctx.lineTo(178, 99); ctx.lineTo(166, 105); ctx.lineTo(162, 93);
+                ctx.lineTo(162, 128); ctx.lineTo(118, 128); ctx.lineTo(118, 93);
+                ctx.lineTo(113, 105); ctx.lineTo(102, 99);
+                ctx.closePath(); ctx.fill(); ctx.stroke();
+                // Plis réalistes du t-shirt
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+                ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(126, 86); ctx.quadraticCurveTo(138, 96, 152, 85); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(124, 104); ctx.quadraticCurveTo(141, 112, 156, 102); ctx.stroke();
 
-                // Visage, barbe, lunettes de soleil & casquette sombre
-                ctx.fillStyle = '#E2B295';
-                ctx.lineWidth = 2;
-                ctx.beginPath(); ctx.ellipse(140, 54, 15, 17, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-                ctx.fillStyle = '#3D312A';
-                ctx.lineWidth = 1.4;
+                // Cornet de glace vanille texturé (gaufrette quadrillée + boule crémeuse)
+                const coneGrad = ctx.createLinearGradient(118, 104, 128, 121);
+                coneGrad.addColorStop(0, '#E3B059');
+                coneGrad.addColorStop(1, '#B67F2A');
+                ctx.fillStyle = coneGrad;
+                ctx.strokeStyle = 'rgba(72, 44, 14, 0.7)';
+                ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(118, 104); ctx.lineTo(128, 104); ctx.lineTo(123, 121); ctx.closePath(); ctx.fill(); ctx.stroke();
+                const scoopGrad = ctx.createRadialGradient(121, 98, 1, 123, 100, 7);
+                scoopGrad.addColorStop(0, '#FFFDF5');
+                scoopGrad.addColorStop(0.7, '#F3E8C8');
+                scoopGrad.addColorStop(1, '#D8C79E');
+                ctx.fillStyle = scoopGrad;
+                ctx.beginPath(); ctx.arc(123, 100, 6, 0, Math.PI * 2); ctx.fill();
+
+                // Cou & visage homme avec modelé d'ombre et pommettes
+                ctx.fillStyle = '#D59E80';
+                ctx.fillRect(134, 67, 12, 8);
+                ctx.fillStyle = skinGrad(126, 42, 154, 70, '#F1C6AC', '#E0AC8E', '#C38A6C');
+                ctx.strokeStyle = 'rgba(58, 34, 24, 0.5)';
+                ctx.lineWidth = 1.1;
+                ctx.beginPath(); ctx.ellipse(140, 54, 14.5, 17, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+                // Oreilles
+                ctx.fillStyle = '#D8A284';
+                ctx.beginPath(); ctx.ellipse(125.5, 55, 2.3, 4.2, -0.1, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.ellipse(154.5, 55, 2.3, 4.2, 0.1, 0, Math.PI * 2); ctx.fill();
+
+                // Nez modelé
+                ctx.strokeStyle = 'rgba(138, 86, 62, 0.55)';
+                ctx.lineWidth = 1.1;
+                ctx.beginPath(); ctx.moveTo(140, 51); ctx.lineTo(139, 57); ctx.quadraticCurveTo(141, 58.5, 142.5, 57.5); ctx.stroke();
+
+                // Barbe courte dégradée et moustache naturelle
+                const beardGrad = ctx.createLinearGradient(126, 54, 140, 72);
+                beardGrad.addColorStop(0, 'rgba(54, 42, 35, 0.85)');
+                beardGrad.addColorStop(1, 'rgba(34, 26, 22, 0.95)');
+                ctx.fillStyle = beardGrad;
                 ctx.beginPath();
                 ctx.moveTo(126, 55); ctx.quadraticCurveTo(140, 76, 154, 55);
-                ctx.lineTo(154, 61); ctx.quadraticCurveTo(140, 75, 126, 61);
-                ctx.closePath(); ctx.fill(); ctx.stroke();
+                ctx.lineTo(153.5, 62); ctx.quadraticCurveTo(140, 74.5, 126.5, 62);
+                ctx.closePath(); ctx.fill();
+                // Moustache
+                ctx.beginPath();
+                ctx.moveTo(133, 60); ctx.quadraticCurveTo(140, 58, 147, 60);
+                ctx.quadraticCurveTo(140, 62.5, 133, 60);
+                ctx.fill();
 
-                // Sourire
-                ctx.fillStyle = '#F7F2E7';
-                ctx.beginPath(); ctx.moveTo(134, 61); ctx.quadraticCurveTo(140, 67, 146, 61); ctx.closePath(); ctx.fill(); ctx.stroke();
+                // Sourire naturel (dents douces + lèvre inférieure)
+                ctx.fillStyle = '#F7F3EA';
+                ctx.beginPath(); ctx.moveTo(134.5, 61.5); ctx.quadraticCurveTo(140, 66.5, 145.5, 61.5); ctx.closePath(); ctx.fill();
+                ctx.strokeStyle = '#A86458';
+                ctx.lineWidth = 0.9;
+                ctx.beginPath(); ctx.moveTo(136, 65.5); ctx.quadraticCurveTo(140, 67, 144, 65.5); ctx.stroke();
 
-                // Lunettes de soleil noires
-                ctx.fillStyle = '#141416';
-                ctx.beginPath(); ctx.roundRect(128, 47, 10, 7, 2); ctx.fill(); ctx.stroke();
-                ctx.beginPath(); ctx.roundRect(142, 47, 10, 7, 2); ctx.fill(); ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(138, 49); ctx.lineTo(142, 49); ctx.stroke();
+                // Lunettes de soleil noires avec reflet subtil sur les verres
+                ctx.fillStyle = '#141518';
+                ctx.strokeStyle = '#0B0B0D';
+                ctx.lineWidth = 1.1;
+                ctx.beginPath(); ctx.roundRect(128, 47, 10.5, 6.8, 2.2); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.roundRect(141.5, 47, 10.5, 6.8, 2.2); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(138.5, 49); ctx.lineTo(141.5, 49); ctx.stroke();
+                // Reflets sur les verres
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
+                ctx.lineWidth = 0.9;
+                ctx.beginPath(); ctx.moveTo(130, 48.5); ctx.lineTo(134, 52); ctx.moveTo(143.5, 48.5); ctx.lineTo(147.5, 52); ctx.stroke();
 
-                // Casquette sombre
-                ctx.fillStyle = '#2A2B30';
-                ctx.lineWidth = 2;
-                ctx.beginPath(); ctx.moveTo(125, 44); ctx.quadraticCurveTo(140, 28, 155, 44); ctx.closePath(); ctx.fill(); ctx.stroke();
-                ctx.fillStyle = '#18181B';
-                ctx.beginPath(); ctx.roundRect(131, 41, 18, 4, 2); ctx.fill();
+                // Casquette sombre portée à l'envers
+                const capGrad = ctx.createLinearGradient(125, 32, 155, 45);
+                capGrad.addColorStop(0, '#363840');
+                capGrad.addColorStop(1, '#1E1F24');
+                ctx.fillStyle = capGrad;
+                ctx.strokeStyle = 'rgba(15, 15, 18, 0.75)';
+                ctx.lineWidth = 1.2;
+                ctx.beginPath(); ctx.moveTo(125.5, 44); ctx.quadraticCurveTo(140, 29, 154.5, 44); ctx.closePath(); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#141519';
+                ctx.beginPath(); ctx.roundRect(131.5, 40.5, 17, 4, 2); ctx.fill();
 
-                // === FEMME À GAUCHE (CHEVEUX NATURELS BLONDS/CHÂTAINS SANS AUCUN CHAPEAU ROSE) ===
-                ctx.fillStyle = '#E5B79B';
-                ctx.strokeStyle = '#1F1614';
-                ctx.lineWidth = 2;
+                // === 2. FEMME À GAUCHE (PORTRAIT SEMI-RÉALISTE, CHEVEUX NATURELS SANS CHAPEAU) ===
+                // Jambes fines avec lumière naturelle
+                ctx.fillStyle = skinGrad(52, 162, 72, 214, '#F1C5AA', '#E2AE90', '#C79072');
+                ctx.strokeStyle = 'rgba(58, 34, 24, 0.5)';
+                ctx.lineWidth = 1.1;
                 ctx.beginPath(); ctx.moveTo(62, 162); ctx.lineTo(50, 214); ctx.lineTo(62, 214); ctx.lineTo(74, 162); ctx.closePath(); ctx.fill(); ctx.stroke();
-                ctx.beginPath(); ctx.roundRect(82, 162, 12, 46, 4); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = skinGrad(82, 162, 94, 208, '#F1C5AA', '#E2AE90', '#C79072');
+                ctx.beginPath(); ctx.roundRect(82, 162, 12, 46, 5); ctx.fill(); ctx.stroke();
 
-                // Chaussettes blanches & bottines noires
-                ctx.fillStyle = '#F7F2E7';
-                ctx.lineWidth = 1.5;
-                ctx.fillRect(49, 204, 12, 12); ctx.strokeRect(49, 204, 12, 12);
-                ctx.fillStyle = '#1A191B';
-                ctx.lineWidth = 2;
+                // Chaussettes blanches & bottines Chelsea noires
+                ctx.fillStyle = '#F5F2EB';
+                ctx.fillRect(49, 204, 12, 12);
+                const bootGrad = ctx.createLinearGradient(40, 214, 62, 230);
+                bootGrad.addColorStop(0, '#2C2B30');
+                bootGrad.addColorStop(1, '#121114');
+                ctx.fillStyle = bootGrad;
+                ctx.strokeStyle = '#0D0C0E';
                 ctx.beginPath(); ctx.roundRect(40, 215, 22, 15, 4); ctx.fill(); ctx.stroke();
                 ctx.beginPath(); ctx.roundRect(77, 206, 19, 16, 4); ctx.fill(); ctx.stroke();
 
-                // Short en jean bleu clair
-                ctx.fillStyle = '#77A9DF';
+                // Short en jean bleu clair avec coutures et délavage
+                const denimGrad = ctx.createLinearGradient(56, 134, 104, 166);
+                denimGrad.addColorStop(0, '#8AB8EA');
+                denimGrad.addColorStop(0.55, '#6E9FD4');
+                denimGrad.addColorStop(1, '#5482B5');
+                ctx.fillStyle = denimGrad;
+                ctx.strokeStyle = 'rgba(34, 56, 84, 0.65)';
+                ctx.lineWidth = 1.2;
                 ctx.beginPath();
                 ctx.moveTo(58, 134); ctx.lineTo(100, 134); ctx.lineTo(104, 166);
-                ctx.lineTo(84, 166); ctx.lineTo(81, 156); ctx.lineTo(78, 166); ctx.lineTo(56, 166);
+                ctx.lineTo(84, 166); ctx.lineTo(81, 155); ctx.lineTo(78, 166); ctx.lineTo(56, 166);
                 ctx.closePath(); ctx.fill(); ctx.stroke();
+                ctx.strokeStyle = 'rgba(225, 240, 255, 0.45)';
+                ctx.setLineDash([2, 2]);
+                ctx.beginPath(); ctx.moveTo(79, 136); ctx.lineTo(79, 153); ctx.stroke();
+                ctx.setLineDash([]);
 
-                // T-shirt rose vif
-                ctx.fillStyle = '#F44E8A';
+                // Bras gauche & glace fusée multicolore
+                ctx.strokeStyle = '#E6B497';
+                ctx.lineWidth = 8.5;
+                ctx.beginPath(); ctx.moveTo(54, 102); ctx.lineTo(46, 118); ctx.lineTo(52, 123); ctx.stroke();
+                ctx.fillStyle = '#2B8A54';
+                ctx.strokeStyle = 'rgba(20, 54, 34, 0.65)';
+                ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.roundRect(43, 102, 7, 14, 3); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#F2C14E';
+                ctx.fillRect(43, 96, 7, 6);
+                ctx.fillStyle = '#D9382E';
+                ctx.beginPath(); ctx.moveTo(43, 96); ctx.quadraticCurveTo(46.5, 89, 50, 96); ctx.closePath(); ctx.fill();
+
+                // T-shirt rose vif drapé avec plis souples
+                const pinkTeeGrad = ctx.createLinearGradient(46, 82, 108, 135);
+                pinkTeeGrad.addColorStop(0, '#FF699F');
+                pinkTeeGrad.addColorStop(0.5, '#F04382');
+                pinkTeeGrad.addColorStop(1, '#C92B65');
+                ctx.fillStyle = pinkTeeGrad;
+                ctx.strokeStyle = 'rgba(115, 20, 56, 0.6)';
+                ctx.lineWidth = 1.2;
                 ctx.beginPath();
                 ctx.moveTo(56, 84); ctx.quadraticCurveTo(79, 79, 102, 84);
                 ctx.lineTo(110, 108); ctx.lineTo(99, 113); ctx.lineTo(96, 101);
                 ctx.lineTo(96, 135); ctx.lineTo(58, 135); ctx.lineTo(58, 101);
                 ctx.lineTo(53, 115); ctx.lineTo(43, 110);
                 ctx.closePath(); ctx.fill(); ctx.stroke();
+                // Plis du t-shirt rose
+                ctx.strokeStyle = 'rgba(130, 22, 62, 0.35)';
+                ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(64, 102); ctx.quadraticCurveTo(78, 110, 91, 101); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(62, 120); ctx.quadraticCurveTo(79, 126, 93, 118); ctx.stroke();
 
-                // Bras gauche & glace fusée
-                ctx.strokeStyle = '#E5B79B';
-                ctx.lineWidth = 9;
-                ctx.beginPath(); ctx.moveTo(54, 102); ctx.lineTo(46, 118); ctx.lineTo(52, 123); ctx.stroke();
-                ctx.fillStyle = '#2E8B57';
-                ctx.strokeStyle = '#1F1614';
-                ctx.lineWidth = 1.3;
-                ctx.beginPath(); ctx.roundRect(43, 102, 7, 14, 3); ctx.fill(); ctx.stroke();
-                ctx.fillStyle = '#E7BC66';
-                ctx.fillRect(43, 96, 7, 6);
-                ctx.fillStyle = '#D63229';
-                ctx.beginPath(); ctx.moveTo(43, 96); ctx.quadraticCurveTo(46.5, 89, 50, 96); ctx.closePath(); ctx.fill();
-
-                // Cheveux naturels blonds/châtains ondulés mi-longs (aucun élément rose sur la tête)
-                ctx.fillStyle = '#A67C52';
-                ctx.strokeStyle = '#1F1614';
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(61, 56);
-                ctx.quadraticCurveTo(63, 41, 79, 41);
-                ctx.quadraticCurveTo(95, 41, 97, 56);
-                ctx.quadraticCurveTo(101, 78, 96, 89);
-                ctx.lineTo(62, 89);
-                ctx.quadraticCurveTo(57, 78, 61, 56);
-                ctx.closePath(); ctx.fill(); ctx.stroke();
-
-                // Visage souriant de la femme
-                ctx.fillStyle = '#ECC0A6';
-                ctx.beginPath(); ctx.ellipse(79, 65, 14, 16, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-                // Mèches naturelles encadrant le visage
-                ctx.fillStyle = '#A67C52';
-                ctx.beginPath();
-                ctx.moveTo(64, 62); ctx.quadraticCurveTo(67, 47, 79, 46);
-                ctx.quadraticCurveTo(91, 47, 94, 62);
-                ctx.quadraticCurveTo(89, 54, 79, 54);
-                ctx.quadraticCurveTo(69, 54, 64, 62);
-                ctx.closePath(); ctx.fill();
-                ctx.strokeStyle = '#7A5736';
-                ctx.lineWidth = 1.8;
-                ctx.beginPath(); ctx.moveTo(64, 62); ctx.quadraticCurveTo(61, 75, 65, 87); ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(94, 62); ctx.quadraticCurveTo(97, 75, 93, 87); ctx.stroke();
-
-                // Yeux & sourire
-                ctx.fillStyle = '#1F1614';
-                ctx.beginPath(); ctx.arc(74, 63, 1.8, 0, Math.PI * 2); ctx.arc(84, 63, 1.8, 0, Math.PI * 2); ctx.fill();
-                ctx.fillStyle = '#F7F2E7';
-                ctx.strokeStyle = '#1F1614';
+                // Chevelure mi-longue châtain clair ondulée (masse arrière avec nuances dorées)
+                const hairWomenGrad = ctx.createLinearGradient(60, 41, 98, 92);
+                hairWomenGrad.addColorStop(0, '#BA8F63');
+                hairWomenGrad.addColorStop(0.5, '#9A7047');
+                hairWomenGrad.addColorStop(1, '#755130');
+                ctx.fillStyle = hairWomenGrad;
+                ctx.strokeStyle = 'rgba(68, 44, 24, 0.65)';
                 ctx.lineWidth = 1.2;
-                ctx.beginPath(); ctx.moveTo(73, 69); ctx.quadraticCurveTo(79, 76, 85, 69); ctx.closePath(); ctx.fill(); ctx.stroke();
-
-                // === PETITE FILLE AU CENTRE DEVANT EUX ===
-                ctx.fillStyle = '#E8BCA0';
-                ctx.strokeStyle = '#1F1614';
-                ctx.lineWidth = 1.8;
-                ctx.beginPath(); ctx.roundRect(97, 182, 10, 36, 4); ctx.fill(); ctx.stroke();
-                ctx.beginPath(); ctx.roundRect(114, 182, 10, 36, 4); ctx.fill(); ctx.stroke();
-
-                ctx.fillStyle = '#F7F2E7';
-                ctx.lineWidth = 1.5;
-                ctx.fillRect(97, 207, 10, 12); ctx.strokeRect(97, 207, 10, 12);
-                ctx.fillRect(114, 207, 10, 12); ctx.strokeRect(114, 207, 10, 12);
-
-                ctx.fillStyle = '#E8E1D5';
-                ctx.lineWidth = 1.8;
-                ctx.beginPath(); ctx.roundRect(91, 219, 22, 10, 4); ctx.fill(); ctx.stroke();
-                ctx.beginPath(); ctx.roundRect(110, 219, 22, 10, 4); ctx.fill(); ctx.stroke();
-
-                // Short noir
-                ctx.fillStyle = '#1C1B1E';
                 ctx.beginPath();
-                ctx.moveTo(95, 162); ctx.lineTo(126, 162); ctx.lineTo(128, 184);
-                ctx.lineTo(113, 184); ctx.lineTo(111, 178); ctx.lineTo(109, 184); ctx.lineTo(94, 184);
+                ctx.moveTo(60, 56);
+                ctx.quadraticCurveTo(63, 40, 79, 40);
+                ctx.quadraticCurveTo(95, 40, 98, 56);
+                ctx.quadraticCurveTo(103, 79, 96, 91);
+                ctx.lineTo(62, 91);
+                ctx.quadraticCurveTo(55, 79, 60, 56);
                 ctx.closePath(); ctx.fill(); ctx.stroke();
 
-                // T-shirt blanc à manches volantées
-                ctx.fillStyle = '#F7F5F0';
+                // Cou & visage femme avec ombres douces et pommettes rosées
+                ctx.fillStyle = '#DFAD91';
+                ctx.fillRect(74, 78, 10, 7);
+                ctx.fillStyle = skinGrad(66, 48, 92, 78, '#F6CEB6', '#E8B69A', '#CF987B');
+                ctx.strokeStyle = 'rgba(72, 42, 30, 0.5)';
+                ctx.lineWidth = 1.1;
+                ctx.beginPath(); ctx.ellipse(79, 65, 13.5, 15.8, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+                // Pommettes douces
+                ctx.fillStyle = 'rgba(226, 122, 122, 0.24)';
+                ctx.beginPath(); ctx.ellipse(71, 67, 3.2, 2, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.ellipse(87, 67, 3.2, 2, 0, 0, Math.PI * 2); ctx.fill();
+
+                // Mèches ondulées naturelles encadrant le visage (sans chapeau)
+                ctx.fillStyle = hairWomenGrad;
                 ctx.beginPath();
-                ctx.moveTo(94, 126); ctx.quadraticCurveTo(110, 122, 127, 126);
-                ctx.lineTo(136, 138); ctx.lineTo(128, 144); ctx.lineTo(125, 138);
-                ctx.lineTo(125, 163); ctx.lineTo(96, 163); ctx.lineTo(96, 138);
-                ctx.lineTo(93, 144); ctx.lineTo(85, 138);
+                ctx.moveTo(64.5, 62); ctx.quadraticCurveTo(67, 46, 79, 45.5);
+                ctx.quadraticCurveTo(91, 46, 93.5, 62);
+                ctx.quadraticCurveTo(88, 52, 79, 52.5);
+                ctx.quadraticCurveTo(70, 52, 64.5, 62);
+                ctx.closePath(); ctx.fill();
+                // Mèches latérales souples et reflets
+                ctx.strokeStyle = '#6E4B2B';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath(); ctx.moveTo(64.5, 61); ctx.quadraticCurveTo(60, 75, 64, 89); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(93.5, 61); ctx.quadraticCurveTo(98, 75, 94, 89); ctx.stroke();
+                ctx.strokeStyle = 'rgba(224, 186, 138, 0.55)';
+                ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(62, 64); ctx.quadraticCurveTo(59, 76, 62, 87); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(96, 64); ctx.quadraticCurveTo(99, 76, 96, 87); ctx.stroke();
+
+                // Sourcils, yeux expressifs & nez femme
+                ctx.strokeStyle = '#6A492D';
+                ctx.lineWidth = 1.1;
+                ctx.beginPath(); ctx.moveTo(71, 59.5); ctx.quadraticCurveTo(74, 58.3, 76.5, 59.5); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(81.5, 59.5); ctx.quadraticCurveTo(84, 58.3, 87, 59.5); ctx.stroke();
+
+                ctx.fillStyle = '#2A1E1A';
+                ctx.beginPath(); ctx.arc(74, 62.5, 1.5, 0, Math.PI * 2); ctx.arc(84, 62.5, 1.5, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath(); ctx.arc(73.5, 62, 0.55, 0, Math.PI * 2); ctx.arc(83.5, 62, 0.55, 0, Math.PI * 2); ctx.fill();
+
+                ctx.strokeStyle = 'rgba(148, 92, 68, 0.5)';
+                ctx.lineWidth = 0.9;
+                ctx.beginPath(); ctx.moveTo(79, 63); ctx.lineTo(78.5, 67.5); ctx.quadraticCurveTo(79.5, 68.3, 80.5, 67.8); ctx.stroke();
+
+                // Grand sourire naturel femme
+                ctx.fillStyle = '#F9F6EF';
+                ctx.strokeStyle = '#B86660';
+                ctx.lineWidth = 0.9;
+                ctx.beginPath(); ctx.moveTo(73.5, 70.5); ctx.quadraticCurveTo(79, 76.5, 84.5, 70.5); ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                // === 3. PETITE FILLE AU CENTRE DEVANT (PORTRAIT SEMI-RÉALISTE) ===
+                // Jambes & chaussettes blanches
+                ctx.fillStyle = skinGrad(98, 178, 123, 212, '#F5CBB2', '#E6B396', '#CD9678');
+                ctx.strokeStyle = 'rgba(68, 40, 28, 0.5)';
+                ctx.lineWidth = 1.1;
+                ctx.beginPath(); ctx.roundRect(98, 178, 9, 34, 4); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.roundRect(114, 178, 9, 34, 4); ctx.fill(); ctx.stroke();
+
+                ctx.fillStyle = '#F7F4EC';
+                ctx.fillRect(98, 203, 9, 9);
+                ctx.fillRect(114, 203, 9, 9);
+
+                // Baskets claires beige/gris avec semelle
+                const kidShoeGrad = ctx.createLinearGradient(94, 211, 127, 222);
+                kidShoeGrad.addColorStop(0, '#EBE4D8');
+                kidShoeGrad.addColorStop(1, '#CFC5B4');
+                ctx.fillStyle = kidShoeGrad;
+                ctx.beginPath(); ctx.roundRect(94, 211, 15, 10, 4); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.roundRect(112, 211, 15, 10, 4); ctx.fill(); ctx.stroke();
+
+                // Short noir de sport
+                ctx.fillStyle = '#202026';
+                ctx.beginPath();
+                ctx.moveTo(96, 162); ctx.lineTo(125, 162); ctx.lineTo(127, 180);
+                ctx.lineTo(113, 180); ctx.lineTo(110.5, 174); ctx.lineTo(108, 180); ctx.lineTo(94, 180);
+                ctx.closePath(); ctx.fill(); ctx.stroke();
+
+                // T-shirt blanc à manches volantées avec ombres douces
+                const whiteTeeGrad = ctx.createLinearGradient(92, 126, 129, 163);
+                whiteTeeGrad.addColorStop(0, '#FFFFFF');
+                whiteTeeGrad.addColorStop(0.65, '#F2EEE6');
+                whiteTeeGrad.addColorStop(1, '#DED8CC');
+                ctx.fillStyle = whiteTeeGrad;
+                ctx.strokeStyle = 'rgba(72, 62, 54, 0.55)';
+                ctx.lineWidth = 1.1;
+                ctx.beginPath();
+                ctx.moveTo(96, 127); ctx.quadraticCurveTo(110.5, 123, 125, 127);
+                ctx.lineTo(132, 142); ctx.quadraticCurveTo(126, 146, 123, 141);
+                ctx.lineTo(124, 163); ctx.lineTo(97, 163); ctx.lineTo(98, 141);
+                ctx.quadraticCurveTo(95, 146, 89, 142);
                 ctx.closePath(); ctx.fill(); ctx.stroke();
 
                 // Bras tenant le cornet de glace à deux mains
-                ctx.strokeStyle = '#E8BCA0';
-                ctx.lineWidth = 7.5;
-                ctx.beginPath(); ctx.moveTo(92, 136); ctx.quadraticCurveTo(96, 150, 106, 150); ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(129, 136); ctx.quadraticCurveTo(125, 150, 115, 150); ctx.stroke();
+                ctx.strokeStyle = '#E8B699';
+                ctx.lineWidth = 6.8;
+                ctx.beginPath(); ctx.moveTo(95, 139); ctx.lineTo(96, 149); ctx.lineTo(106, 149); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(126, 139); ctx.lineTo(125, 149); ctx.lineTo(115, 149); ctx.stroke();
 
-                ctx.fillStyle = '#D4A03E';
-                ctx.strokeStyle = '#1F1614';
-                ctx.lineWidth = 1.4;
-                ctx.beginPath(); ctx.moveTo(106, 144); ctx.lineTo(115, 144); ctx.lineTo(110.5, 158); ctx.closePath(); ctx.fill(); ctx.stroke();
-                ctx.fillStyle = '#F7F1DC';
-                ctx.beginPath(); ctx.arc(110.5, 140.5, 5.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+                // Cornet vanille enfant
+                ctx.fillStyle = '#DDA84F';
+                ctx.strokeStyle = 'rgba(84, 52, 18, 0.65)';
+                ctx.lineWidth = 0.9;
+                ctx.beginPath(); ctx.moveTo(106, 143); ctx.lineTo(115, 143); ctx.lineTo(110.5, 158); ctx.closePath(); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#FCF9EE';
+                ctx.beginPath(); ctx.arc(110.5, 139, 5, 0, Math.PI * 2); ctx.fill();
 
-                // Chignon & visage souriant de la petite fille
-                ctx.fillStyle = '#5A3D2B';
-                ctx.lineWidth = 1.6;
-                ctx.beginPath(); ctx.arc(110.5, 96, 7, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-                ctx.fillStyle = '#ECC0A6';
-                ctx.lineWidth = 1.8;
-                ctx.beginPath(); ctx.ellipse(110.5, 111, 13, 14.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-                ctx.fillStyle = '#5A3D2B';
+                // Cheveux châtains attachés & visage souriant enfant
+                const kidHairGrad = ctx.createLinearGradient(97, 94, 124, 123);
+                kidHairGrad.addColorStop(0, '#78543B');
+                kidHairGrad.addColorStop(1, '#4C3322');
+                ctx.fillStyle = kidHairGrad;
+                ctx.beginPath(); ctx.ellipse(110.5, 108, 13.5, 14.5, 0, 0, Math.PI * 2); ctx.fill();
+
+                ctx.fillStyle = skinGrad(99, 98, 122, 123, '#F7D0B9', '#EAB89C', '#D29B7E');
+                ctx.strokeStyle = 'rgba(72, 42, 30, 0.5)';
+                ctx.lineWidth = 1.1;
+                ctx.beginPath(); ctx.ellipse(110.5, 111, 11.8, 13.2, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+                // Mèches frontales douces
+                ctx.fillStyle = kidHairGrad;
                 ctx.beginPath();
-                ctx.moveTo(98, 108); ctx.quadraticCurveTo(102, 96, 110.5, 96);
-                ctx.quadraticCurveTo(119.5, 96, 123, 108);
-                ctx.quadraticCurveTo(119, 102, 110.5, 102);
-                ctx.quadraticCurveTo(102.5, 102, 98, 108);
+                ctx.moveTo(98.8, 109); ctx.quadraticCurveTo(101, 97, 110.5, 97);
+                ctx.quadraticCurveTo(120, 97, 122.2, 109);
+                ctx.quadraticCurveTo(116, 101.5, 110.5, 102);
+                ctx.quadraticCurveTo(105, 101.5, 98.8, 109);
                 ctx.closePath(); ctx.fill();
 
-                ctx.fillStyle = '#1F1614';
-                ctx.beginPath(); ctx.arc(106, 110, 1.7, 0, Math.PI * 2); ctx.arc(115, 110, 1.7, 0, Math.PI * 2); ctx.fill();
-                ctx.fillStyle = '#F7F2E7';
-                ctx.lineWidth = 1.1;
+                // Pommettes, yeux brillants & sourire enfant
+                ctx.fillStyle = 'rgba(226, 120, 120, 0.25)';
+                ctx.beginPath(); ctx.ellipse(104, 113.5, 2.6, 1.6, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.ellipse(117, 113.5, 2.6, 1.6, 0, 0, Math.PI * 2); ctx.fill();
+
+                ctx.fillStyle = '#241915';
+                ctx.beginPath(); ctx.arc(106, 110, 1.6, 0, Math.PI * 2); ctx.arc(115, 110, 1.6, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath(); ctx.arc(105.5, 109.5, 0.55, 0, Math.PI * 2); ctx.arc(114.5, 109.5, 0.55, 0, Math.PI * 2); ctx.fill();
+
+                ctx.fillStyle = '#FAF7F0';
+                ctx.strokeStyle = '#B86660';
+                ctx.lineWidth = 0.9;
                 ctx.beginPath(); ctx.moveTo(105.5, 115.5); ctx.quadraticCurveTo(110.5, 121, 115.5, 115.5); ctx.closePath(); ctx.fill(); ctx.stroke();
 
                 ctx.restore();
@@ -1086,7 +1253,7 @@
 
             /**
              * ============================================================================
-             * 2. PORTE 3D INTERACTIVE & DÉTOURAGE AUTOMATIQUE DE PHOTO SUR CANVAS
+             * 2. PORTE 3D INTERACTIVE + DÉTOURAGE AUTOMATIQUE DE PHOTO SUR CANVAS
              * ============================================================================
              */
             function initInteractiveChaletDoor() {
@@ -1109,12 +1276,12 @@
                     photoCutoutInput.addEventListener('change', (e) => {
                         const file = e.target.files && e.target.files[0];
                         if (!file) return;
-                        processDoorwayPhotoCutout(file);
+                        processPhotoCutoutToTarget(file, 'doorway-trio-canvas', 'chalet-doorway', 'door-open', 'door-hint-badge', '🎄 Bienvenue !');
                     });
                 }
             }
 
-            function processDoorwayPhotoCutout(file) {
+            function processPhotoCutoutToTarget(file, targetCanvasId, stageId, openClass, badgeId, openLabel) {
                 const reader = new FileReader();
                 reader.onload = (ev) => {
                     const img = new Image();
@@ -1143,13 +1310,32 @@
                         const visited = new Uint8Array(w * h);
                         const stack = [];
 
+                        // Échantillonnage des couleurs de bordure pour détourer aussi bien un mur intérieur qu'un paysage
+                        const borderSamples = [];
+                        for (let x = 0; x < w; x += Math.max(1, Math.floor(w / 20))) {
+                            borderSamples.push([data[x * 4], data[x * 4 + 1], data[x * 4 + 2]]);
+                        }
+                        for (let y = 0; y < Math.floor(h * 0.5); y += Math.max(1, Math.floor(h / 20))) {
+                            const leftIdx = (y * w) * 4;
+                            const rightIdx = (y * w + (w - 1)) * 4;
+                            borderSamples.push([data[leftIdx], data[leftIdx + 1], data[leftIdx + 2]]);
+                            borderSamples.push([data[rightIdx], data[rightIdx + 1], data[rightIdx + 2]]);
+                        }
+
                         const isBackgroundPixel = (idx) => {
                             const r = data[idx];
                             const g = data[idx + 1];
                             const b = data[idx + 2];
                             const isSky = (b > 135 && b >= r - 10 && g > 125) || (r > 185 && g > 190 && b > 195);
                             const isGrass = (g > r + 14 && g > b + 18 && g > 65);
-                            return isSky || isGrass;
+                            if (isSky || isGrass) return true;
+                            for (let i = 0; i < borderSamples.length; i++) {
+                                const [sr, sg, sb] = borderSamples[i];
+                                if (Math.abs(r - sr) + Math.abs(g - sg) + Math.abs(b - sb) < 52) {
+                                    return true;
+                                }
+                            }
+                            return false;
                         };
 
                         for (let x = 0; x < w; x++) {
@@ -1177,16 +1363,6 @@
                             }
                         }
 
-                        for (let y = Math.floor(h * 0.55); y < h; y++) {
-                            for (let x = 0; x < w; x++) {
-                                const idx = (y * w + x) * 4;
-                                const r = data[idx], g = data[idx + 1], b = data[idx + 2];
-                                if (g > r + 18 && g > b + 22) {
-                                    data[idx + 3] = 0;
-                                }
-                            }
-                        }
-
                         offCtx.putImageData(imgData, 0, 0);
 
                         let minX = w, minY = h, maxX = 0, maxY = 0;
@@ -1211,23 +1387,23 @@
                             const cropW = maxX - minX + 1;
                             const cropH = maxY - minY + 1;
 
-                            const doorCanvas = document.getElementById('doorway-trio-canvas');
-                            if (doorCanvas) {
-                                const dCtx = doorCanvas.getContext('2d');
-                                dCtx.clearRect(0, 0, doorCanvas.width, doorCanvas.height);
-                                const scale = Math.min(doorCanvas.width / cropW, doorCanvas.height / cropH);
+                            const targetCanvas = document.getElementById(targetCanvasId);
+                            if (targetCanvas) {
+                                const dCtx = targetCanvas.getContext('2d');
+                                dCtx.clearRect(0, 0, targetCanvas.width, targetCanvas.height);
+                                const scale = Math.min(targetCanvas.width / cropW, targetCanvas.height / cropH);
                                 const drawW = cropW * scale;
                                 const drawH = cropH * scale;
-                                const drawX = (doorCanvas.width - drawW) / 2;
-                                const drawY = doorCanvas.height - drawH;
+                                const drawX = (targetCanvas.width - drawW) / 2;
+                                const drawY = targetCanvas.height - drawH;
                                 dCtx.drawImage(offCanvas, minX, minY, cropW, cropH, drawX, drawY, drawW, drawH);
                             }
 
-                            const doorway = document.getElementById('chalet-doorway');
-                            const hintBadge = document.getElementById('door-hint-badge');
-                            if (doorway) doorway.classList.add('door-open');
-                            if (hintBadge) hintBadge.textContent = '🎄 Bienvenue !';
-                            showToast('Photo détourée sur Canvas et placée dans la porte du chalet ! ✨');
+                            const stageEl = document.getElementById(stageId);
+                            const badgeEl = document.getElementById(badgeId);
+                            if (stageEl) stageEl.classList.add(openClass);
+                            if (badgeEl) badgeEl.textContent = openLabel;
+                            showToast('Photo détourée sur Canvas et intégrée au chalet ! ✨');
                         }
                     };
                     img.src = ev.target.result;
