@@ -473,12 +473,6 @@
                 </div>
 
                 <!-- 2. BARNABY : VRAI CHAT BRITISH SHORTHAIR GRIS ANIMÉ SUR CANVAS (TOUJOURS À DROITE DE LA MAISON) -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. BARNABY : VRAI CHAT BRITISH SHORTHAIR GRIS EN STYLE BANDE DESSINÉE SUR CANVAS (TOUJOURS À DROITE DE LA MAISON) -->
                 <div class="shrink-0 flex flex-col items-center">
                     <div class="relative rounded-2xl p-1.5 bg-mcr-parchment border-4 border-mcr-brass shadow-xl cursor-pointer group" id="cat-canvas-wrapper" title="Cliquez pour faire ronronner Barnaby le British Shorthair !">
                         <canvas id="british-shorthair-canvas" width="210" height="225" class="block w-[112px] h-[120px] sm:w-[175px] sm:h-[188px] md:w-[195px] md:h-[210px] rounded-xl"></canvas>
@@ -507,8 +501,8 @@
                     <span class="font-display text-base sm:text-lg font-bold text-mcr-mulled flex items-center gap-2">
                         <i class="fa-solid fa-tags text-mcr-brick"></i> Listes de Noël
                     </span>
-                    <span id="sync-status-badge" class="bg-mcr-pine text-mcr-kraft text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-mcr-ink">
-                        <i class="fa-solid fa-circle text-mcr-brass text-[7px] mr-1"></i> Synchronisé en direct
+                    <span id="sync-status-badge" class="bg-mcr-pine text-mcr-kraft text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-mcr-ink transition-colors">
+                        <i class="fa-solid fa-circle text-mcr-brass text-[7px] mr-1 animate-pulse"></i> Connexion Cloud en direct...
                     </span>
                 </div>
 
@@ -827,9 +821,58 @@
         <p class="mt-1 opacity-80">Albert Square &bull; Northern Quarter &bull; Espace commun des listes de Noël</p>
     </footer>
 
+    <!-- Firebase SDK (App + Firestore en temps réel) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
     <script>
         (function () {
             'use strict';
+
+            /**
+             * ============================================================================
+             * CONFIGURATION FIREBASE FIRESTORE EN TEMPS RÉEL (PROJET : noel-manchester)
+             * ============================================================================
+             */
+            const firebaseConfig = {
+                apiKey: "AIzaSyCSMf6bMQrJxOZr9asXxwMnKelk7GTD-gY",
+                authDomain: "noel-manchester.firebaseapp.com",
+                projectId: "noel-manchester",
+                storageBucket: "noel-manchester.firebasestorage.app",
+                messagingSenderId: "648583133297",
+                appId: "1:648583133297:web:44823281eeb6a6abe203d0",
+                measurementId: "G-K5EJ7VHYKL"
+            };
+
+            let firestoreDocRef = null;
+            let isFirestoreConnected = false;
+
+            try {
+                if (typeof firebase !== 'undefined') {
+                    if (!firebase.apps.length) {
+                        firebase.initializeApp(firebaseConfig);
+                    }
+                    const db = firebase.firestore();
+                    firestoreDocRef = db.collection('chalets_noel_manchester').doc('shared_state');
+                }
+            } catch (err) {
+                console.warn('Initialisation Firebase en attente ou mode hors-ligne :', err);
+            }
+
+            function updateSyncBadge(mode, customText) {
+                const badge = document.getElementById('sync-status-badge');
+                if (!badge) return;
+                if (mode === 'cloud') {
+                    badge.className = 'bg-mcr-pine text-mcr-kraft text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-mcr-brass shadow-sm transition-colors';
+                    badge.innerHTML = `<i class="fa-solid fa-wifi text-mcr-brass text-[8px] mr-1"></i> ${customText || 'En direct (Cloud multi-appareils)'}`;
+                } else if (mode === 'error') {
+                    badge.className = 'bg-mcr-brick text-mcr-kraft text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-mcr-ink transition-colors';
+                    badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-mcr-brass text-[8px] mr-1"></i> ${customText || 'Vérifiez le mode test Firestore'}`;
+                } else {
+                    badge.className = 'bg-mcr-pine text-mcr-kraft text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-mcr-ink transition-colors';
+                    badge.innerHTML = `<i class="fa-solid fa-circle text-mcr-brass text-[7px] mr-1"></i> ${customText || 'Synchronisé en local'}`;
+                }
+            }
 
             /**
              * ============================================================================
@@ -1253,478 +1296,14 @@
 
             /**
              * ============================================================================
-             * 2. PORTE 3D INTERACTIVE + DÉTOURAGE AUTOMATIQUE DE PHOTO SUR CANVAS
-             * ============================================================================
-             */
-            function initInteractiveChaletDoor() {
-                drawDefaultTrioOnDoorCanvas();
-
-                const doorway = document.getElementById('chalet-doorway');
-                const hintBadge = document.getElementById('door-hint-badge');
-                const photoCutoutInput = document.getElementById('door-photo-cutout-input');
-
-                if (doorway) {
-                    doorway.addEventListener('click', () => {
-                        const isOpen = doorway.classList.toggle('door-open');
-                        if (hintBadge) {
-                            hintBadge.textContent = isOpen ? '🎄 Bienvenue !' : '✨ Ouvrir la porte';
-                        }
-                    });
-                }
-
-                if (photoCutoutInput) {
-                    photoCutoutInput.addEventListener('change', (e) => {
-                        const file = e.target.files && e.target.files[0];
-                        if (!file) return;
-                        processPhotoCutoutToTarget(file, 'doorway-trio-canvas', 'chalet-doorway', 'door-open', 'door-hint-badge', '🎄 Bienvenue !');
-                    });
-                }
-            }
-
-            function processPhotoCutoutToTarget(file, targetCanvasId, stageId, openClass, badgeId, openLabel) {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const maxDim = 420;
-                        let w = img.width;
-                        let h = img.height;
-                        if (w > maxDim || h > maxDim) {
-                            if (w > h) {
-                                h = Math.round((h * maxDim) / w);
-                                w = maxDim;
-                            } else {
-                                w = Math.round((w * maxDim) / h);
-                                h = maxDim;
-                            }
-                        }
-
-                        const offCanvas = document.createElement('canvas');
-                        offCanvas.width = w;
-                        offCanvas.height = h;
-                        const offCtx = offCanvas.getContext('2d');
-                        offCtx.drawImage(img, 0, 0, w, h);
-
-                        const imgData = offCtx.getImageData(0, 0, w, h);
-                        const data = imgData.data;
-                        const visited = new Uint8Array(w * h);
-                        const stack = [];
-
-                        // Échantillonnage des couleurs de bordure pour détourer aussi bien un mur intérieur qu'un paysage
-                        const borderSamples = [];
-                        for (let x = 0; x < w; x += Math.max(1, Math.floor(w / 20))) {
-                            borderSamples.push([data[x * 4], data[x * 4 + 1], data[x * 4 + 2]]);
-                        }
-                        for (let y = 0; y < Math.floor(h * 0.5); y += Math.max(1, Math.floor(h / 20))) {
-                            const leftIdx = (y * w) * 4;
-                            const rightIdx = (y * w + (w - 1)) * 4;
-                            borderSamples.push([data[leftIdx], data[leftIdx + 1], data[leftIdx + 2]]);
-                            borderSamples.push([data[rightIdx], data[rightIdx + 1], data[rightIdx + 2]]);
-                        }
-
-                        const isBackgroundPixel = (idx) => {
-                            const r = data[idx];
-                            const g = data[idx + 1];
-                            const b = data[idx + 2];
-                            const isSky = (b > 135 && b >= r - 10 && g > 125) || (r > 185 && g > 190 && b > 195);
-                            const isGrass = (g > r + 14 && g > b + 18 && g > 65);
-                            if (isSky || isGrass) return true;
-                            for (let i = 0; i < borderSamples.length; i++) {
-                                const [sr, sg, sb] = borderSamples[i];
-                                if (Math.abs(r - sr) + Math.abs(g - sg) + Math.abs(b - sb) < 52) {
-                                    return true;
-                                }
-                            }
-                            return false;
-                        };
-
-                        for (let x = 0; x < w; x++) {
-                            stack.push(x);
-                            stack.push((h - 1) * w + x);
-                        }
-                        for (let y = 0; y < h; y++) {
-                            stack.push(y * w);
-                            stack.push(y * w + (w - 1));
-                        }
-
-                        while (stack.length > 0) {
-                            const pos = stack.pop();
-                            if (visited[pos]) continue;
-                            visited[pos] = 1;
-                            const idx = pos * 4;
-                            if (isBackgroundPixel(idx)) {
-                                data[idx + 3] = 0;
-                                const x = pos % w;
-                                const y = (pos - x) / w;
-                                if (x > 0 && !visited[pos - 1]) stack.push(pos - 1);
-                                if (x < w - 1 && !visited[pos + 1]) stack.push(pos + 1);
-                                if (y > 0 && !visited[pos - w]) stack.push(pos - w);
-                                if (y < h - 1 && !visited[pos + w]) stack.push(pos + w);
-                            }
-                        }
-
-                        offCtx.putImageData(imgData, 0, 0);
-
-                        let minX = w, minY = h, maxX = 0, maxY = 0;
-                        for (let y = 0; y < h; y++) {
-                            for (let x = 0; x < w; x++) {
-                                if (data[(y * w + x) * 4 + 3] > 30) {
-                                    if (x < minX) minX = x;
-                                    if (x > maxX) maxX = x;
-                                    if (y < minY) minY = y;
-                                    if (y > maxY) maxY = y;
-                                }
-                            }
-                        }
-
-                        if (maxX > minX && maxY > minY) {
-                            const pad = 8;
-                            minX = Math.max(0, minX - pad);
-                            minY = Math.max(0, minY - pad);
-                            maxX = Math.min(w - 1, maxX + pad);
-                            maxY = Math.min(h - 1, maxY + pad);
-
-                            const cropW = maxX - minX + 1;
-                            const cropH = maxY - minY + 1;
-
-                            const targetCanvas = document.getElementById(targetCanvasId);
-                            if (targetCanvas) {
-                                const dCtx = targetCanvas.getContext('2d');
-                                dCtx.clearRect(0, 0, targetCanvas.width, targetCanvas.height);
-                                const scale = Math.min(targetCanvas.width / cropW, targetCanvas.height / cropH);
-                                const drawW = cropW * scale;
-                                const drawH = cropH * scale;
-                                const drawX = (targetCanvas.width - drawW) / 2;
-                                const drawY = targetCanvas.height - drawH;
-                                dCtx.drawImage(offCanvas, minX, minY, cropW, cropH, drawX, drawY, drawW, drawH);
-                            }
-
-                            const stageEl = document.getElementById(stageId);
-                            const badgeEl = document.getElementById(badgeId);
-                            if (stageEl) stageEl.classList.add(openClass);
-                            if (badgeEl) badgeEl.textContent = openLabel;
-                            showToast('Photo détourée sur Canvas et intégrée au chalet ! ✨');
-                        }
-                    };
-                    img.src = ev.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-
-            /**
-             * ============================================================================
-             * 3. BARNABY : VRAI CHAT BRITISH SHORTHAIR GRIS ANIMÉ SUR CANVAS (BD)
-             * ============================================================================
-             */
-            function initBritishShorthairCanvas() {
-                const canvas = document.getElementById('british-shorthair-canvas');
-                if (!canvas) return;
-                const ctx = canvas.getContext('2d');
-
-                let frame = 0;
-                let blinkTimer = 0;
-                let isBlinking = false;
-                let purrBoost = 0;
-
-                const wrapper = document.getElementById('cat-canvas-wrapper');
-                const speech = document.getElementById('cat-speech');
-                if (wrapper && speech) {
-                    wrapper.addEventListener('click', () => {
-                        purrBoost = 35;
-                        speech.classList.remove('opacity-0');
-                        clearTimeout(window.__catSpeechTimer);
-                        window.__catSpeechTimer = setTimeout(() => {
-                            speech.classList.add('opacity-0');
-                        }, 2400);
-                    });
-                }
-
-                function drawBritishShorthair() {
-                    const w = canvas.width;
-                    const h = canvas.height;
-                    ctx.clearRect(0, 0, w, h);
-
-                    // Fond soirée d'hiver à Manchester
-                    const bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-                    bgGrad.addColorStop(0, '#2B3A42');
-                    bgGrad.addColorStop(0.65, '#4A5559');
-                    bgGrad.addColorStop(0.66, '#E8D5B5');
-                    bgGrad.addColorStop(1, '#D8C098');
-                    ctx.fillStyle = bgGrad;
-                    ctx.fillRect(0, 0, w, h);
-
-                    // Halo de réverbère victorien
-                    const lampHalo = ctx.createRadialGradient(34, 48, 4, 34, 48, 48);
-                    lampHalo.addColorStop(0, 'rgba(231, 188, 102, 0.75)');
-                    lampHalo.addColorStop(1, 'rgba(231, 188, 102, 0)');
-                    ctx.fillStyle = lampHalo;
-                    ctx.fillRect(0, 0, 95, 110);
-
-                    ctx.strokeStyle = '#1F1614';
-                    ctx.lineWidth = 3;
-                    ctx.beginPath();
-                    ctx.moveTo(34, 152);
-                    ctx.lineTo(34, 56);
-                    ctx.stroke();
-                    ctx.fillStyle = '#E7BC66';
-                    ctx.beginPath();
-                    ctx.moveTo(27, 56);
-                    ctx.lineTo(41, 56);
-                    ctx.lineTo(44, 42);
-                    ctx.lineTo(24, 42);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.stroke();
-
-                    frame += 0.045 + (purrBoost > 0 ? 0.05 : 0);
-                    if (purrBoost > 0) purrBoost--;
-
-                    blinkTimer++;
-                    if (blinkTimer > 150) {
-                        isBlinking = true;
-                        if (blinkTimer > 160) {
-                            isBlinking = false;
-                            blinkTimer = 0;
-                        }
-                    }
-
-                    const tailAngle = Math.sin(frame) * 0.22;
-                    const breathY = Math.sin(frame * 1.2) * 1.4;
-
-                    // Ombre au sol
-                    ctx.fillStyle = 'rgba(31, 22, 20, 0.25)';
-                    ctx.beginPath();
-                    ctx.ellipse(115, 198, 56, 11, 0, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    // Queue épaisse et arrondie
-                    ctx.save();
-                    ctx.translate(154, 174);
-                    ctx.rotate(tailAngle);
-                    ctx.lineCap = 'round';
-                    ctx.strokeStyle = '#1F1614';
-                    ctx.lineWidth = 22;
-                    ctx.beginPath();
-                    ctx.moveTo(0, 0);
-                    ctx.bezierCurveTo(26, -4, 34, -30, 18, -42);
-                    ctx.stroke();
-
-                    ctx.strokeStyle = '#6E7885';
-                    ctx.lineWidth = 16;
-                    ctx.beginPath();
-                    ctx.moveTo(0, 0);
-                    ctx.bezierCurveTo(26, -4, 34, -30, 18, -42);
-                    ctx.stroke();
-                    ctx.restore();
-
-                    // Corps trapu British Blue
-                    ctx.save();
-                    ctx.translate(0, breathY);
-
-                    ctx.fillStyle = '#75808E';
-                    ctx.strokeStyle = '#1F1614';
-                    ctx.lineWidth = 3.2;
-                    ctx.beginPath();
-                    ctx.moveTo(74, 130);
-                    ctx.bezierCurveTo(60, 152, 62, 188, 78, 195);
-                    ctx.lineTo(148, 195);
-                    ctx.bezierCurveTo(164, 188, 164, 150, 148, 130);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.stroke();
-
-                    ctx.fillStyle = '#96A1AF';
-                    ctx.beginPath();
-                    ctx.ellipse(112, 154, 24, 28, 0, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    ctx.fillStyle = '#7C8796';
-                    ctx.beginPath();
-                    ctx.roundRect(84, 160, 21, 37, 10);
-                    ctx.fill();
-                    ctx.stroke();
-
-                    ctx.beginPath();
-                    ctx.roundRect(119, 160, 21, 37, 10);
-                    ctx.fill();
-                    ctx.stroke();
-
-                    ctx.lineWidth = 2;
-                    ctx.beginPath();
-                    ctx.moveTo(91, 196); ctx.lineTo(91, 190);
-                    ctx.moveTo(98, 196); ctx.lineTo(98, 190);
-                    ctx.moveTo(126, 196); ctx.lineTo(126, 190);
-                    ctx.moveTo(133, 196); ctx.lineTo(133, 190);
-                    ctx.stroke();
-
-                    // Écharpe rayée noir et or de Manchester
-                    ctx.lineWidth = 3;
-                    ctx.fillStyle = '#1F1614';
-                    ctx.beginPath();
-                    ctx.roundRect(74, 121, 76, 15, 7);
-                    ctx.fill();
-                    ctx.stroke();
-
-                    ctx.fillStyle = '#D4A03E';
-                    ctx.fillRect(86, 122.5, 8, 12);
-                    ctx.fillRect(108, 122.5, 8, 12);
-                    ctx.fillRect(130, 122.5, 8, 12);
-
-                    ctx.fillStyle = '#1F1614';
-                    ctx.beginPath();
-                    ctx.roundRect(122, 132, 16, 26, 5);
-                    ctx.fill();
-                    ctx.stroke();
-                    ctx.fillStyle = '#D4A03E';
-                    ctx.fillRect(123.5, 140, 13, 5);
-                    ctx.fillRect(123.5, 150, 13, 4);
-
-                    // Tête ronde aux joues rebondies
-                    ctx.lineWidth = 3.2;
-                    ctx.fillStyle = '#6E7885';
-                    ctx.beginPath();
-                    ctx.moveTo(74, 82);
-                    ctx.quadraticCurveTo(66, 52, 92, 66);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.stroke();
-
-                    ctx.beginPath();
-                    ctx.moveTo(150, 82);
-                    ctx.quadraticCurveTo(158, 52, 132, 66);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.stroke();
-
-                    ctx.fillStyle = '#9D8E95';
-                    ctx.beginPath();
-                    ctx.moveTo(77, 78);
-                    ctx.quadraticCurveTo(73, 60, 88, 68);
-                    ctx.closePath();
-                    ctx.fill();
-
-                    ctx.beginPath();
-                    ctx.moveTo(147, 78);
-                    ctx.quadraticCurveTo(151, 60, 136, 68);
-                    ctx.closePath();
-                    ctx.fill();
-
-                    ctx.fillStyle = '#7C8796';
-                    ctx.beginPath();
-                    ctx.ellipse(112, 96, 44, 36, 0, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.stroke();
-
-                    ctx.fillStyle = '#96A1AF';
-                    ctx.beginPath();
-                    ctx.ellipse(102, 108, 13, 10, 0, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.ellipse(122, 108, 13, 10, 0, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    // Grands yeux ronds cuivrés
-                    if (isBlinking) {
-                        ctx.strokeStyle = '#1F1614';
-                        ctx.lineWidth = 3;
-                        ctx.beginPath();
-                        ctx.arc(95, 93, 8, 0.1 * Math.PI, 0.9 * Math.PI);
-                        ctx.stroke();
-                        ctx.beginPath();
-                        ctx.arc(129, 93, 8, 0.1 * Math.PI, 0.9 * Math.PI);
-                        ctx.stroke();
-                    } else {
-                        ctx.fillStyle = '#E08A1E';
-                        ctx.strokeStyle = '#1F1614';
-                        ctx.lineWidth = 2.6;
-                        ctx.beginPath();
-                        ctx.arc(95, 92, 9.5, 0, Math.PI * 2);
-                        ctx.fill();
-                        ctx.stroke();
-
-                        ctx.beginPath();
-                        ctx.arc(129, 92, 9.5, 0, Math.PI * 2);
-                        ctx.fill();
-                        ctx.stroke();
-
-                        ctx.fillStyle = '#1F1614';
-                        ctx.beginPath();
-                        ctx.arc(95, 92, 5, 0, Math.PI * 2);
-                        ctx.arc(129, 92, 5, 0, Math.PI * 2);
-                        ctx.fill();
-
-                        ctx.fillStyle = '#F2E4CC';
-                        ctx.beginPath();
-                        ctx.arc(92, 89, 2.4, 0, Math.PI * 2);
-                        ctx.arc(126, 89, 2.4, 0, Math.PI * 2);
-                        ctx.fill();
-                    }
-
-                    // Nez & sourire BD
-                    ctx.fillStyle = '#3E4652';
-                    ctx.beginPath();
-                    ctx.moveTo(108, 103);
-                    ctx.lineTo(116, 103);
-                    ctx.lineTo(112, 108);
-                    ctx.closePath();
-                    ctx.fill();
-
-                    ctx.strokeStyle = '#1F1614';
-                    ctx.lineWidth = 2.2;
-                    ctx.beginPath();
-                    ctx.moveTo(112, 108);
-                    ctx.quadraticCurveTo(106, 114, 101, 111);
-                    ctx.moveTo(112, 108);
-                    ctx.quadraticCurveTo(118, 114, 123, 111);
-                    ctx.stroke();
-
-                    // Moustaches
-                    ctx.lineWidth = 1.8;
-                    ctx.beginPath();
-                    ctx.moveTo(85, 105); ctx.lineTo(62, 101);
-                    ctx.moveTo(85, 110); ctx.lineTo(63, 112);
-                    ctx.moveTo(139, 105); ctx.lineTo(162, 101);
-                    ctx.moveTo(139, 110); ctx.lineTo(161, 112);
-                    ctx.stroke();
-
-                    // Bonnet de Noël
-                    ctx.fillStyle = '#7E241C';
-                    ctx.strokeStyle = '#1F1614';
-                    ctx.lineWidth = 2.8;
-                    ctx.beginPath();
-                    ctx.moveTo(92, 65);
-                    ctx.quadraticCurveTo(112, 34, 138, 52);
-                    ctx.lineTo(132, 68);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.stroke();
-
-                    ctx.fillStyle = '#F2E4CC';
-                    ctx.beginPath();
-                    ctx.roundRect(89, 60, 46, 10, 5);
-                    ctx.fill();
-                    ctx.stroke();
-
-                    ctx.beginPath();
-                    ctx.arc(141, 53, 6.5, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.stroke();
-
-                    ctx.restore();
-                    requestAnimationFrame(drawBritishShorthair);
-                }
-
-                drawBritishShorthair();
-            }
-
-            /**
-             * ============================================================================
-             * 4. SYNCHRONISATION LOCALE INSTANTANÉE (localStorage + BroadcastChannel)
+             * 4. SYNCHRONISATION TEMPS RÉEL FIRESTORE + CACHE LOCAL (localStorage)
              * ============================================================================
              */
             const STORAGE_KEY = 'manchester_christmas_chalet_v1';
             const CHANNEL_NAME = 'manchester_christmas_sync';
             let broadcastChannel = null;
+            let unsubscribeFirestore = null;
+            let isApplyingRemoteUpdate = false;
 
             try {
                 if ('BroadcastChannel' in window) {
@@ -1734,7 +1313,7 @@
                 broadcastChannel = null;
             }
 
-            // Exemples pré-remplis modifiables pour que le site soit immédiatement vivant
+            // Exemples pré-remplis modifiables pour initialiser le chalet si la base est vide
             const DEFAULT_PARTICIPANTS = [
                 {
                     id: 'camille-mcr',
@@ -1785,24 +1364,7 @@
             let pendingPhotoBase64 = '';
             let pendingConfirmCallback = null;
 
-            function loadStateFromStorage() {
-                try {
-                    const raw = localStorage.getItem(STORAGE_KEY);
-                    if (raw) {
-                        const parsed = JSON.parse(raw);
-                        if (Array.isArray(parsed)) {
-                            participantsList = parsed;
-                        }
-                    } else {
-                        participantsList = JSON.parse(JSON.stringify(DEFAULT_PARTICIPANTS));
-                        saveStateToStorage(false);
-                    }
-                } catch (e) {
-                    if (participantsList.length === 0) {
-                        participantsList = JSON.parse(JSON.stringify(DEFAULT_PARTICIPANTS));
-                    }
-                }
-
+            function ensureValidSelection() {
                 if (participantsList.length > 0) {
                     const exists = participantsList.some(p => p.id === selectedParticipantId);
                     if (!exists) {
@@ -1815,17 +1377,95 @@
                 }
             }
 
-            function saveStateToStorage(broadcast = true) {
+            function loadStateFromStorage() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (raw) {
+                        const parsed = JSON.parse(raw);
+                        if (Array.isArray(parsed)) {
+                            participantsList = parsed;
+                        }
+                    } else if (!isFirestoreConnected) {
+                        participantsList = JSON.parse(JSON.stringify(DEFAULT_PARTICIPANTS));
+                    }
+                } catch (e) {
+                    if (participantsList.length === 0) {
+                        participantsList = JSON.parse(JSON.stringify(DEFAULT_PARTICIPANTS));
+                    }
+                }
+                ensureValidSelection();
+            }
+
+            function saveStateToStorage(syncCloud = true) {
                 try {
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(participantsList));
                 } catch (e) {
-                    showToast('Espace de stockage local saturé (réduisez le poids d’une photo).');
+                    showToast('Cache local saturé (réduisez le poids d’une photo).');
                 }
-                if (broadcast && broadcastChannel) {
+
+                if (broadcastChannel) {
                     try {
                         broadcastChannel.postMessage({ type: 'STATE_UPDATED' });
                     } catch (e) {}
                 }
+
+                if (syncCloud && firestoreDocRef && !isApplyingRemoteUpdate) {
+                    firestoreDocRef.set({
+                        participants: participantsList,
+                        updatedAt: Date.now()
+                    }).then(() => {
+                        isFirestoreConnected = true;
+                        updateSyncBadge('cloud', 'En direct (Cloud multi-appareils)');
+                    }).catch((err) => {
+                        console.error('Erreur sauvegarde Firestore :', err);
+                        updateSyncBadge('error', 'Droits Firestore requis (Mode test)');
+                        showToast('⚠️ Activez Firestore en "mode test" dans votre console Firebase.');
+                    });
+                }
+            }
+
+            function initRealtimeFirestoreSync() {
+                if (!firestoreDocRef) {
+                    updateSyncBadge('local', 'Mode local');
+                    return;
+                }
+
+                unsubscribeFirestore = firestoreDocRef.onSnapshot((docSnapshot) => {
+                    isFirestoreConnected = true;
+                    updateSyncBadge('cloud', 'En direct (Cloud multi-appareils)');
+
+                    if (docSnapshot.exists) {
+                        const data = docSnapshot.data();
+                        if (data && Array.isArray(data.participants)) {
+                            isApplyingRemoteUpdate = true;
+                            participantsList = data.participants;
+                            try {
+                                localStorage.setItem(STORAGE_KEY, JSON.stringify(participantsList));
+                            } catch (e) {}
+                            ensureValidSelection();
+                            renderAll();
+                            isApplyingRemoteUpdate = false;
+                        }
+                    } else {
+                        // Première initialisation du document partagé dans Firestore
+                        const initialSeed = participantsList.length > 0
+                            ? participantsList
+                            : JSON.parse(JSON.stringify(DEFAULT_PARTICIPANTS));
+                        participantsList = initialSeed;
+                        ensureValidSelection();
+                        renderAll();
+                        firestoreDocRef.set({
+                            participants: participantsList,
+                            updatedAt: Date.now()
+                        }).catch((err) => {
+                            console.warn('Impossible de créer le document initial Firestore :', err);
+                        });
+                    }
+                }, (error) => {
+                    console.warn('Erreur de lecture temps réel Firestore :', error);
+                    isFirestoreConnected = false;
+                    updateSyncBadge('error', 'Activez Firestore en mode test');
+                });
             }
 
             if (broadcastChannel) {
@@ -2404,6 +2044,7 @@
                 loadStateFromStorage();
                 bindEvents();
                 renderAll();
+                initRealtimeFirestoreSync();
             }
 
             if (document.readyState === 'loading') {
