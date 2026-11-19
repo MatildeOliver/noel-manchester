@@ -461,9 +461,9 @@
                                     <div class="snowy-ledge"></div>
                                 </div>
                                 <div class="flex flex-col gap-1.5 items-end">
-                                    <label for="door-photo-cutout-input" class="w-full cursor-pointer inline-flex items-center justify-center gap-1.5 bg-mcr-ink/90 hover:bg-mcr-pine text-mcr-parchment border-2 border-mcr-brass/80 px-2 py-1 rounded-xl text-[9px] sm:text-[10px] font-bold transition shadow" title="Importer une photo pour détourer les personnes de la porte">
+                                    <label for="door-photo-cutout-input" class="w-full cursor-pointer inline-flex items-center justify-center gap-1.5 bg-mcr-ink/90 hover:bg-mcr-pine text-mcr-parchment border-2 border-mcr-brass/80 px-2 py-1 rounded-xl text-[9px] sm:text-[10px] font-bold transition shadow" title="Importer une photo pour l'Atelier tricot / détourer les personnes de la porte">
                                         <i class="fa-solid fa-scissors text-mcr-brass"></i>
-                                        <span class="truncate">Photo porte</span>
+                                        <span class="truncate">Atelier tricot</span>
                                     </label>
                                     <input type="file" id="door-photo-cutout-input" accept="image/*" class="hidden">
                                 </div>
@@ -853,10 +853,18 @@
                         firebase.initializeApp(firebaseConfig);
                     }
                     const db = firebase.firestore();
-                    firestoreDocRef = db.collection('chalets_noel_manchester').doc('shared_state');
+                    firestoreDocRef = db.collection('chalets').doc('manchester_noel');
                 }
             } catch (err) {
                 console.warn('Initialisation Firebase en attente ou mode hors-ligne :', err);
+            }
+
+            const DOOR_PHOTO_STORAGE_KEY = 'manchester_christmas_door_photo_v1';
+            let customDoorPhotoDataUrl = '';
+            try {
+                customDoorPhotoDataUrl = localStorage.getItem(DOOR_PHOTO_STORAGE_KEY) || '';
+            } catch (e) {
+                customDoorPhotoDataUrl = '';
             }
 
             function updateSyncBadge(mode, customText) {
@@ -867,7 +875,7 @@
                     badge.innerHTML = `<i class="fa-solid fa-wifi text-mcr-brass text-[8px] mr-1"></i> ${customText || 'En direct (Cloud multi-appareils)'}`;
                 } else if (mode === 'error') {
                     badge.className = 'bg-mcr-brick text-mcr-kraft text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-mcr-ink transition-colors';
-                    badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-mcr-brass text-[8px] mr-1"></i> ${customText || 'Vérifiez le mode test Firestore'}`;
+                    badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-mcr-brass text-[8px] mr-1"></i> ${customText || 'Firestore : activez le mode test (édition locale active)'}`;
                 } else {
                     badge.className = 'bg-mcr-pine text-mcr-kraft text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-mcr-ink transition-colors';
                     badge.innerHTML = `<i class="fa-solid fa-circle text-mcr-brass text-[7px] mr-1"></i> ${customText || 'Synchronisé en local'}`;
@@ -876,10 +884,375 @@
 
             /**
              * ============================================================================
-             * 1. PORTRAITS SEMI-RÉALISTES DÉTOURÉS DES 3 PERSONNAGES DANS LA PORTE DU CHALET
-             *    - Femme à gauche : cheveux mi-longs châtain clair ondulés (sans chapeau), t-shirt rose vif drapé, short jean bleu clair, glace fusée
-             *    - Homme à droite : casquette sombre à l'envers, lunettes de soleil noires, barbe soignée, t-shirt noir, tatouage bras, short cargo kaki, cornet vanille
-             *    - Petite fille au centre devant : cheveux bruns attachés, t-shirt blanc à manches volantées, short noir, cornet vanille tenu à deux mains
+             * 1. BARNABY : CHAT BRITISH SHORTHAIR GRIS ANIMÉ SUR CANVAS
+             * ============================================================================
+             */
+            function initBritishShorthairCanvas() {
+                const canvas = document.getElementById('british-shorthair-canvas');
+                const wrapper = document.getElementById('cat-canvas-wrapper');
+                const speech = document.getElementById('cat-speech');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+
+                let blinkTimer = 0;
+                let isBlinking = false;
+                let purrBoost = 0;
+                let startTime = performance.now();
+
+                if (wrapper) {
+                    wrapper.addEventListener('click', () => {
+                        purrBoost = 1.0;
+                        if (speech) {
+                            speech.classList.remove('opacity-0');
+                            clearTimeout(window.__catSpeechTimer);
+                            window.__catSpeechTimer = setTimeout(() => {
+                                speech.classList.add('opacity-0');
+                            }, 2600);
+                        }
+                    });
+                }
+
+                function drawCat(now) {
+                    const t = (now - startTime) * 0.001;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    // Fond chaleureux parchemin + neige au sol
+                    const bgGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                    bgGrad.addColorStop(0, '#1D3E2E');
+                    bgGrad.addColorStop(0.76, '#152E22');
+                    bgGrad.addColorStop(0.77, '#F2E4CC');
+                    bgGrad.addColorStop(1, '#DFC8A2');
+                    ctx.fillStyle = bgGrad;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    // Ligne d'horizon du trottoir enneigé
+                    ctx.strokeStyle = '#1F1614';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(0, canvas.height * 0.765);
+                    ctx.lineTo(canvas.width, canvas.height * 0.765);
+                    ctx.stroke();
+
+                    // Petites étoiles dorées dans le ciel
+                    ctx.fillStyle = '#E7BC66';
+                    [[26, 26, 2], [176, 34, 2.3], [44, 58, 1.5], [160, 62, 1.7]].forEach(([sx, sy, sr]) => {
+                        ctx.beginPath();
+                        ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+
+                    // Clignement naturel des yeux
+                    blinkTimer += 0.016;
+                    if (!isBlinking && blinkTimer > 3.6) {
+                        isBlinking = true;
+                        blinkTimer = 0;
+                    } else if (isBlinking && blinkTimer > 0.16) {
+                        isBlinking = false;
+                        blinkTimer = 0;
+                    }
+
+                    if (purrBoost > 0) {
+                        purrBoost = Math.max(0, purrBoost - 0.015);
+                    }
+
+                    const breath = Math.sin(t * 2.4) * 1.6 + Math.sin(t * 18) * purrBoost * 1.1;
+                    const tailWave = Math.sin(t * 2.2 + purrBoost * 3) * 12;
+
+                    ctx.save();
+                    ctx.translate(105, 166);
+
+                    // Queue épaisse et pelucheuse de British Shorthair
+                    ctx.strokeStyle = '#606873';
+                    ctx.lineWidth = 17;
+                    ctx.lineCap = 'round';
+                    ctx.beginPath();
+                    ctx.moveTo(28, 4);
+                    ctx.quadraticCurveTo(66, -6 + tailWave * 0.4, 72 + tailWave * 0.45, -34 + tailWave * 0.3);
+                    ctx.stroke();
+
+                    ctx.strokeStyle = '#79828F';
+                    ctx.lineWidth = 11;
+                    ctx.beginPath();
+                    ctx.moveTo(28, 3);
+                    ctx.quadraticCurveTo(64, -8 + tailWave * 0.4, 70 + tailWave * 0.45, -33 + tailWave * 0.3);
+                    ctx.stroke();
+
+                    // Corps rond et dense bleu-gris British Shorthair
+                    const bodyGrad = ctx.createRadialGradient(-8, -32, 8, 0, -24, 52);
+                    bodyGrad.addColorStop(0, '#8E97A4');
+                    bodyGrad.addColorStop(0.65, '#6B7480');
+                    bodyGrad.addColorStop(1, '#505762');
+                    ctx.fillStyle = bodyGrad;
+                    ctx.strokeStyle = '#252930';
+                    ctx.lineWidth = 2.2;
+                    ctx.beginPath();
+                    ctx.ellipse(0, -24 + breath * 0.4, 38, 42 - breath * 0.3, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    // Plastron plus clair
+                    ctx.fillStyle = 'rgba(178, 187, 199, 0.32)';
+                    ctx.beginPath();
+                    ctx.ellipse(-3, -24 + breath * 0.4, 20, 26, 0, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Pattes avant trapues
+                    ctx.fillStyle = '#757E8B';
+                    ctx.beginPath();
+                    ctx.roundRect(-22, -4, 17, 22, 8);
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.roundRect(5, -4, 17, 22, 8);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    // Écharpe de Noël rouge bordeaux et dorée
+                    ctx.fillStyle = '#7E241C';
+                    ctx.strokeStyle = '#2A1612';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.roundRect(-31, -56 + breath * 0.5, 62, 13, 6);
+                    ctx.fill();
+                    ctx.stroke();
+                    // Pan de l'écharpe
+                    ctx.fillStyle = '#912B22';
+                    ctx.beginPath();
+                    ctx.roundRect(12, -48 + breath * 0.5, 13, 28, 4);
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.fillStyle = '#D4A03E';
+                    ctx.fillRect(13, -30 + breath * 0.5, 11, 4);
+
+                    // Tête ronde caractéristique aux joues pleines
+                    ctx.save();
+                    ctx.translate(0, -76 + breath * 0.6);
+
+                    // Oreilles courtes triangulaires
+                    ctx.fillStyle = '#68717D';
+                    ctx.beginPath();
+                    ctx.moveTo(-31, -14);
+                    ctx.lineTo(-27, -41);
+                    ctx.lineTo(-9, -25);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(31, -14);
+                    ctx.lineTo(27, -41);
+                    ctx.lineTo(9, -25);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+
+                    // Intérieur rosé doux des oreilles
+                    ctx.fillStyle = '#B89598';
+                    ctx.beginPath();
+                    ctx.moveTo(-26, -17);
+                    ctx.lineTo(-24, -34);
+                    ctx.lineTo(-13, -24);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.moveTo(26, -17);
+                    ctx.lineTo(24, -34);
+                    ctx.lineTo(13, -24);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // Visage rond joufflu
+                    const headGrad = ctx.createRadialGradient(-8, -10, 6, 0, 0, 38);
+                    headGrad.addColorStop(0, '#969FAD');
+                    headGrad.addColorStop(0.7, '#707986');
+                    headGrad.addColorStop(1, '#535A65');
+                    ctx.fillStyle = headGrad;
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, 36, 30, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    // Grands yeux cuivrés / ambrés
+                    if (isBlinking || purrBoost > 0.35) {
+                        ctx.strokeStyle = '#1F1614';
+                        ctx.lineWidth = 2.5;
+                        ctx.beginPath();
+                        ctx.arc(-13, -2, 6, 0.15 * Math.PI, 0.85 * Math.PI);
+                        ctx.stroke();
+                        ctx.beginPath();
+                        ctx.arc(13, -2, 6, 0.15 * Math.PI, 0.85 * Math.PI);
+                        ctx.stroke();
+                    } else {
+                        [-13, 13].forEach((ex) => {
+                            ctx.fillStyle = '#E08A1E';
+                            ctx.beginPath();
+                            ctx.arc(ex, -3, 6.5, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.strokeStyle = '#1F1614';
+                            ctx.lineWidth = 1.5;
+                            ctx.stroke();
+
+                            ctx.fillStyle = '#181414';
+                            ctx.beginPath();
+                            ctx.arc(ex, -3, 3.1, 0, Math.PI * 2);
+                            ctx.fill();
+
+                            ctx.fillStyle = '#FFFFFF';
+                            ctx.beginPath();
+                            ctx.arc(ex - 2, -5, 1.6, 0, Math.PI * 2);
+                            ctx.fill();
+                        });
+                    }
+
+                    // Truffe gris ardoise et babines souriantes
+                    ctx.fillStyle = '#3C414A';
+                    ctx.beginPath();
+                    ctx.moveTo(-4, 5);
+                    ctx.lineTo(4, 5);
+                    ctx.lineTo(0, 9.5);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.strokeStyle = '#252930';
+                    ctx.lineWidth = 1.8;
+                    ctx.beginPath();
+                    ctx.moveTo(0, 9.5);
+                    ctx.quadraticCurveTo(-5, 14, -9, 11);
+                    ctx.moveTo(0, 9.5);
+                    ctx.quadraticCurveTo(5, 14, 9, 11);
+                    ctx.stroke();
+
+                    // Moustaches
+                    ctx.strokeStyle = 'rgba(242, 228, 204, 0.72)';
+                    ctx.lineWidth = 1.2;
+                    [[-20, 6, -42, 3], [-20, 10, -43, 11], [20, 6, 42, 3], [20, 10, 43, 11]].forEach(([x1, y1, x2, y2]) => {
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
+                    });
+
+                    // Petit bonnet de Noël incliné sur l'oreille
+                    ctx.save();
+                    ctx.translate(4, -27);
+                    ctx.rotate(0.14);
+                    ctx.fillStyle = '#8B231B';
+                    ctx.strokeStyle = '#2A1612';
+                    ctx.lineWidth = 1.8;
+                    ctx.beginPath();
+                    ctx.moveTo(-17, 2);
+                    ctx.quadraticCurveTo(0, -24, 21, -8);
+                    ctx.lineTo(15, 3);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#F2E4CC';
+                    ctx.beginPath();
+                    ctx.roundRect(-18, -1, 35, 7, 3.5);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.arc(22, -7, 4.5, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.restore();
+
+                    ctx.restore();
+                    ctx.restore();
+
+                    requestAnimationFrame(drawCat);
+                }
+
+                requestAnimationFrame(drawCat);
+            }
+
+            /**
+             * ============================================================================
+             * 2. PORTE INTERACTIVE 3D & OUTIL ATELIER TRICOT / DÉTOURAGE PHOTO
+             * ============================================================================
+             */
+            function drawCustomDoorImageOnCanvas(dataUrl) {
+                const canvas = document.getElementById('doorway-trio-canvas');
+                if (!canvas || !dataUrl) return;
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+                img.onload = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    const scale = Math.min((canvas.width - 24) / img.width, (canvas.height - 24) / img.height);
+                    const drawW = img.width * scale;
+                    const drawH = img.height * scale;
+                    const dx = (canvas.width - drawW) / 2;
+                    const dy = canvas.height - drawH - 8;
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.roundRect(dx, dy, drawW, drawH, 26);
+                    ctx.clip();
+                    ctx.drawImage(img, dx, dy, drawW, drawH);
+                    ctx.restore();
+
+                    ctx.strokeStyle = '#F7F2E7';
+                    ctx.lineWidth = 5;
+                    ctx.beginPath();
+                    ctx.roundRect(dx, dy, drawW, drawH, 26);
+                    ctx.stroke();
+                };
+                img.onerror = () => {
+                    drawDefaultTrioOnDoorCanvas();
+                };
+                img.src = dataUrl;
+            }
+
+            function initInteractiveChaletDoor() {
+                const doorway = document.getElementById('chalet-doorway');
+                const hintBadge = document.getElementById('door-hint-badge');
+                const fileInput = document.getElementById('door-photo-cutout-input');
+
+                if (customDoorPhotoDataUrl) {
+                    drawCustomDoorImageOnCanvas(customDoorPhotoDataUrl);
+                } else {
+                    drawDefaultTrioOnDoorCanvas();
+                }
+
+                if (doorway) {
+                    // Ouverture au clic/tap (mobile et desktop) en plus du survol CSS
+                    doorway.addEventListener('click', () => {
+                        const isOpen = doorway.classList.toggle('door-open');
+                        if (hintBadge) {
+                            hintBadge.textContent = isOpen ? '🎄 Bienvenue !' : '✨ Ouvrir la porte';
+                        }
+                    });
+                }
+
+                if (fileInput) {
+                    fileInput.addEventListener('change', async (e) => {
+                        const file = e.target.files && e.target.files[0];
+                        if (!file) return;
+                        try {
+                            const compressedDataUrl = await processImageToBase64(file);
+                            customDoorPhotoDataUrl = compressedDataUrl;
+                            try {
+                                localStorage.setItem(DOOR_PHOTO_STORAGE_KEY, compressedDataUrl);
+                            } catch (err) {}
+                            drawCustomDoorImageOnCanvas(compressedDataUrl);
+                            if (doorway) {
+                                doorway.classList.add('door-open');
+                                if (hintBadge) hintBadge.textContent = '🧶 Atelier tricot';
+                            }
+                            saveStateToStorage(true);
+                            showToast('Photo mise à jour dans la porte (Atelier tricot) ! 🧶');
+                        } catch (err) {
+                            showToast('Impossible de charger cette photo.');
+                        }
+                    });
+                }
+            }
+
+            /**
+             * ============================================================================
+             * 3. PORTRAITS SEMI-RÉALISTES DÉTOURÉS DES 3 PERSONNAGES DANS LA PORTE DU CHALET
              * ============================================================================
              */
             function drawDefaultTrioOnDoorCanvas() {
@@ -1410,16 +1783,19 @@
                 }
 
                 if (syncCloud && firestoreDocRef && !isApplyingRemoteUpdate) {
-                    firestoreDocRef.set({
+                    const payload = {
                         participants: participantsList,
                         updatedAt: Date.now()
-                    }).then(() => {
+                    };
+                    if (customDoorPhotoDataUrl) {
+                        payload.doorPhoto = customDoorPhotoDataUrl;
+                    }
+                    firestoreDocRef.set(payload, { merge: true }).then(() => {
                         isFirestoreConnected = true;
                         updateSyncBadge('cloud', 'En direct (Cloud multi-appareils)');
                     }).catch((err) => {
                         console.error('Erreur sauvegarde Firestore :', err);
-                        updateSyncBadge('error', 'Droits Firestore requis (Mode test)');
-                        showToast('⚠️ Activez Firestore en "mode test" dans votre console Firebase.');
+                        updateSyncBadge('error', 'Firestore : activez le mode test (édition locale active)');
                     });
                 }
             }
@@ -1436,16 +1812,26 @@
 
                     if (docSnapshot.exists) {
                         const data = docSnapshot.data();
+                        isApplyingRemoteUpdate = true;
+
+                        if (data && typeof data.doorPhoto === 'string' && data.doorPhoto && data.doorPhoto !== customDoorPhotoDataUrl) {
+                            customDoorPhotoDataUrl = data.doorPhoto;
+                            try {
+                                localStorage.setItem(DOOR_PHOTO_STORAGE_KEY, customDoorPhotoDataUrl);
+                            } catch (e) {}
+                            drawCustomDoorImageOnCanvas(customDoorPhotoDataUrl);
+                        }
+
                         if (data && Array.isArray(data.participants)) {
-                            isApplyingRemoteUpdate = true;
                             participantsList = data.participants;
                             try {
                                 localStorage.setItem(STORAGE_KEY, JSON.stringify(participantsList));
                             } catch (e) {}
                             ensureValidSelection();
                             renderAll();
-                            isApplyingRemoteUpdate = false;
                         }
+
+                        isApplyingRemoteUpdate = false;
                     } else {
                         // Première initialisation du document partagé dans Firestore
                         const initialSeed = participantsList.length > 0
@@ -1457,14 +1843,14 @@
                         firestoreDocRef.set({
                             participants: participantsList,
                             updatedAt: Date.now()
-                        }).catch((err) => {
+                        }, { merge: true }).catch((err) => {
                             console.warn('Impossible de créer le document initial Firestore :', err);
                         });
                     }
                 }, (error) => {
                     console.warn('Erreur de lecture temps réel Firestore :', error);
                     isFirestoreConnected = false;
-                    updateSyncBadge('error', 'Activez Firestore en mode test');
+                    updateSyncBadge('error', 'Firestore : activez le mode test (édition locale active)');
                 });
             }
 
