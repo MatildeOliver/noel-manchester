@@ -200,6 +200,22 @@
             opacity: 1;
         }
 
+        /* Fenêtres gourmandes du 2e étage : chopes de bière & English Breakfast sortant sur le rebord */
+        .window-treat-actor {
+            transform: translateY(4px) scale(0.96);
+            transition: transform 0.45s cubic-bezier(0.34, 1.45, 0.64, 1);
+            filter:
+        /* Fenêtres gourmandes du 2e étage : chopes de bière & English Breakfast sortant sur le rebord (sans contour blanc) */
+        .window-treat-actor {
+            transform: translateY(4px) scale(0.96);
+            transition: transform 0.45s cubic-bezier(0.34, 1.45, 0.64, 1);
+            filter: drop-shadow(0 5px 7px rgba(20, 10, 8, 0.58));
+        }
+        .victorian-window-interactive:hover .window-treat-actor,
+        .victorian-window-interactive.treat-popped .window-treat-actor {
+            transform: translateY(10px) scale(1.16);
+        }
+
         /* Boutons et champs de saisie texturés (zéro blanc) */
         .btn-brass {
             background: linear-gradient(180deg, #E2B354 0%, #C8922E 100%);
@@ -334,11 +350,21 @@
                 Espace commun de Noël : chacun ajoute son onglet, dépose ses idées cadeaux ou réserve les présents des proches.
             </p>
 
-            <!-- SCÈNE ARCHITECTURALE CÔTE À CÔTE (flex-nowrap garantit qu'ils restent côte à côte sur grand écran et tablette) -->
-            <div class="mt-7 max-w-4xl mx-auto flex flex-nowrap items-end justify-center gap-2 sm:gap-5 px-1">
+            <!-- SCÈNE ARCHITECTURALE CÔTE À CÔTE + DÉCORATIONS LATÉRALES SUR LES BORDS (ALBERT MEMORIAL À GAUCHE & 2 CHOPES DE BIÈRE À DROITE) -->
+            <div class="mt-7 max-w-6xl mx-auto flex flex-nowrap items-end justify-center gap-2 sm:gap-4 px-1">
                 
+                <!-- 0. BORD GAUCHE : MONUMENT ALBERT MEMORIAL D'ALBERT SQUARE DÉCORÉ POUR NOËL (CANVAS HD) -->
+                <div class="hidden md:flex shrink-0 flex-col items-center">
+                    <div class="relative rounded-2xl p-1 bg-mcr-pine/80 border-2 border-mcr-brass/80 shadow-xl" title="Albert Memorial • Albert Square, Manchester">
+                        <canvas id="albert-memorial-canvas" width="165" height="275" class="block w-[132px] h-[220px] lg:w-[152px] lg:h-[254px] rounded-xl"></canvas>
+                    </div>
+                    <span class="mt-1.5 text-[10px] font-semibold text-mcr-parchment bg-mcr-ink/85 border border-mcr-brass/60 px-2.5 py-0.5 rounded-full whitespace-nowrap">
+                        Albert Square &bull; Memorial
+                    </span>
+                </div>
+
                 <!-- 1. GRANDE MAISON VICTORIENNE EN BRIQUE ROUGE DE MANCHESTER -->
-                <div class="flex-1 min-w-0 max-w-[640px] relative">
+                <div class="flex-1 min-w-0 max-w-[600px] relative">
                     <!-- Deux cheminées en brique rouge + fumée douce -->
                     <div class="flex justify-between px-10 sm:px-16 -mb-2 relative z-10">
                         <div class="relative w-9 sm:w-12 h-8 sm:h-10 manchester-brick-wall border-x-2 border-t-2 border-mcr-ink rounded-t-md">
@@ -373,23 +399,30 @@
 
                         <!-- 2e Étage : 3 Grandes fenêtres victoriennes cintrées illuminées -->
                         <div class="grid grid-cols-3 gap-2.5 sm:gap-4 px-1 sm:px-3">
-                            <div>
-                                <div class="victorian-window h-16 sm:h-24 flex items-center justify-center">
-                                    <span class="text-lg sm:text-2xl drop-shadow" title="Sapin illuminé">🎄</span>
+                            <!-- Fenêtre gauche : 2 Chopes de bière ambrée mousseuse qui sortent de la fenêtre -->
+                            <div class="relative">
+                                <div id="window-beer-stage" class="victorian-window victorian-window-interactive h-16 sm:h-24 flex items-end justify-center overflow-visible cursor-pointer group" title="Cliquez ou survolez : 2 chopes de bière ambrée qui trinquent à la fenêtre !">
+                                    <div class="window-treat-actor relative z-10 w-[114%] h-[112%] -mb-2 flex items-end justify-center pointer-events-none">
+                                        <canvas id="window-beer-canvas" width="160" height="140" class="w-full h-full object-contain object-bottom"></canvas>
+                                    </div>
                                 </div>
-                                <div class="snowy-ledge"></div>
+                                <div class="snowy-ledge relative z-20"></div>
                             </div>
+                            <!-- Fenêtre centrale : Chaleur du foyer -->
                             <div>
                                 <div class="victorian-window h-16 sm:h-24 flex items-center justify-center">
                                     <span class="text-lg sm:text-2xl drop-shadow" title="Chaleur du foyer">✨</span>
                                 </div>
                                 <div class="snowy-ledge"></div>
                             </div>
-                            <div>
-                                <div class="victorian-window h-16 sm:h-24 flex items-center justify-center">
-                                    <span class="text-lg sm:text-2xl drop-shadow" title="Chaleur du foyer">🕯️</span>
+                            <!-- Fenêtre droite : Full English Breakfast fumant sur le rebord -->
+                            <div class="relative">
+                                <div id="window-breakfast-stage" class="victorian-window victorian-window-interactive h-16 sm:h-24 flex items-end justify-center overflow-visible cursor-pointer group" title="Cliquez ou survolez : Full English Breakfast de Manchester à la fenêtre !">
+                                    <div class="window-treat-actor relative z-10 w-[116%] h-[112%] -mb-2 flex items-end justify-center pointer-events-none">
+                                        <canvas id="window-breakfast-canvas" width="165" height="140" class="w-full h-full object-contain object-bottom"></canvas>
+                                    </div>
                                 </div>
-                                <div class="snowy-ledge"></div>
+                                <div class="snowy-ledge relative z-20"></div>
                             </div>
                         </div>
 
@@ -486,8 +519,8 @@
                 </div>
             </div>
 
-            <!-- Trottoir enneigé commun reliant la grande maison et Barnaby -->
-            <div class="max-w-4xl mx-auto h-3.5 bg-gradient-to-b from-mcr-kraft to-mcr-parchmentDark border-2 border-mcr-ink rounded-full -mt-1.5 shadow-md"></div>
+            <!-- Trottoir enneigé commun reliant l'Albert Memorial, la grande maison et Barnaby -->
+            <div class="max-w-5xl mx-auto h-3.5 bg-gradient-to-b from-mcr-kraft to-mcr-parchmentDark border-2 border-mcr-ink rounded-full -mt-1.5 shadow-md"></div>
         </div>
     </header>
 
@@ -1166,6 +1199,593 @@
                 }
 
                 requestAnimationFrame(drawCat);
+            }
+
+            /**
+             * ============================================================================
+             * 1B. DÉCORATIONS LATÉRALES SUR LES BORDS (ALBERT MEMORIAL & 2 CHOPES DE BIÈRE)
+             * ============================================================================
+             */
+            function initLateralChristmasDecorations() {
+                // --- A. MONUMENT ALBERT MEMORIAL D'ALBERT SQUARE (BORD GAUCHE) ---
+                const memCanvas = document.getElementById('albert-memorial-canvas');
+                if (memCanvas) {
+                    const mCtx = memCanvas.getContext('2d');
+                    const startMem = performance.now();
+
+                    function drawAlbertMemorial(now) {
+                        const t = (now - startMem) * 0.001;
+                        const w = memCanvas.width;
+                        const h = memCanvas.height;
+                        mCtx.clearRect(0, 0, w, h);
+
+                        // Ciel nocturne hivernal & trottoir enneigé assorti
+                        const skyGrad = mCtx.createLinearGradient(0, 0, 0, h);
+                        skyGrad.addColorStop(0, '#173326');
+                        skyGrad.addColorStop(0.81, '#1D3E2E');
+                        skyGrad.addColorStop(0.82, '#F2E4CC');
+                        skyGrad.addColorStop(1, '#DFC8A2');
+                        mCtx.fillStyle = skyGrad;
+                        mCtx.fillRect(0, 0, w, h);
+
+                        // Ligne d'horizon enneigée
+                        mCtx.strokeStyle = '#1F1614';
+                        mCtx.lineWidth = 2;
+                        mCtx.beginPath();
+                        mCtx.moveTo(0, h * 0.815);
+                        mCtx.lineTo(w, h * 0.815);
+                        mCtx.stroke();
+
+                        // Étoiles dorées douces
+                        mCtx.fillStyle = '#E7BC66';
+                        [[24, 24, 1.8], [140, 32, 2.1], [34, 68, 1.4], [134, 78, 1.6]].forEach(([sx, sy, sr]) => {
+                            mCtx.beginPath();
+                            mCtx.arc(sx, sy, sr, 0, Math.PI * 2);
+                            mCtx.fill();
+                        });
+
+                        const cx = w * 0.5;
+                        const stoneGrad = mCtx.createLinearGradient(cx - 42, 30, cx + 42, 225);
+                        stoneGrad.addColorStop(0, '#DFC08A');
+                        stoneGrad.addColorStop(0.55, '#C49E63');
+                        stoneGrad.addColorStop(1, '#9E7942');
+
+                        mCtx.strokeStyle = '#2A1612';
+                        mCtx.lineWidth = 1.6;
+
+                        // Marchepieds / Socle octogonal à degrés en pierre de grès dorée
+                        mCtx.fillStyle = '#B38E55';
+                        mCtx.beginPath();
+                        mCtx.roundRect(cx - 56, 212, 112, 13, 3);
+                        mCtx.fill();
+                        mCtx.stroke();
+
+                        mCtx.fillStyle = stoneGrad;
+                        mCtx.beginPath();
+                        mCtx.roundRect(cx - 48, 200, 96, 13, 3);
+                        mCtx.fill();
+                        mCtx.stroke();
+
+                        // Neige sur les marches du socle
+                        mCtx.fillStyle = '#F2E4CC';
+                        mCtx.beginPath();
+                        mCtx.roundRect(cx - 49, 198, 98, 4, 2);
+                        mCtx.fill();
+
+                        // Piédestal central sculpté avec arche néogothique
+                        mCtx.fillStyle = stoneGrad;
+                        mCtx.beginPath();
+                        mCtx.roundRect(cx - 34, 152, 68, 48, 2);
+                        mCtx.fill();
+                        mCtx.stroke();
+
+                        // Dais / Baldaquin néogothique ouvert abritant la statue du Prince Albert
+                        mCtx.fillStyle = '#3B2820';
+                        mCtx.beginPath();
+                        mCtx.moveTo(cx - 24, 152);
+                        mCtx.lineTo(cx - 24, 118);
+                        mCtx.quadraticCurveTo(cx, 102, cx + 24, 118);
+                        mCtx.lineTo(cx + 24, 152);
+                        mCtx.closePath();
+                        mCtx.fill();
+
+                        // Lueur chaude dorée sous le dais néogothique
+                        const nicheGlow = mCtx.createRadialGradient(cx, 132, 2, cx, 132, 24);
+                        nicheGlow.addColorStop(0, '#FCE39C');
+                        nicheGlow.addColorStop(0.7, '#D4A03E');
+                        nicheGlow.addColorStop(1, 'rgba(155, 107, 30, 0.25)');
+                        mCtx.fillStyle = nicheGlow;
+                        mCtx.beginPath();
+                        mCtx.moveTo(cx - 20, 152);
+                        mCtx.lineTo(cx - 20, 120);
+                        mCtx.quadraticCurveTo(cx, 106, cx + 20, 120);
+                        mCtx.lineTo(cx + 20, 152);
+                        mCtx.closePath();
+                        mCtx.fill();
+
+                        // Silhouette dorée de la statue du Prince Albert sous l'arche
+                        mCtx.fillStyle = '#5E3D1C';
+                        mCtx.beginPath();
+                        mCtx.ellipse(cx, 138, 7, 13, 0, 0, Math.PI * 2);
+                        mCtx.fill();
+                        mCtx.beginPath();
+                        mCtx.arc(cx, 122, 4.2, 0, Math.PI * 2);
+                        mCtx.fill();
+
+                        // Colonnes d'angle néogothiques & pinacles latéraux
+                        [-28, 28].forEach((offset) => {
+                            mCtx.fillStyle = stoneGrad;
+                            mCtx.beginPath();
+                            mCtx.rect(cx + offset - 4.5, 104, 9, 48);
+                            mCtx.fill();
+                            mCtx.stroke();
+
+                            // Petit pinacle pointu enneigé
+                            mCtx.beginPath();
+                            mCtx.moveTo(cx + offset - 6, 104);
+                            mCtx.lineTo(cx + offset, 84);
+                            mCtx.lineTo(cx + offset + 6, 104);
+                            mCtx.closePath();
+                            mCtx.fill();
+                            mCtx.stroke();
+                        });
+
+                        // Gâble triangulaire sculpté au-dessus de l'arche
+                        mCtx.fillStyle = stoneGrad;
+                        mCtx.beginPath();
+                        mCtx.moveTo(cx - 31, 112);
+                        mCtx.lineTo(cx, 78);
+                        mCtx.lineTo(cx + 31, 112);
+                        mCtx.closePath();
+                        mCtx.fill();
+                        mCtx.stroke();
+
+                        // Grande flèche néogothique élancée vers le ciel
+                        mCtx.fillStyle = stoneGrad;
+                        mCtx.beginPath();
+                        mCtx.moveTo(cx - 21, 86);
+                        mCtx.lineTo(cx, 18);
+                        mCtx.lineTo(cx + 21, 86);
+                        mCtx.closePath();
+                        mCtx.fill();
+                        mCtx.stroke();
+
+                        // Crochets gothiques & neige sur les arêtes de la flèche
+                        mCtx.strokeStyle = '#F2E4CC';
+                        mCtx.lineWidth = 2;
+                        mCtx.beginPath();
+                        mCtx.moveTo(cx - 19, 83);
+                        mCtx.lineTo(cx, 20);
+                        mCtx.lineTo(cx + 19, 83);
+                        mCtx.stroke();
+
+                        // Étoile dorée au sommet de la flèche
+                        mCtx.fillStyle = '#E7BC66';
+                        mCtx.strokeStyle = '#2A1612';
+                        mCtx.lineWidth = 1.2;
+                        mCtx.beginPath();
+                        mCtx.arc(cx, 15, 4.5, 0, Math.PI * 2);
+                        mCtx.fill();
+                        mCtx.stroke();
+
+                        // Guirlande de sapin & lumières de Noël enroulées autour du monument
+                        mCtx.strokeStyle = '#173326';
+                        mCtx.lineWidth = 4.5;
+                        mCtx.beginPath();
+                        mCtx.moveTo(cx - 16, 70);
+                        mCtx.quadraticCurveTo(cx, 77, cx + 16, 70);
+                        mCtx.moveTo(cx - 33, 156);
+                        mCtx.quadraticCurveTo(cx, 168, cx + 33, 156);
+                        mCtx.stroke();
+
+                        const bulbs = [
+                            [cx - 12, 72, '#E7BC66', 0],
+                            [cx, 74, '#D9382E', 0.8],
+                            [cx + 12, 72, '#E7BC66', 1.6],
+                            [cx - 25, 160, '#D9382E', 0.4],
+                            [cx - 8, 164, '#E7BC66', 1.2],
+                            [cx + 9, 164, '#D9382E', 2.0],
+                            [cx + 25, 160, '#E7BC66', 2.6]
+                        ];
+                        bulbs.forEach(([bx, by, col, phase]) => {
+                            const pulse = 0.72 + 0.28 * Math.sin(t * 3.5 + phase);
+                            mCtx.save();
+                            mCtx.globalAlpha = pulse;
+                            mCtx.fillStyle = col;
+                            mCtx.beginPath();
+                            mCtx.arc(bx, by, 3.1, 0, Math.PI * 2);
+                            mCtx.fill();
+                            mCtx.restore();
+                        });
+
+                        // Couronne de houx de Noël sur le socle central
+                        mCtx.strokeStyle = '#173326';
+                        mCtx.lineWidth = 5;
+                        mCtx.beginPath();
+                        mCtx.arc(cx, 180, 10, 0, Math.PI * 2);
+                        mCtx.stroke();
+                        mCtx.fillStyle = '#B8332A';
+                        mCtx.beginPath();
+                        mCtx.arc(cx, 170, 3, 0, Math.PI * 2);
+                        mCtx.fill();
+
+                        // Deux petits cadeaux de Noël au pied du monument
+                        mCtx.fillStyle = '#7E241C';
+                        mCtx.strokeStyle = '#1F1614';
+                        mCtx.lineWidth = 1.4;
+                        mCtx.beginPath();
+                        mCtx.roundRect(cx - 44, 188, 14, 12, 2);
+                        mCtx.fill();
+                        mCtx.stroke();
+                        mCtx.fillStyle = '#D4A03E';
+                        mCtx.fillRect(cx - 38, 188, 2.5, 12);
+
+                        mCtx.fillStyle = '#224937';
+                        mCtx.beginPath();
+                        mCtx.roundRect(cx + 30, 189, 13, 11, 2);
+                        mCtx.fill();
+                        mCtx.stroke();
+                        mCtx.fillStyle = '#E7BC66';
+                        mCtx.fillRect(cx + 35.5, 189, 2.5, 11);
+
+                        requestAnimationFrame(drawAlbertMemorial);
+                    }
+
+                    requestAnimationFrame(drawAlbertMemorial);
+                }
+
+                // --- B. 2 CHOPES DE BIÈRE AMBRÉE MOUSSEUSE SORTANT DE LA FENÊTRE GAUCHE ---
+                const beerCanvas = document.getElementById('window-beer-canvas');
+                const beerStage = document.getElementById('window-beer-stage');
+                if (beerCanvas) {
+                    const bCtx = beerCanvas.getContext('2d');
+                    const startBeer = performance.now();
+                    let clinkBoost = 0;
+
+                    if (beerStage) {
+                        beerStage.addEventListener('click', () => {
+                            beerStage.classList.toggle('treat-popped');
+                            clinkBoost = 1.0;
+                            showToast('Cheers ! Deux chopes de bière ambrée sortent de la fenêtre 🍺');
+                        });
+                    }
+
+                    function drawSingleWindowBeerMug(ctx, x, y, tiltAngle, flipHandle) {
+                        ctx.save();
+                        ctx.translate(x, y);
+                        ctx.rotate(tiltAngle);
+
+                        const mugW = 34;
+                        const mugH = 54;
+
+                        // Anse en verre épais
+                        ctx.strokeStyle = '#E8D5B5';
+                        ctx.lineWidth = 6;
+                        ctx.beginPath();
+                        const hx = flipHandle ? mugW * 0.5 : -mugW * 0.5;
+                        const dir = flipHandle ? 1 : -1;
+                        ctx.moveTo(hx, -mugH * 0.72);
+                        ctx.quadraticCurveTo(hx + dir * 16, -mugH * 0.72, hx + dir * 16, -mugH * 0.45);
+                        ctx.quadraticCurveTo(hx + dir * 16, -mugH * 0.18, hx, -mugH * 0.18);
+                        ctx.stroke();
+
+                        ctx.strokeStyle = '#2A1612';
+                        ctx.lineWidth = 1.6;
+                        ctx.stroke();
+
+                        // Corps en verre rempli de bière ambrée de Manchester
+                        const aleGrad = ctx.createLinearGradient(-mugW * 0.5, -mugH, mugW * 0.5, 0);
+                        aleGrad.addColorStop(0, '#F3AF36');
+                        aleGrad.addColorStop(0.55, '#C96E18');
+                        aleGrad.addColorStop(1, '#8C3B0C');
+
+                        ctx.fillStyle = aleGrad;
+                        ctx.strokeStyle = '#2A1612';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.roundRect(-mugW * 0.5, -mugH, mugW, mugH, [4, 4, 8, 8]);
+                        ctx.fill();
+                        ctx.stroke();
+
+                        // Reflets verticaux du verre
+                        ctx.strokeStyle = 'rgba(255, 236, 185, 0.38)';
+                        ctx.lineWidth = 1.8;
+                        [-8, 0, 8].forEach((rx) => {
+                            ctx.beginPath();
+                            ctx.moveTo(rx, -mugH + 13);
+                            ctx.lineTo(rx, -7);
+                            ctx.stroke();
+                        });
+
+                        // Base en verre
+                        ctx.fillStyle = '#E8D5B5';
+                        ctx.strokeStyle = '#2A1612';
+                        ctx.lineWidth = 1.5;
+                        ctx.beginPath();
+                        ctx.roundRect(-mugW * 0.5 - 1, -6, mugW + 2, 6, [0, 0, 6, 6]);
+                        ctx.fill();
+                        ctx.stroke();
+
+                        // Épaisse mousse crémeuse sur le dessus
+                        ctx.fillStyle = '#FFFDF7';
+                        ctx.strokeStyle = '#2A1612';
+                        ctx.lineWidth = 1.6;
+                        ctx.beginPath();
+                        ctx.arc(-10, -mugH, 8.5, Math.PI, 0);
+                        ctx.arc(0, -mugH - 3, 9.5, Math.PI, 0);
+                        ctx.arc(10, -mugH, 8.5, Math.PI, 0);
+                        ctx.lineTo(mugW * 0.5 + 1, -mugH + 8);
+                        ctx.quadraticCurveTo(0, -mugH + 11, -mugW * 0.5 - 1, -mugH + 8);
+                        ctx.closePath();
+                        ctx.fill();
+                        ctx.stroke();
+
+                        // Coulure de mousse gourmande
+                        ctx.fillStyle = '#FFFDF7';
+                        ctx.beginPath();
+                        ctx.roundRect(flipHandle ? -11 : 5, -mugH + 5, 4.5, 11, 2.2);
+                        ctx.fill();
+
+                        ctx.restore();
+                    }
+
+                    function drawWindowBeerScene(now) {
+                        const t = (now - startBeer) * 0.001;
+                        const w = beerCanvas.width;
+                        const h = beerCanvas.height;
+                        bCtx.clearRect(0, 0, w, h);
+
+                        if (clinkBoost > 0) {
+                            clinkBoost = Math.max(0, clinkBoost - 0.018);
+                        }
+
+                        const cx = w * 0.5;
+                        const sillY = h - 10;
+
+                        // Plateau en bois posé sur le rebord de la fenêtre ouverte
+                        bCtx.fillStyle = '#6D3B1E';
+                        bCtx.strokeStyle = '#1F1614';
+                        bCtx.lineWidth = 1.8;
+                        bCtx.beginPath();
+                        bCtx.roundRect(cx - 56, sillY - 4, 112, 8, 4);
+                        bCtx.fill();
+                        bCtx.stroke();
+
+                        // Balancement festif des 2 chopes qui trinquent en sortant de la fenêtre
+                        const clinkWave = Math.sin(t * 2.2) * 0.055 + Math.sin(t * 16) * clinkBoost * 0.09;
+                        drawSingleWindowBeerMug(bCtx, cx - 22, sillY - 3, 0.11 + clinkWave, false);
+                        drawSingleWindowBeerMug(bCtx, cx + 22, sillY - 3, -0.11 - clinkWave, true);
+
+                        // Étincelles dorées au-dessus des deux chopes
+                        const sparkAlpha = 0.5 + 0.5 * Math.abs(Math.sin(t * 2.2)) + clinkBoost * 0.4;
+                        bCtx.save();
+                        bCtx.globalAlpha = Math.min(1, sparkAlpha);
+                        bCtx.strokeStyle = '#FFF2C2';
+                        bCtx.lineWidth = 2;
+                        [
+                            [cx, 54, cx, 43],
+                            [cx - 8, 58, cx - 15, 51],
+                            [cx + 8, 58, cx + 15, 51]
+                        ].forEach(([x1, y1, x2, y2]) => {
+                            bCtx.beginPath();
+                            bCtx.moveTo(x1, y1);
+                            bCtx.lineTo(x2, y2);
+                            bCtx.stroke();
+                        });
+                        bCtx.restore();
+
+                        requestAnimationFrame(drawWindowBeerScene);
+                    }
+
+                    requestAnimationFrame(drawWindowBeerScene);
+                }
+
+                // --- C. FULL ENGLISH BREAKFAST FUMANT DANS LA FENÊTRE DROITE ---
+                const breakfastCanvas = document.getElementById('window-breakfast-canvas');
+                const breakfastStage = document.getElementById('window-breakfast-stage');
+                if (breakfastCanvas) {
+                    const fCtx = breakfastCanvas.getContext('2d');
+                    const startBreakfast = performance.now();
+                    let steamBoost = 0;
+
+                    if (breakfastStage) {
+                        breakfastStage.addEventListener('click', () => {
+                            breakfastStage.classList.toggle('treat-popped');
+                            steamBoost = 1.0;
+                            showToast('Miam ! Un Full English Breakfast bien chaud à la fenêtre 🍳🥓');
+                        });
+                    }
+
+                    function drawFullEnglishBreakfast(now) {
+                        const t = (now - startBreakfast) * 0.001;
+                        const w = breakfastCanvas.width;
+                        const h = breakfastCanvas.height;
+                        fCtx.clearRect(0, 0, w, h);
+
+                        if (steamBoost > 0) {
+                            steamBoost = Math.max(0, steamBoost - 0.015);
+                        }
+
+                        const cx = w * 0.5;
+                        const plateY = h - 34;
+
+                        // Grande assiette ovale en porcelaine crème posée sur le rebord de la fenêtre
+                        fCtx.save();
+                        fCtx.fillStyle = '#D8C6A8';
+                        fCtx.strokeStyle = '#1F1614';
+                        fCtx.lineWidth = 2;
+                        fCtx.beginPath();
+                        fCtx.ellipse(cx, plateY + 4, 66, 26, 0, 0, Math.PI * 2);
+                        fCtx.fill();
+                        fCtx.stroke();
+
+                        fCtx.fillStyle = '#FAF5EA';
+                        fCtx.beginPath();
+                        fCtx.ellipse(cx, plateY, 64, 24, 0, 0, Math.PI * 2);
+                        fCtx.fill();
+                        fCtx.stroke();
+
+                        // Liseré doré intérieur de l'assiette
+                        fCtx.strokeStyle = '#C8922E';
+                        fCtx.lineWidth = 1.2;
+                        fCtx.beginPath();
+                        fCtx.ellipse(cx, plateY, 54, 18.5, 0, 0, Math.PI * 2);
+                        fCtx.stroke();
+
+                        // 1. Toast doré grillé coupé en triangle à l'arrière gauche
+                        fCtx.fillStyle = '#D99B43';
+                        fCtx.strokeStyle = '#5E3612';
+                        fCtx.lineWidth = 1.4;
+                        fCtx.beginPath();
+                        fCtx.moveTo(cx - 46, plateY - 6);
+                        fCtx.lineTo(cx - 24, plateY - 22);
+                        fCtx.lineTo(cx - 14, plateY - 4);
+                        fCtx.closePath();
+                        fCtx.fill();
+                        fCtx.stroke();
+
+                        fCtx.fillStyle = '#E8B35A';
+                        fCtx.beginPath();
+                        fCtx.moveTo(cx - 43, plateY - 7);
+                        fCtx.lineTo(cx - 25, plateY - 19);
+                        fCtx.lineTo(cx - 17, plateY - 6);
+                        fCtx.closePath();
+                        fCtx.fill();
+
+                        // 2. Haricots blancs à la sauce tomate (Baked Beans) dans un petit ramequin à droite
+                        fCtx.fillStyle = '#C9381E';
+                        fCtx.strokeStyle = '#2A1612';
+                        fCtx.lineWidth = 1.4;
+                        fCtx.beginPath();
+                        fCtx.ellipse(cx + 30, plateY - 7, 17, 9.5, 0.1, 0, Math.PI * 2);
+                        fCtx.fill();
+                        fCtx.stroke();
+
+                        fCtx.fillStyle = '#E67A2E';
+                        [
+                            [cx + 23, plateY - 8], [cx + 30, plateY - 10], [cx + 37, plateY - 7],
+                            [cx + 26, plateY - 5], [cx + 34, plateY - 4], [cx + 29, plateY - 7]
+                        ].forEach(([bx, by]) => {
+                            fCtx.beginPath();
+                            fCtx.ellipse(bx, by, 3.2, 2, 0.3, 0, Math.PI * 2);
+                            fCtx.fill();
+                        });
+
+                        // 3. Deux saucisses anglaises dorées (Cumberland sausages) en bas à droite
+                        [
+                            [cx + 12, plateY + 7, -0.22],
+                            [cx + 20, plateY + 13, -0.18]
+                        ].forEach(([sx, sy, ang]) => {
+                            fCtx.save();
+                            fCtx.translate(sx, sy);
+                            fCtx.rotate(ang);
+                            const sausGrad = fCtx.createLinearGradient(-18, -4, 18, 4);
+                            sausGrad.addColorStop(0, '#A84A20');
+                            sausGrad.addColorStop(0.5, '#C8602B');
+                            sausGrad.addColorStop(1, '#7E3012');
+                            fCtx.fillStyle = sausGrad;
+                            fCtx.strokeStyle = '#2A1612';
+                            fCtx.lineWidth = 1.3;
+                            fCtx.beginPath();
+                            fCtx.roundRect(-18, -4.5, 36, 9, 4.5);
+                            fCtx.fill();
+                            fCtx.stroke();
+                            fCtx.restore();
+                        });
+
+                        // 4. Tranches de bacon croustillant à gauche
+                        [
+                            [cx - 32, plateY + 6, 0.25],
+                            [cx - 26, plateY + 12, 0.2]
+                        ].forEach(([bx, by, ang]) => {
+                            fCtx.save();
+                            fCtx.translate(bx, by);
+                            fCtx.rotate(ang);
+                            fCtx.fillStyle = '#B8332A';
+                            fCtx.strokeStyle = '#3B1210';
+                            fCtx.lineWidth = 1.2;
+                            fCtx.beginPath();
+                            fCtx.roundRect(-16, -3.5, 32, 7, 3);
+                            fCtx.fill();
+                            fCtx.stroke();
+                            // Bande de gras doré
+                            fCtx.fillStyle = '#F5D5B8';
+                            fCtx.fillRect(-14, -1, 28, 2);
+                            fCtx.restore();
+                        });
+
+                        // 5. Tomate rôtie & champignons grillés au centre-haut
+                        fCtx.fillStyle = '#D93426';
+                        fCtx.strokeStyle = '#2A1612';
+                        fCtx.lineWidth = 1.3;
+                        fCtx.beginPath();
+                        fCtx.arc(cx + 6, plateY - 12, 7, 0, Math.PI * 2);
+                        fCtx.fill();
+                        fCtx.stroke();
+
+                        fCtx.fillStyle = '#7A5E48';
+                        fCtx.beginPath();
+                        fCtx.ellipse(cx - 8, plateY - 13, 6.5, 4.5, -0.2, 0, Math.PI * 2);
+                        fCtx.fill();
+                        fCtx.stroke();
+
+                        // 6. Deux œufs au plat bien brillants au cœur de l'assiette
+                        [
+                            [cx - 6, plateY + 1],
+                            [cx + 11, plateY - 2]
+                        ].forEach(([ex, ey]) => {
+                            // Blanc d'œuf (contour sombre naturel)
+                            fCtx.fillStyle = '#F7F1E3';
+                            fCtx.strokeStyle = '#3B2C24';
+                            fCtx.lineWidth = 1.2;
+                            fCtx.beginPath();
+                            fCtx.ellipse(ex, ey, 12.5, 8.5, 0.1, 0, Math.PI * 2);
+                            fCtx.fill();
+                            fCtx.stroke();
+
+                            // Jaune d'œuf doré avec reflet
+                            fCtx.fillStyle = '#F5A614';
+                            fCtx.beginPath();
+                            fCtx.arc(ex + 1, ey - 1, 5.2, 0, Math.PI * 2);
+                            fCtx.fill();
+
+                            fCtx.fillStyle = '#FFF5C0';
+                            fCtx.beginPath();
+                            fCtx.arc(ex - 0.8, ey - 2.5, 1.6, 0, Math.PI * 2);
+                            fCtx.fill();
+                        });
+
+                        fCtx.restore();
+
+                        // Volutes de vapeur chaude qui s'élèvent doucement de l'assiette
+                        const steamAmp = 1 + steamBoost * 0.8;
+                        fCtx.save();
+                        fCtx.strokeStyle = 'rgba(255, 250, 240, 0.72)';
+                        fCtx.lineWidth = 2;
+                        fCtx.lineCap = 'round';
+                        [-24, 0, 24].forEach((offsetX, idx) => {
+                            const phase = t * 2.4 + idx * 1.4;
+                            const rise = ((phase % 3.2) / 3.2) * 26 * steamAmp;
+                            const alpha = Math.sin(((phase % 3.2) / 3.2) * Math.PI) * 0.78;
+                            const sway = Math.sin(phase * 2) * 4;
+                            fCtx.globalAlpha = Math.max(0, alpha);
+                            fCtx.beginPath();
+                            fCtx.moveTo(cx + offsetX, plateY - 14 - rise * 0.3);
+                            fCtx.quadraticCurveTo(
+                                cx + offsetX + sway,
+                                plateY - 24 - rise * 0.7,
+                                cx + offsetX - sway * 0.5,
+                                plateY - 34 - rise
+                            );
+                            fCtx.stroke();
+                        });
+                        fCtx.restore();
+
+                        requestAnimationFrame(drawFullEnglishBreakfast);
+                    }
+
+                    requestAnimationFrame(drawFullEnglishBreakfast);
+                }
             }
 
             /**
@@ -2426,6 +3046,7 @@
             function bootApp() {
                 initSnowflakes();
                 initBritishShorthairCanvas();
+                initLateralChristmasDecorations();
                 initInteractiveChaletDoor();
                 loadStateFromStorage();
                 bindEvents();
